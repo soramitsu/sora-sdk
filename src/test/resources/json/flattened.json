@@ -1,0 +1,15 @@
+{
+  "/1:a": 1,
+  "/1:b": "string",
+  "/1:c_0": 3,
+  "/1:c_1": 2,
+  "/1:c_2": 1,
+  "/1:d/1:1": 1,
+  "/1:d/1:2_0/1:z": 1,
+  "/1:e": null,
+  "/36:complex_key/value with? empty object": {},
+  "/11:empty array": [],
+  "/28:empty array of empty objects_0": {},
+  "/28:empty array of empty objects_1": {},
+  "/28:empty array of empty objects_2": {}
+}
