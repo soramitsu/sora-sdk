@@ -4,13 +4,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.stream.IntStream;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.val;
 
 
+@NoArgsConstructor
 public class Flattener {
 
+  @Setter
   private char dictkey = '/';
+  @Setter
   private char arrkey = '_';
+  @Setter
   private ObjectMapper mapper = new ObjectMapper();
 
   private void flatten(JsonNode root, String path, ObjectNode out) {
@@ -21,9 +27,10 @@ public class Flattener {
         return;
       }
 
-      val fields = root.fields();
-      fields.forEachRemaining(
-          field -> flatten(field.getValue(), path + dictkey + sanitize(field.getKey()), out));
+      root.fields()
+          .forEachRemaining(
+              field -> flatten(field.getValue(), path + dictkey + sanitize(field.getKey()), out)
+          );
     } else if (root.isArray()) {
       if (root.size() == 0) {
         // it is empty array
@@ -43,29 +50,12 @@ public class Flattener {
   }
 
   private void deflatten(JsonNode root, ObjectNode out) {
+    // TODO: implement BSM-91
     throw new RuntimeException("not implemented");
-  }
-
-  public Flattener() {
   }
 
   public Flattener(ObjectMapper mapper) {
     this.mapper = mapper;
-  }
-
-  public Flattener setObjectMapper(ObjectMapper mapper) {
-    this.mapper = mapper;
-    return this;
-  }
-
-  public Flattener setDictionaryKey(char key) {
-    this.dictkey = key;
-    return this;
-  }
-
-  public Flattener setArrayKey(char key) {
-    this.arrkey = key;
-    return this;
   }
 
 
