@@ -1,26 +1,15 @@
 package jp.co.soramitsu.sora.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import javax.xml.bind.DatatypeConverter;
-import jp.co.soramitsu.jackson.OneCodeGenerator;
 import jp.co.soramitsu.jackson.OneCodeMapper;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.val;
 
 public class Hashifier {
 
