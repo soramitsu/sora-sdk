@@ -15,8 +15,12 @@ cache:
   - "$HOME/.gradle/wrapper/"
 env:
   secure: "TctcR4AdewAI9r612gSM4+Zp5PPZvd4cCD36E+4hJLkaxA4KQHMeDL2AB5jQoLolE1vqnFr9ZUxL3pDPVSlLAMVTPEoscKk3FfuNGN6SbXLXRWPRX20agkSzqx19kkktcEAIKEMq+s02m2yBWj4xIXgq8yZgHgG1V6V6OlpHIq/hxZDJ1Hbd0VIGz77k3xLzLbksyI6Esl34LpBcPf65RFq16G/uSBePUEtPzoPrIlUp5XHblKh1MqeLxUHgEMMOoCJBXGdJ27igREcAzwP+VDSLvT9jt2cX8bQ6A3CWLrLp0FlwEXhTIAfko+On1ya4+z3R1hDr7xJ5DcwhEK7VjU4EdANu+yg3CHV6Xn2kztAorPoSVqVqnLHzN15FI8dO2RWt+LhkgXIiT8m8XuZyYRg87elJGAI8jssPCUbIpZJVTCeOlbka36aQCrj5FrwVAenBNLln5e+XjFgT9uCvrgUEK5q/gWvbLVsZbo2sq/QC4M4Xu/ePEOVsOEx9poFiHqRIn0UB0Mntf6ZIwAKdiPr2DjlaP0eiwzMhZ5iuU6Rcij6DqYCr0x3iYqGUsN0TdHQfA4DWM67H4WdIrm7Wpe5rs9VB2uCA7L9ylRwIn8dTSxMrv0IYHQOPU1S9t5N4paHUZtRt/+3iFzc4BceaosRiiQiy8ooQ0VLc/hZl8Js="
-script:
+
+before_install:
 - "gradle wrapper"
+- "chmod +x gradlew"
+
+script:
 - "./gradlew --daemon"
 - "./gradlew assemble -x test --parallel"
 - "./gradlew test"
