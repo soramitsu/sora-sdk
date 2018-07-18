@@ -54,6 +54,8 @@ dependencies {
     testCompile("cglib:cglib-nodep:${cglibVersion}") // for mocking in spock
     testCompile("org.spockframework:spock-core:${spockVersion}")
 
+    compile("com.github.warchant:ed25519-sha3-java:${edVersion}")
+
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
