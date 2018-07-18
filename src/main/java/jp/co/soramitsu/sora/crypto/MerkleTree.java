@@ -21,6 +21,10 @@ public class MerkleTree {
     return digest.digest(Arrays.concatenate(a, b));
   }
 
+  public byte[][] getTree(){
+    return tree;
+  }
+
   public static int getTreeSize(int items) {
     int highest = Integer.highestOneBit(items);
     return items == highest ? items : highest * 2;
