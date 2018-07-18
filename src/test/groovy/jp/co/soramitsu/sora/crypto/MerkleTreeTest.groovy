@@ -25,9 +25,12 @@ class MerkleTreeTest extends Specification {
 
         when:
         def actual = MerkleTree.getTreeSize(leafs)
+        def tree = MerkleTree.newTree(leafs)
+
 
         then:
         actual == size
+        tree.length == size
 
         where:
         leafs | size
@@ -37,28 +40,6 @@ class MerkleTreeTest extends Specification {
         4     | 4
         7     | 8
         8     | 8
-    }
-
-    def "newTree allocates the tree"() {
-        given:
-        leafs
-        size
-
-        when:
-        def tree = MerkleTree.newTree(leafs)
-
-        then:
-        tree.length == size
-
-        where:
-        leafs | size
-        1     | 1
-        2     | 2
-        3     | 4
-        4     | 4
-        5     | 8
-        8     | 8
-
     }
 
     def "merkle tree works"() {
