@@ -2,14 +2,12 @@ package jp.co.soramitsu.sora.crypto;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import lombok.Setter;
+import lombok.NonNull;
 import org.spongycastle.util.Arrays;
 
 public class MerkleTree {
 
-  @Setter
   private MessageDigest digest;
 
   private boolean created = false;
@@ -21,17 +19,17 @@ public class MerkleTree {
     return digest.digest(Arrays.concatenate(a, b));
   }
 
-  public byte[][] getTree(){
+  public byte[][] getTree() {
     return tree;
   }
 
-  public static int getTreeSize(int items) {
+  public static int nextPowerOf2(int items) {
     int highest = Integer.highestOneBit(items);
     return items == highest ? items : highest * 2;
   }
 
   public static byte[][] newTree(int leafs) {
-    int size = getTreeSize(leafs);
+    int size = nextPowerOf2(leafs * 2) - 1;
     byte[][] list = new byte[size][];
 
     for (int i = 0; i < size; i++) {
@@ -41,13 +39,13 @@ public class MerkleTree {
     return list;
   }
 
-  public MerkleTree(List<byte[]> leafs, MessageDigest digest) {
+  public MerkleTree(@NonNull List<byte[]> leafs, @NonNull MessageDigest digest) {
     this.digest = digest;
 
     create(leafs);
   }
 
-  public MerkleTree(MessageDigest digest) {
+  public MerkleTree(@NonNull MessageDigest digest) {
     this.digest = digest;
   }
 

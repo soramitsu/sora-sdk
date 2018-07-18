@@ -18,28 +18,26 @@ class MerkleTreeTest extends Specification {
     def digest = Mock(MessageDigest)
 
 
-    def "getTreeSize works"() {
+    def "tree is constructed with the correct size"() {
         given:
         leafs
-        size
+        power
 
         when:
-        def actual = MerkleTree.getTreeSize(leafs)
+        def actual = MerkleTree.nextPowerOf2(leafs)
         def tree = MerkleTree.newTree(leafs)
 
-
         then:
-        actual == size
-        tree.length == size
+        actual == power
+        tree.length == treesize
 
         where:
-        leafs | size
-        1     | 1
-        2     | 2
-        3     | 4
-        4     | 4
-        7     | 8
-        8     | 8
+        leafs | power | treesize
+        2     | 2     | 3
+        3     | 4     | 7
+        4     | 4     | 7
+        7     | 8     | 15
+        8     | 8     | 15
     }
 
     def "merkle tree works"() {
@@ -61,6 +59,9 @@ class MerkleTreeTest extends Specification {
 
         then:
         tree.root() == [root] as byte[]
+        tree.getTree() == [
+                [root], [e], [f], [a], [b], [c], [d]
+        ] as byte[][]
 
         where:
         a | b | c | d | e | f | root
