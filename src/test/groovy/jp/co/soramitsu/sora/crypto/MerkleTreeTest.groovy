@@ -24,7 +24,7 @@ class MerkleTreeTest extends Specification {
         power
 
         when:
-        def actual = MerkleTree.nextPowerOf2(leafs)
+        def actual = MerkleTree.ceilToPowerOf2(leafs)
         def tree = MerkleTree.newTree(leafs)
 
         then:

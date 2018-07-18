@@ -23,13 +23,13 @@ public class MerkleTree {
     return tree;
   }
 
-  public static int nextPowerOf2(int items) {
+  public static int ceilToPowerOf2(int items) {
     int highest = Integer.highestOneBit(items);
     return items == highest ? items : highest * 2;
   }
 
   public static byte[][] newTree(int leafs) {
-    int size = nextPowerOf2(leafs * 2) - 1;
+    int size = ceilToPowerOf2(leafs * 2) - 1;
     byte[][] list = new byte[size][];
 
     for (int i = 0; i < size; i++) {
