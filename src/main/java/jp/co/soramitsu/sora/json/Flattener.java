@@ -9,7 +9,6 @@ import lombok.val;
 
 public class Flattener {
 
-  private int features = 0;
   private char dictkey = '/';
   private char arrkey = '_';
   private ObjectMapper mapper = new ObjectMapper();
