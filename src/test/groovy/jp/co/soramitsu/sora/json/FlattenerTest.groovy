@@ -1,10 +1,10 @@
 package jp.co.soramitsu.sora.json
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import spock.genesis.Gen
+import spock.genesis.generators.InfiniteIterator
 import spock.genesis.transform.Iterations
-import spock.lang.Shared
 import spock.lang.Specification
 
 class FlattenerTest extends Specification {
@@ -15,7 +15,6 @@ class FlattenerTest extends Specification {
     def mapper = new ObjectMapper()
     def flattener = new FlattenerImpl()
 
-    @Shared
     def initial = mapper.readTree(this.getClass().getResourceAsStream('/json/_initial.json'))
     def flattened = mapper.readTree(this.getClass().getResourceAsStream('/json/flattened.json'))
 
@@ -30,9 +29,28 @@ class FlattenerTest extends Specification {
 
         then:
         actual == expected
+        noExceptionThrown()
 
         where:
         expected << Gen.string(~/[a-z\\\/_0-9]+/)
+    }
+
+    def "sanitize handles UTF-8"() {
+        given:
+        byte[] b = str.getBytes("utf-8") as byte[]
+        def bytes = new String(b, "utf-8") as String
+
+        when:
+        def sanitized = flattener.sanitize(bytes)
+        def actual = flattener.desanitize(sanitized)
+
+        then:
+        actual == str
+        noExceptionThrown()
+
+        where:
+        str = "привет, мир"
+
     }
 
     def "isFlattened works"() {
@@ -59,6 +77,33 @@ class FlattenerTest extends Specification {
 
         then:
         flatActual == flattened
+    }
+
+    ObjectNode deepgen(int level, InfiniteIterator<String> it) {
+        if (level <= 0) {
+            return null
+        }
+
+        ObjectNode last = mapper.createObjectNode() as ObjectNode
+        last.set(it.next(), deepgen(level - 1, it))
+        return last
+    }
+
+    def "deep jsons are handled properly"() {
+        given:
+        def deep = deepgen(levels, it)
+
+        when:
+        def flat = flattener.flatten(deep)
+
+        then:
+        flattener.isFlattened(flat)
+        flat.size() == 1
+
+        where:
+        levels = 1000    // maximum nesting levels
+        maxLength = 100  // maximum key length
+        it = Gen.string(maxLength).iterator()
     }
 
 }

@@ -1,11 +1,10 @@
 package jp.co.soramitsu.sora.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.stream.IntStream;
 import lombok.val;
-import lombok.var;
 
 
 public class Flattener {
@@ -24,12 +23,8 @@ public class Flattener {
       }
 
       val fields = root.fields();
-      while (fields.hasNext()) {
-        var it = fields.next();
-        var key = sanitize(it.getKey());
-
-        flatten(it.getValue(), path + dictkey + key, out);
-      }
+      fields.forEachRemaining(
+          field -> flatten(field.getValue(), path + dictkey + sanitize(field.getKey()), out));
     } else if (root.isArray()) {
       if (root.size() == 0) {
         // it is empty array
@@ -37,13 +32,9 @@ public class Flattener {
         return;
       }
 
-      val fields = root.iterator();
-      long counter = 0;
-      while (fields.hasNext()) {
-        var it = fields.next();
-        flatten(it, path + arrkey + (counter++), out);
-      }
-
+      IntStream
+          .range(0, root.size())
+          .forEachOrdered(i -> flatten(root.get(i), path + arrkey + i, out));
     } else if (root.isValueNode()) {
       out.set(path, root);
 
@@ -112,7 +103,7 @@ public class Flattener {
       val key = field.getKey();
       val value = field.getValue();
 
-      if (!value.isValueNode() &&        // not value node
+      if (!value.isValueNode() &&  // not value node
           // and not empty object or empty array
           (value.size() != 0 && (value.isArray() || value.isObject()))
           ) {
@@ -120,7 +111,7 @@ public class Flattener {
       }
 
       if (!key.startsWith(Character.toString(dictkey))) {
-        // does not start with /
+        // does not start with dictkey
         return false;
       }
     }
@@ -161,12 +152,4 @@ public class Flattener {
 
     return key;
   }
-
-  public static class FlattenerException extends RuntimeException {
-
-    public FlattenerException(String msg) {
-      super(msg);
-    }
-  }
-
 }
