@@ -38,7 +38,7 @@ public class Flattener {
       out.set(path, root);
 
     } else {
-      throw new FlattenerException("type is neigher object, array or value");
+      throw new FlattenException("type is neigher object, array or value");
     }
   }
 
@@ -82,7 +82,7 @@ public class Flattener {
 
   public JsonNode deflatten(JsonNode root) {
     if (!isFlattened(root)) {
-      throw new FlattenerException("input json is not flattened");
+      throw new FlattenException("input json is not flattened");
     }
 
     ObjectNode out = mapper.createObjectNode();
@@ -137,7 +137,7 @@ public class Flattener {
    * @param k encoded string
    * @return decoded string
    * @throws NumberFormatException when first part (before :) is not base 10 number
-   * @throws FlattenerException when length of the first part is not equal to length of second part
+   * @throws FlattenException when length of the first part is not equal to length of second part
    */
   protected String desanitize(String k) {
     String[] a = k.split(":", 2);
@@ -146,7 +146,7 @@ public class Flattener {
     int len = Integer.parseInt(a[0]);
     String key = a[1];
     if (len != key.length()) {
-      throw new FlattenerException("wrongly escaped key: " + k);
+      throw new FlattenException("wrongly escaped key: " + k);
     }
 
     return key;
