@@ -18,8 +18,7 @@ public class MerkleTree {
   protected byte[][] tree;
 
   protected byte[] hash(byte[] a, byte[] b) {
-    byte[] data = Arrays.concatenate(a, b);
-    return digest.digest(data);
+    return digest.digest(Arrays.concatenate(a, b));
   }
 
   public static int getTreeSize(int items) {
