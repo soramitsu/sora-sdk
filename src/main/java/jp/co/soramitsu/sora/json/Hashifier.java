@@ -9,36 +9,40 @@ import java.util.ArrayList;
 import java.util.List;
 import jp.co.soramitsu.jackson.OneCodeMapper;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.Value;
 
+@Value
 public class Hashifier {
 
-  @Setter
   private MessageDigest digest;
 
-  @Setter
-  private ObjectMapper mapper = new ObjectMapper();
+  private ObjectMapper mapper;
 
   private ObjectMapper onecoder = new OneCodeMapper();
 
   public Hashifier(@NonNull MessageDigest digest) {
+    this(digest, new ObjectMapper());
+  }
+
+  public Hashifier(@NonNull MessageDigest digest, @NonNull ObjectMapper mapper) {
     this.digest = digest;
+    this.mapper = mapper;
   }
 
   /**
-   * Hashes top-level key-value pairs from input JSON. Number of output hashes
-   * equals to number of top-level keys in input JSON.
+   * Hashes top-level key-value pairs from input JSON. Number of output hashes equals to number of
+   * top-level keys in input JSON.
    *
    * @param root JSON Object
    * @return list of hashes. Hash is specified by {@link #digest}
-   * @throws HashifyException when input json is not an object
+   * @throws NotJsonObjectException when input json is not an object
    */
   public List<byte[]> hashify(JsonNode root) {
     if (!root.isObject()) {
-      throw new HashifyException("input json is not an object");
+      throw new NotJsonObjectException(root);
     }
 
-    List<byte[]> c = new ArrayList<>(root.size());
+    List<byte[]> hashes = new ArrayList<>(root.size());
 
     root.fields()
         .forEachRemaining(field -> {
@@ -48,13 +52,12 @@ public class Hashifier {
 
           try {
             byte[] serialized = onecoder.writeValueAsBytes(out);
-
-            c.add(digest.digest(serialized));
+            hashes.add(digest.digest(serialized));
           } catch (JsonProcessingException e) {
-            throw new HashifyException(e);
+            throw new NotJsonObjectException(e);
           }
         });
 
-    return c;
+    return hashes;
   }
 }
