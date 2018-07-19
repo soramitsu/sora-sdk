@@ -44,7 +44,6 @@ final def spockGenesisVersion = '0.6.0'
 final def jacksonVersion = '2.9.6'
 final def onecodeVersion = '1.0.1'
 final def lombokVersion = '1.18.0'
-final def hamcrestVersion = '1.3'
 final def cglibVersion = '3.2.7'
 
 
@@ -54,7 +53,6 @@ dependencies {
     testCompile("com.nagternal:spock-genesis:${spockGenesisVersion}")
     testCompile("cglib:cglib-nodep:${cglibVersion}") // for mocking in spock
     testCompile("org.spockframework:spock-core:${spockVersion}")
-    testCompile("org.hamcrest:hamcrest-all:${hamcrestVersion}")
 
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
