@@ -15,7 +15,7 @@ class MerkleTreeTest extends Specification {
         power
 
         when:
-        def actual = MerkleTree.ceilToPowerOf2(leafs as int)
+        def actual = MerkleTree.ceilToPowerOf2(leafs)
         def tree = MerkleTree.newTree(leafs)
 
         then:
