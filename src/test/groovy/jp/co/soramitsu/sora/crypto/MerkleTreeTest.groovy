@@ -1,12 +1,14 @@
 package jp.co.soramitsu.sora.crypto
 
+import jp.co.soramitsu.sora.common.ByteArrayTree
 import spock.lang.Specification
 
 import java.security.MessageDigest
 
-class MerkleTreeTest extends Specification {
+import static jp.co.soramitsu.sora.common.Util.allocateEmptyTree
+import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2
 
-    def digest = Mock(MessageDigest)
+class MerkleTreeTest extends Specification {
 
 
     def "tree is constructed with the correct size"() {
@@ -15,12 +17,12 @@ class MerkleTreeTest extends Specification {
         power
 
         when:
-        def actual = MerkleTreeFactory.ceilToPowerOf2(leafs)
-        def tree = MerkleTreeFactory.allocateEmptyTree(leafs)
+        def actual = ceilToPowerOf2(leafs)
+        def tree = allocateEmptyTree(leafs)
 
         then:
         actual == power
-        tree.length == treesize
+        tree.size() == treesize
 
         where:
         leafs | power | treesize
@@ -50,8 +52,10 @@ class MerkleTreeTest extends Specification {
     }
 
 
-    def "merkle tree works"() {
+    def "valid merkle tree is created from leafs and from the full tree"() {
         given:
+        def digest = Mock(MessageDigest)
+
         // for all
         digest.digest([a, b] as byte[]) >> [e]
         digest.digest([c, d] as byte[]) >> [f]
@@ -65,11 +69,15 @@ class MerkleTreeTest extends Specification {
         MerkleTreeFactory factory = new MerkleTreeFactory(digest)
 
         when:
-        MerkleTree tree = factory.createFromLeafs(leafs)
+        MerkleTree tree = factory.createFromLeafs(leafs as List<byte[]>)
+        MerkleTree full = factory.createFromFullTree(tree.getHashTree())
 
         then:
+        noExceptionThrown()
         tree.root() == [root] as byte[]
-        tree.getTree() == expectedTree as byte[][]
+        tree.getHashTree().getTree() == expectedTree as byte[][]
+        full.root() == [root] as byte[]
+        full.getHashTree().getTree() == expectedTree as byte[][]
 
         where:
         a | b | c | d | e | f | root
@@ -82,7 +90,7 @@ class MerkleTreeTest extends Specification {
                 list([[a], [b], [c], [d]]),
                 list([[a], [b], [c]]),
                 list([[e], [f]]),  // e+f = root
-                list([[root]])     // single leaf tree = root
+                list([[root]])     // single leaf hashTree = root
 
         ]
 
@@ -93,4 +101,5 @@ class MerkleTreeTest extends Specification {
                 bytes([[root]])
         ]
     }
+
 }

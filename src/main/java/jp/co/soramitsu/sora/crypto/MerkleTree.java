@@ -1,24 +1,27 @@
 package jp.co.soramitsu.sora.crypto;
 
+import java.security.MessageDigest;
+import jp.co.soramitsu.sora.common.ByteArrayTree;
 import lombok.Value;
 
 @Value
 public class MerkleTree {
 
+  MessageDigest digest;
+
   /**
-   * This is binary tree and it is stored "by levels", so first level is root and stored
-   * as tree[0], next level (2 items) is stored in tree[1] and tree[2], and so on.
+   * This is binary hashTree and it is stored "by levels", so first level is root and stored as hashTree[0],
+   * next level (2 items) is stored in hashTree[1] and hashTree[2], and so on.
    *
    * Scheme: [root] [intermediate nodes] [leafs]
    */
-  byte[][] tree;
-
+  ByteArrayTree hashTree;
 
   /**
    * @return merkle root hash
    */
   public byte[] root() {
-    return tree[0];
+    return hashTree.get(0);
   }
 }
 
