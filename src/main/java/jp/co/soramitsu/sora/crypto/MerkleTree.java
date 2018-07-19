@@ -4,7 +4,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
-import lombok.val;
 import org.spongycastle.util.Arrays;
 
 public class MerkleTree {

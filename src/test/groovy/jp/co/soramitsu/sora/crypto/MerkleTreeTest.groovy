@@ -1,10 +1,8 @@
 package jp.co.soramitsu.sora.crypto
 
-import spock.genesis.Gen
 import spock.lang.Specification
 
 import java.security.MessageDigest
-
 
 class MerkleTreeTest extends Specification {
 
