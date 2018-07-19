@@ -1,19 +1,12 @@
 package jp.co.soramitsu.sora.crypto
 
+import spock.genesis.Gen
 import spock.lang.Specification
 
 import java.security.MessageDigest
 
 
 class MerkleTreeTest extends Specification {
-
-    class MTree extends MerkleTree {
-        /* to test protected methods */
-
-        MTree(MessageDigest d) {
-            super(d)
-        }
-    }
 
     def digest = Mock(MessageDigest)
 
@@ -24,7 +17,7 @@ class MerkleTreeTest extends Specification {
         power
 
         when:
-        def actual = MerkleTree.ceilToPowerOf2(leafs)
+        def actual = MerkleTree.ceilToPowerOf2(leafs as int)
         def tree = MerkleTree.newTree(leafs)
 
         then:
@@ -33,6 +26,7 @@ class MerkleTreeTest extends Specification {
 
         where:
         leafs | power | treesize
+        1     | 1     | 1
         2     | 2     | 3
         3     | 4     | 7
         4     | 4     | 7
@@ -40,31 +34,64 @@ class MerkleTreeTest extends Specification {
         8     | 8     | 15
     }
 
+
+    byte[][] bytes(def array) {
+        byte[][] b = new byte[array.size()][]
+        for (int i = 0; i < b.length; i++) {
+            b[i] = array[i] as byte[]
+        }
+        return b
+    }
+
+    List<byte[]> list(def array) {
+        List<byte[]> l = new ArrayList<>(array.size());
+        for (int i = 0; i < array.size(); i++) {
+            l.add(i, array[i] as byte[])
+        }
+        return l
+    }
+
+
     def "merkle tree works"() {
         given:
-        def transactions = [
-                [a] as byte[],
-                [b] as byte[],
-                [c] as byte[],
-                [d] as byte[]
-        ] as List<byte[]>
-
+        // for all
         digest.digest([a, b] as byte[]) >> [e]
         digest.digest([c, d] as byte[]) >> [f]
+
+        // for 4 leafs
         digest.digest([e, f] as byte[]) >> [root]
 
+        // for 3 leafs
+        digest.digest([e, c] as byte[]) >> [root]
+
+
         when:
-        def tree = new MTree(digest)
-        tree.create(transactions)
+        def tree = new MerkleTree(digest, leafs)
 
         then:
         tree.root() == [root] as byte[]
-        tree.getTree() == [
-                [root], [e], [f], [a], [b], [c], [d]
-        ] as byte[][]
+        tree.getTree() == expectedTree as byte[][]
 
         where:
         a | b | c | d | e | f | root
         1 | 2 | 3 | 4 | 5 | 6 | 7
+        1 | 2 | 3 | 4 | 5 | 6 | 7
+        1 | 2 | 3 | 4 | 5 | 6 | 7
+        1 | 2 | 3 | 4 | 5 | 6 | 7
+
+        leafs << [
+                list([[a], [b], [c], [d]]),
+                list([[a], [b], [c]]),
+                list([[e], [f]]),  // e+f = root
+                list([[root]])     // single leaf tree = root
+
+        ]
+
+        expectedTree << [
+                bytes([[root], [e], [f], [a], [b], [c], [d]]),
+                bytes([[root], [e], [c], [a], [b], [c], null]),
+                bytes([[root], [e], [f]]),
+                bytes([[root]])
+        ]
     }
 }

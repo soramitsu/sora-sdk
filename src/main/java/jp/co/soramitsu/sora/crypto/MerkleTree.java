@@ -4,19 +4,18 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
+import lombok.val;
 import org.spongycastle.util.Arrays;
 
 public class MerkleTree {
 
   private MessageDigest digest;
 
-  private boolean created = false;
-
   // [root] [intermediate nodes] [leafs]
-  protected byte[][] tree;
+  private byte[][] tree;
 
-  protected byte[] hash(byte[] a, byte[] b) {
-    return digest.digest(Arrays.concatenate(a, b));
+  public static byte[] hash(MessageDigest d, byte[] a, byte[] b) {
+    return d.digest(Arrays.concatenate(a, b));
   }
 
   public byte[][] getTree() {
@@ -39,7 +38,7 @@ public class MerkleTree {
     return list;
   }
 
-  public MerkleTree(@NonNull List<byte[]> leafs, @NonNull MessageDigest digest) {
+  public MerkleTree(@NonNull MessageDigest digest, @NonNull List<byte[]> leafs) {
     this.digest = digest;
 
     create(leafs);
@@ -60,32 +59,37 @@ public class MerkleTree {
 
     tree = newTree(level.size());
 
-    List<byte[]> nextLevel = new ArrayList<>(tree.length / 2);
+    List<byte[]> nextLevel = new ArrayList<>(tree.length);
 
     while (!level.isEmpty()) {
-      System.arraycopy(level.toArray(), 0, tree, level.size() - 1, level.size());
+      int leftmostLevelNode = ceilToPowerOf2(level.size()) - 1;
+      System.arraycopy(level.toArray(), 0, tree, leftmostLevelNode, level.size());
 
       // calculate next level
       while (level.size() > 1) {
-
-        if (level.size() > 1) {
-          // we can get 2 elements
-          nextLevel.add(
-              hash(level.remove(0), level.remove(0))
-          );
-        } else {
-          // there is only one element
-          nextLevel.add(
-              level.remove(0)
-          );
-        }
+        // we can get 2 elements
+        nextLevel.add(
+            hash(digest, level.remove(0), level.remove(0))
+        );
       }
 
-      level.clear();
+      if (level.size() == 1) {
+        nextLevel.add(
+            level.remove(0)
+        );
+      }
+
+      if(nextLevel.size() == 1){
+        // this is root
+        tree[0] = nextLevel.remove(0);
+        break;
+      }
+
+      // level is clear at this point
+      assert level.isEmpty();
       level.addAll(nextLevel);
       nextLevel.clear();
     }
 
-    created = true;
   }
 }
