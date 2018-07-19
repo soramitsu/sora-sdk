@@ -14,19 +14,61 @@ public class MerkleTree {
   // [root] [intermediate nodes] [leafs]
   private byte[][] tree;
 
-  public static byte[] hash(MessageDigest d, byte[] a, byte[] b) {
-    return d.digest(Arrays.concatenate(a, b));
+  /**
+   * Creates new tree from given leafs with given digest function.
+   * @param digest implementation of the digest algorithm
+   * @param leafs list of leaf nodes
+   */
+  public MerkleTree(@NonNull MessageDigest digest, @NonNull List<byte[]> leafs) {
+    this.digest = digest;
+
+    create(leafs);
   }
 
+  /**
+   * Creates instance of MerkleTree with given digest.
+   * @apiNote after you created the instance, method {@link #create(List)} should be called
+   * to calculate tree hashes
+   * @param digest implementation of the digest algorithm
+   */
+  public MerkleTree(@NonNull MessageDigest digest) {
+    this.digest = digest;
+  }
+
+  /**
+   * Calculates hash by concatenating two hashes <code>a</code> and <code>b</code>
+   * @param a left hash
+   * @param b right hash
+   * @return digest(a || b) where || is a concatenation
+   */
+  public byte[] hash(byte[] a, byte[] b) {
+    return digest.digest(Arrays.concatenate(a, b));
+  }
+
+  /**
+   * Getter for the tree. Tree is stored "by levels", so first level is root and stored
+   * as tree[0], next level (2 items) is stored in tree[1] and tree[2], and so on.
+   * @return tree represented as [root] [intermediate nodes] [leafs]
+   */
   public byte[][] getTree() {
     return tree;
   }
 
+  /**
+   * Ceil to the next power of 2
+   * @param items
+   * @return <code>items</code> = 2, returns 2. <code>items</code> = 3, returns 4.
+   */
   public static int ceilToPowerOf2(int items) {
     int highest = Integer.highestOneBit(items);
     return items == highest ? items : highest * 2;
   }
 
+  /**
+   * Allocates new hash tree represented as byte[][]
+   * @param leafs number of leafs in this tree
+   * @return allocated tree filled with nulls
+   */
   public static byte[][] newTree(int leafs) {
     int size = ceilToPowerOf2(leafs * 2) - 1;
     byte[][] list = new byte[size][];
@@ -38,20 +80,18 @@ public class MerkleTree {
     return list;
   }
 
-  public MerkleTree(@NonNull MessageDigest digest, @NonNull List<byte[]> leafs) {
-    this.digest = digest;
 
-    create(leafs);
-  }
-
-  public MerkleTree(@NonNull MessageDigest digest) {
-    this.digest = digest;
-  }
-
+  /**
+   * @return merkle root hash
+   */
   public byte[] root() {
     return tree[0];
   }
 
+  /**
+   * Calculates merkle tree given leafs.
+   * @param level the bottom-most level of the tree (e.g. leafs)
+   */
   public void create(List<byte[]> level) {
     if (level.isEmpty()) {
       throw new IllegalArgumentException("tree can be calculated from at least one item");
@@ -69,7 +109,7 @@ public class MerkleTree {
       while (level.size() > 1) {
         // we can get 2 elements
         nextLevel.add(
-            hash(digest, level.remove(0), level.remove(0))
+            hash(level.remove(0), level.remove(0))
         );
       }
 
