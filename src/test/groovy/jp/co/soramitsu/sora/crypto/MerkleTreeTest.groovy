@@ -15,8 +15,8 @@ class MerkleTreeTest extends Specification {
         power
 
         when:
-        def actual = MerkleTree.ceilToPowerOf2(leafs)
-        def tree = MerkleTree.newTree(leafs)
+        def actual = MerkleTreeFactory.ceilToPowerOf2(leafs)
+        def tree = MerkleTreeFactory.allocateNewTree(leafs)
 
         then:
         actual == power
@@ -64,7 +64,7 @@ class MerkleTreeTest extends Specification {
 
 
         when:
-        def tree = new MerkleTree(digest, leafs)
+        MerkleTree tree = new MerkleTreeFactory(digest, leafs)
 
         then:
         tree.root() == [root] as byte[]
