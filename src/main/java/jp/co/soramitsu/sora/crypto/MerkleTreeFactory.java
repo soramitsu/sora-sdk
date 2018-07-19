@@ -1,6 +1,5 @@
 package jp.co.soramitsu.sora.crypto;
 
-import com.sun.istack.internal.NotNull;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class MerkleTreeFactory {
    * Creates instance of MerkleTree with given digest.
    *
    * @param digest implementation of the digest algorithm
-   * @apiNote after you created the instance, method {@link #createFromLeafs(MessageDigest, List)}
+   * @apiNote after you created the instance, method {@link #createFromLeafs(List)}
    * should be called to calculate tree hashes
    */
   public MerkleTreeFactory(@NonNull MessageDigest digest) {
@@ -25,13 +24,12 @@ public class MerkleTreeFactory {
   /**
    * Calculates hash by concatenating two hashes <code>a</code> and <code>b</code>
    *
-   * @param d Instance of the hash algorithm
    * @param a left hash
    * @param b right hash
    * @return digest(a | | b) where || is a concatenation
    */
-  public static byte[] hash(MessageDigest d, byte[] a, byte[] b) {
-    return d.digest(Arrays.concatenate(a, b));
+  public byte[] hash(byte[] a, byte[] b) {
+    return digest.digest(Arrays.concatenate(a, b));
   }
 
   /**
@@ -50,15 +48,9 @@ public class MerkleTreeFactory {
    * @param leafs number of leafs in this tree
    * @return allocated tree filled with nulls
    */
-  public static byte[][] allocateNewTree(int leafs) {
+  public static byte[][] allocateEmptyTree(int leafs) {
     int size = ceilToPowerOf2(leafs * 2) - 1;
-    byte[][] list = new byte[size][];
-
-    for (int i = 0; i < size; i++) {
-      list[i] = null;
-    }
-
-    return list;
+    return new byte[size][];
   }
 
 
@@ -67,15 +59,12 @@ public class MerkleTreeFactory {
    *
    * @param leafs the bottom-most level of the tree (e.g. leafs)
    */
-  public static MerkleTree createFromLeafs(
-      @NotNull final MessageDigest digest,
-      final List<byte[]> leafs
-  ) {
+  public MerkleTree createFromLeafs(final List<byte[]> leafs) {
     if (leafs.isEmpty()) {
       throw new IllegalArgumentException("tree can be calculated from at least one item");
     }
 
-    byte[][] tree = allocateNewTree(leafs.size());
+    byte[][] tree = allocateEmptyTree(leafs.size());
 
     List<byte[]> nextLevel = new ArrayList<>(tree.length);
 
@@ -87,7 +76,7 @@ public class MerkleTreeFactory {
       while (leafs.size() > 1) {
         // we can get 2 elements
         nextLevel.add(
-            hash(digest, leafs.remove(0), leafs.remove(0))
+            hash(leafs.remove(0), leafs.remove(0))
         );
       }
 
