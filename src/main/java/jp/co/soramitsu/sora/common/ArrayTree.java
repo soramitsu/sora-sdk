@@ -1,6 +1,5 @@
 package jp.co.soramitsu.sora.common;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -22,6 +21,17 @@ public class ArrayTree<E> {
     int leafsTotal = (tree.size() + 1) / 2;
     int leftmostLeafIndex = leafsTotal - 1;
     return tree.stream().skip(leftmostLeafIndex).collect(Collectors.toList());
+  }
+
+  public int find(E el) {
+    for (int pos = 0; pos < tree.size(); pos++) {
+      if (tree.get(pos).equals(el)) {
+        // found
+        return pos;
+      }
+    }
+
+    return -1;
   }
 
   public int size() {
@@ -56,12 +66,31 @@ public class ArrayTree<E> {
     return p;
   }
 
+  /**
+   * Get neighbour of node with position = <code>pos</code>
+   *
+   * @param pos position of the node
+   * @return -1 if pos is invalid; 0 if pos is root; right child if pos is left child and vice versa
+   */
+  public static int getNeighbor(int pos) {
+    if (pos < 0) {
+      return -1;
+    } else if (pos == 0) {
+      return 0;
+    } else if (pos % 2 == 0) {
+      return pos - 1;
+    } else {
+      return pos + 1;
+    }
+  }
+
   @Override
   public String toString() {
     return tree.toString();
   }
 
-  public boolean equals(ArrayTree<E> other) {
-    return tree.equals(other.tree);
+  @Override
+  public boolean equals(Object other) {
+    return tree.equals(other);
   }
 }

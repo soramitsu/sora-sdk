@@ -10,4 +10,8 @@ public class InvalidMerkleTreeException extends Exception {
         DatatypeConverter.printHexBinary(actualRoot.getData())
     ));
   }
+
+  public InvalidMerkleTreeException(int pos){
+    super("No element at position " + pos);
+  }
 }

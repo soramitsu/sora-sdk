@@ -1,5 +1,8 @@
 package jp.co.soramitsu.sora.crypto;
 
+import static jp.co.soramitsu.sora.common.ArrayTree.getNeighbor;
+import static jp.co.soramitsu.sora.common.ArrayTree.getParent;
+
 import java.security.MessageDigest;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +16,8 @@ public class MerkleTree {
   MessageDigest digest;
 
   /**
-   * This is binary hashTree and it is stored "by levels", so first level is root and stored as hashTree[0],
-   * next level (2 items) is stored in hashTree[1] and hashTree[2], and so on.
+   * This is binary hashTree and it is stored "by levels", so first level is root and stored as
+   * hashTree[0], next level (2 items) is stored in hashTree[1] and hashTree[2], and so on.
    *
    * Scheme: [root] [intermediate nodes] [leafs]
    */
@@ -33,56 +36,36 @@ public class MerkleTree {
    * @param hash hash that should be proved to be inside merkle tree
    * @return {@link MerkleTreeProof} if <code>hash</code> is found in tree, {@code null} otherwise
    */
-  public MerkleTreeProof createProof(final Hash hash) {
+  public MerkleTreeProof createProof(final Hash hash) throws InvalidMerkleTreeException {
     final int rootPosition = 0;
 
-    LinkedList<Integer> stack = new LinkedList<>();
-    stack.add(rootPosition); // start from root
-
-    // preorder dfs tree traversal
-    while (!stack.isEmpty()) {
-      int nodepos = stack.removeFirst();
-
-      if (hashTree.get(nodepos).equals(hash)) {
-        // found correct hash
-
-        if(nodepos != rootPosition) {
-          // [element] [path...] [root]
-          stack.addFirst(nodepos); // element position
-          stack.addLast(rootPosition);     // root
-        }
-
-        // given list of positions, create a list of path Nodes
-        List<MerkleNode> path = stack
-            .stream()
-            .map(i -> new MerkleNode(i, hashTree.get(i)))
-            .collect(Collectors.toList());
-
-        return new MerkleTreeProof(
-            path,
-            digest.getAlgorithm()
-        );
-      }
-
-      int left = ArrayTree.getLeftChild(nodepos);
-      int right = ArrayTree.getRightChild(nodepos);
-
-      // visit right
-      if (hashTree.hasElement(right)) {
-        stack.addFirst(right);
-      }
-
-      // visit left
-      if (hashTree.hasElement(left)) {
-        stack.addFirst(left);
-      }
+    int pos = hashTree.find(hash);
+    if (pos < 0) {
+      return null;
     }
 
-    return null;
+    LinkedList<Integer> stack = new LinkedList<>();
+    stack.addFirst(pos);
+    while (pos != rootPosition) {
+      int neighbour = getNeighbor(pos);
+      if (!hashTree.hasElement(neighbour)) {
+        throw new InvalidMerkleTreeException(neighbour);
+      }
+      stack.addLast(neighbour);
+      pos = getParent(pos);
+    }
+
+    // given list of positions, create a list of path Nodes
+    List<MerkleNode> path = stack
+        .stream()
+        .map(i -> new MerkleNode(i, hashTree.get(i)))
+        .collect(Collectors.toList());
+
+    return new MerkleTreeProof(path);
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return hashTree.toString();
   }
 }

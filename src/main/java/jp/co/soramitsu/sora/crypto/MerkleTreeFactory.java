@@ -9,6 +9,7 @@ import java.util.Objects;
 import jp.co.soramitsu.sora.common.ArrayTree;
 import jp.co.soramitsu.sora.common.ArrayTreeFactory;
 import jp.co.soramitsu.sora.common.InvalidLeafNumberException;
+import jp.co.soramitsu.sora.common.Util;
 import lombok.NonNull;
 import lombok.val;
 
@@ -25,21 +26,6 @@ public class MerkleTreeFactory {
    */
   public MerkleTreeFactory(@NonNull MessageDigest digest) {
     this.digest = digest;
-  }
-
-  /**
-   * Calculates hash by concatenating two hashes <code>a</code> and <code>b</code>
-   *
-   * @param a left hash
-   * @param b right hash
-   * @return digest(a + b) where + is a concatenation
-   */
-  public Hash hash(@NonNull Hash a, @NonNull Hash b) {
-    byte[] bytes = digest.digest(
-        org.spongycastle.util.Arrays.concatenate(a.getData(), b.getData())
-    );
-
-    return new Hash(bytes);
   }
 
   /**
@@ -70,7 +56,7 @@ public class MerkleTreeFactory {
 
         if (Objects.nonNull(left) && Objects.nonNull(right)) {
           nextLevel.add(
-              hash(left, right)
+              Util.hash(digest, left, right)
           );
         } else if (Objects.nonNull(left)) {
           nextLevel.add(left);
@@ -119,7 +105,7 @@ public class MerkleTreeFactory {
     MerkleTree mt = new MerkleTree(digest, tree);
     MerkleTree check = createFromLeafs(tree.getLeafs());
 
-    if(!mt.root().equals(check.root())){
+    if (!mt.root().equals(check.root())) {
       throw new InvalidMerkleTreeException(mt.root(), check.root());
     }
 
