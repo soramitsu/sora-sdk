@@ -1,0 +1,54 @@
+{
+  "a" : {
+    "v" : 1,
+    "s" : "salt"
+  },
+  "b" : {
+    "v" : "string",
+    "s" : "salt"
+  },
+  "c" : [ {
+    "v" : 3,
+    "s" : "salt"
+  }, {
+    "v" : 2,
+    "s" : "salt"
+  }, {
+    "v" : 1,
+    "s" : "salt"
+  } ],
+  "d" : {
+    "1" : {
+      "v" : 1,
+      "s" : "salt"
+    },
+    "2" : [ {
+      "z" : {
+        "v" : 1,
+        "s" : "salt"
+      }
+    } ]
+  },
+  "e" : {
+    "v" : null,
+    "s" : "salt"
+  },
+  "complex_key/value with? empty object" : {
+    "v" : { },
+    "s" : "salt"
+  },
+  "empty array" : {
+    "v" : [ ],
+    "s" : "salt"
+  },
+  "empty array of empty objects" : [ {
+    "v" : { },
+    "s" : "salt"
+  }, {
+    "v" : { },
+    "s" : "salt"
+  }, {
+    "v" : { },
+    "s" : "salt"
+  } ]
+}
