@@ -90,23 +90,21 @@ public class MerkleTreeFactory {
     return new MerkleTree(digest, tree);
   }
 
-  // TODO
-
   /**
    * Creates new Merkle Tree from tree bytes. Performs validity check. This method should be used
    * always when you read the tree from the untrusted source.
    *
    * @param tree merkle tree as described in {@link MerkleTree}
    * @return valid {@link MerkleTree}
-   * @throws InvalidMerkleTreeException when <code>tree</code> is not valid (roots are different).
+   * @throws RootHashMismatchException when <code>tree</code> is not valid (roots are different).
    */
   public MerkleTree createFromFullTree(@NonNull final ArrayTree<Hash> tree)
-      throws InvalidMerkleTreeException {
+      throws RootHashMismatchException {
     MerkleTree mt = new MerkleTree(digest, tree);
     MerkleTree check = createFromLeafs(tree.getLeafs());
 
     if (!mt.root().equals(check.root())) {
-      throw new InvalidMerkleTreeException(mt.root(), check.root());
+      throw new RootHashMismatchException(mt.root(), check.root());
     }
 
     return mt;

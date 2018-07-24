@@ -36,7 +36,7 @@ public class MerkleTree {
    * @param hash hash that should be proved to be inside merkle tree
    * @return {@link MerkleTreeProof} if <code>hash</code> is found in tree, {@code null} otherwise
    */
-  public MerkleTreeProof createProof(final Hash hash) throws InvalidMerkleTreeException {
+  public MerkleTreeProof createProof(final Hash hash) throws RootHashMismatchException {
     final int rootPosition = 0;
 
     int pos = hashTree.find(hash);
@@ -62,11 +62,6 @@ public class MerkleTree {
         .collect(Collectors.toList());
 
     return new MerkleTreeProof(path);
-  }
-
-  @Override
-  public String toString() {
-    return hashTree.toString();
   }
 }
 
