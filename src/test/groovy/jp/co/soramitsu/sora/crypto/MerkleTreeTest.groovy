@@ -43,7 +43,7 @@ class MerkleTreeTest extends Specification {
         MerkleTreeFactory factory = new MerkleTreeFactory(digest)
 
         when:
-        MerkleTree tree = factory.createFromLeafs(arr2list(leafs) as List<Hash>)
+        MerkleTree tree = factory.createFromLeaves(arr2list(leafs) as List<Hash>)
         MerkleTree full = factory.createFromFullTree(tree.getHashTree())
 
         then:
@@ -52,8 +52,11 @@ class MerkleTreeTest extends Specification {
         tree.root() == expTree.get(0)
         full.root() == expTree.get(0)
 
-        tree.getHashTree().getTree() == expTree
-        full.getHashTree().getTree() == expTree
+        expTree.eachWithIndex { Hash entry, int i ->
+            tree.getHashTree().get(i) == entry
+            full.getHashTree().get(i) == entry
+        }
+
 
         where:
 

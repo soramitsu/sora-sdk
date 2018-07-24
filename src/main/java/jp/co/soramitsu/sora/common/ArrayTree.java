@@ -2,35 +2,49 @@ package jp.co.soramitsu.sora.common;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import jp.co.soramitsu.sora.crypto.InvalidMerkleTreeException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.Value;
 
-@EqualsAndHashCode
-@ToString
+@Value
 public class ArrayTree<E> {
 
-  @Getter
   private List<E> tree;
 
   public ArrayTree(List<E> tree) {
+    if (Util.ceilToPowerOf2(tree.size() + 1) != tree.size() + 1) {
+      throw new InvalidNodeNumberException(tree.size());
+    }
+
     this.tree = tree;
   }
 
-  public boolean hasElement(int i) {
-    return i < tree.size() && get(i) != null;
-  }
 
-  public List<E> getLeafs() {
+  public List<E> getLeaves() {
     int leafsTotal = (tree.size() + 1) / 2;
     int leftmostLeafIndex = leafsTotal - 1;
-    return tree
-        .stream()
+    return tree.stream()
         .skip(leftmostLeafIndex)
         .collect(Collectors.toList());
   }
 
-  public int find(E el) {
+  /**
+   * @param i element position in the tree
+   * @return true, if node exists (has non-null value); false otherwise
+   */
+  public boolean hasNodeAt(int i) {
+    return i >= 0 && i < tree.size() && get(i) != null;
+  }
+
+  /**
+   * Returns index of element in the tree
+   *
+   * @param el element to be found
+   * @return index in the tree if found; -1 otherwise
+   */
+  public int indexOf(E el) {
     return tree.indexOf(el);
   }
 
@@ -46,19 +60,33 @@ public class ArrayTree<E> {
     tree.set(i, el);
   }
 
-  public static int getLeftChild(int parent) {
+  /**
+   * Given parent index, get left child index in the binary tree.
+   *
+   * @param parent parent index
+   * @return left child index
+   */
+  public static int getLeftChildIndex(int parent) {
     return parent * 2 + 1;
   }
 
-  public static int getRightChild(int parent) {
+  /**
+   * Given parent index, get right child index in the binary tree.
+   *
+   * @param parent parent index
+   * @return right child index
+   */
+  public static int getRightChildIndex(int parent) {
     return parent * 2 + 2;
   }
 
   /**
+   * Returns parent index in the tree.
+   *
    * @param child child index
-   * @return parent index or -1, if no parent (root)
+   * @return parent index or -1, if no parent (it is root)
    */
-  public static int getParent(int child) {
+  public static int getPrentIndex(int child) {
     if (child <= 0) {
       return -1;
     }
@@ -67,12 +95,12 @@ public class ArrayTree<E> {
   }
 
   /**
-   * Get neighbour of node with position = <code>pos</code>
+   * Get neighbour index of node with position = <code>pos</code>
    *
    * @param pos position of the node
    * @return -1 if pos is invalid; 0 if pos is root; right child if pos is left child and vice versa
    */
-  public static int getNeighbor(int pos) {
+  public static int getNeighborIndex(int pos) {
     if (pos < 0) {
       return -1;
     } else if (pos == 0) {

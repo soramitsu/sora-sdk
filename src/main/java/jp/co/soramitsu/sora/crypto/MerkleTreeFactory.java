@@ -1,14 +1,14 @@
 package jp.co.soramitsu.sora.crypto;
 
+import static java.util.Objects.nonNull;
 import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import jp.co.soramitsu.sora.common.ArrayTree;
 import jp.co.soramitsu.sora.common.ArrayTreeFactory;
-import jp.co.soramitsu.sora.common.InvalidLeafNumberException;
+import jp.co.soramitsu.sora.common.InvalidNodeNumberException;
 import jp.co.soramitsu.sora.common.Util;
 import lombok.NonNull;
 import lombok.val;
@@ -21,7 +21,7 @@ public class MerkleTreeFactory {
    * Creates instance of MerkleTree with given digest.
    *
    * @param digest implementation of the digest algorithm
-   * @apiNote after you created the instance, method {@link #createFromLeafs(List)} should be called
+   * @apiNote after you created the instance, method {@link #createFromLeaves(List)} should be called
    * to calculate tree hashes
    */
   public MerkleTreeFactory(@NonNull MessageDigest digest) {
@@ -29,14 +29,14 @@ public class MerkleTreeFactory {
   }
 
   /**
-   * Calculates new {@link MerkleTree} given leafs.
+   * Calculates new {@link MerkleTree} given leaves.
    *
-   * @param leafs the bottom-most level of the tree (e.g. leafs)
+   * @param leafs the bottom-most level of the tree (e.g. leaves)
    * @return valid {@link MerkleTree}
-   * @throws IllegalArgumentException when number of leafs is not at least 1
+   * @throws IllegalArgumentException when number of leaves is not at least 1
    */
-  public MerkleTree createFromLeafs(@NonNull final List<Hash> leafs)
-      throws InvalidLeafNumberException {
+  public MerkleTree createFromLeaves(@NonNull final List<Hash> leafs)
+      throws InvalidNodeNumberException {
     ArrayTree<Hash> tree = ArrayTreeFactory.createWithNLeafs(leafs.size());  // throws
 
     List<Hash> nextLevel = new ArrayList<>(tree.size());
@@ -54,13 +54,13 @@ public class MerkleTreeFactory {
         val left = leafs.remove(0);
         val right = leafs.remove(0);
 
-        if (Objects.nonNull(left) && Objects.nonNull(right)) {
+        if (nonNull(left) && nonNull(right)) {
           nextLevel.add(
               Util.hash(digest, left, right)
           );
-        } else if (Objects.nonNull(left)) {
+        } else if (nonNull(left)) {
           nextLevel.add(left);
-        } else if (Objects.nonNull(right)) {
+        } else if (nonNull(right)) {
           nextLevel.add(right);
         } else {
           // both null
@@ -87,7 +87,7 @@ public class MerkleTreeFactory {
       nextLevel.clear();
     }
 
-    return new MerkleTree(digest, tree);
+    return new MerkleTree(tree);
   }
 
   /**
@@ -100,8 +100,8 @@ public class MerkleTreeFactory {
    */
   public MerkleTree createFromFullTree(@NonNull final ArrayTree<Hash> tree)
       throws RootHashMismatchException {
-    MerkleTree mt = new MerkleTree(digest, tree);
-    MerkleTree check = createFromLeafs(tree.getLeafs());
+    MerkleTree mt = new MerkleTree(tree);
+    MerkleTree check = createFromLeaves(tree.getLeaves());
 
     if (!mt.root().equals(check.root())) {
       throw new RootHashMismatchException(mt.root(), check.root());

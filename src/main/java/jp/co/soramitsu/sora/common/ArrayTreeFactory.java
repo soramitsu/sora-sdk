@@ -13,7 +13,7 @@ public class ArrayTreeFactory {
 
   public static <T> ArrayTree<T> createWithNLeafs(int leafs) {
     if (leafs <= 0) {
-      throw new InvalidLeafNumberException(leafs);
+      throw new InvalidNodeNumberException(leafs);
     }
 
     int size = ceilToPowerOf2(leafs * 2) - 1;

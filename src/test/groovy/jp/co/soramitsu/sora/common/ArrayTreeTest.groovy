@@ -7,15 +7,15 @@ class ArrayTreeTest extends Specification {
 
     def "navigation works"() {
         expect:
-        ArrayTree.getLeftChild(parent) == left
-        ArrayTree.getRightChild(parent) == right
-        ArrayTree.getParent(left) == parent
-        ArrayTree.getParent(right) == parent
-        ArrayTree.getParent(0) == -1
-        ArrayTree.getNeighbor(0) == 0
-        ArrayTree.getNeighbor(-1) == -1
-        ArrayTree.getNeighbor(left) == right
-        ArrayTree.getNeighbor(right) == left
+        ArrayTree.getLeftChildIndex(parent) == left
+        ArrayTree.getRightChildIndex(parent) == right
+        ArrayTree.getPrentIndex(left) == parent
+        ArrayTree.getPrentIndex(right) == parent
+        ArrayTree.getPrentIndex(0) == -1
+        ArrayTree.getNeighborIndex(0) == 0
+        ArrayTree.getNeighborIndex(-1) == -1
+        ArrayTree.getNeighborIndex(left) == right
+        ArrayTree.getNeighborIndex(right) == left
 
         where:
         left | right | parent
@@ -28,13 +28,13 @@ class ArrayTreeTest extends Specification {
         13   | 14    | 6
     }
 
-    def "find works"() {
+    def "indexOf works"() {
         given:
-        def list = [1, 2, 3, 4, 4, 3] as List<Integer>
+        def list = [1, 2, 3, 4, 4, 3, 2] as List<Integer>
         ArrayTree<Integer> tree = ArrayTreeFactory.createFromNodes(list)
 
         when:
-        def pos = tree.find(item)
+        def pos = tree.indexOf(item)
 
         then:
         pos == position
@@ -53,6 +53,6 @@ class ArrayTreeTest extends Specification {
         ArrayTreeFactory.createWithNLeafs(0)
 
         then:
-        thrown(InvalidLeafNumberException)
+        thrown(InvalidNodeNumberException)
     }
 }

@@ -1,6 +1,6 @@
 package jp.co.soramitsu.sora.crypto;
 
-import static jp.co.soramitsu.sora.common.ArrayTree.getParent;
+import static jp.co.soramitsu.sora.common.ArrayTree.getPrentIndex;
 
 import java.security.MessageDigest;
 import java.util.Comparator;
@@ -37,7 +37,7 @@ public class MerkleTreeProof {
           pair.getFirst().getHash(),
           pair.getLast().getHash()
       );
-      int parentPos = getParent(pair.getFirst().getPosition());
+      int parentPos = getPrentIndex(pair.getFirst().getPosition());
       copy.addFirst(new MerkleNode(parentPos, hash));
     }
 

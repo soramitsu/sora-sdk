@@ -1,9 +1,8 @@
 package jp.co.soramitsu.sora.crypto;
 
-import static jp.co.soramitsu.sora.common.ArrayTree.getNeighbor;
-import static jp.co.soramitsu.sora.common.ArrayTree.getParent;
+import static jp.co.soramitsu.sora.common.ArrayTree.getNeighborIndex;
+import static jp.co.soramitsu.sora.common.ArrayTree.getPrentIndex;
 
-import java.security.MessageDigest;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +12,9 @@ import lombok.Value;
 @Value
 public class MerkleTree {
 
-  MessageDigest digest;
-
   /**
    * This is binary hashTree and it is stored "by levels", so first level is root and stored as
-   * hashTree[0], next level (2 items) is stored in hashTree[1] and hashTree[2], and so on.
+   * tree[0], next level (2 items) is stored in tree[1] and tree[2], and so on.
    *
    * Scheme: [root] [intermediate nodes] [leafs]
    */
@@ -35,11 +32,12 @@ public class MerkleTree {
    *
    * @param hash hash that should be proved to be inside merkle tree
    * @return {@link MerkleTreeProof} if <code>hash</code> is found in tree, {@code null} otherwise
+   * @throws InvalidMerkleTreeException if required element is not in the tree
    */
   public MerkleTreeProof createProof(final Hash hash) {
     final int rootPosition = 0;
 
-    int pos = hashTree.find(hash);
+    int pos = hashTree.indexOf(hash);
     if (pos < 0) {
       return null;
     }
@@ -47,12 +45,12 @@ public class MerkleTree {
     LinkedList<Integer> stack = new LinkedList<>();
     stack.addFirst(pos);
     while (pos != rootPosition) {
-      int neighbour = getNeighbor(pos);
-      if (!hashTree.hasElement(neighbour)) {
+      int neighbour = getNeighborIndex(pos);
+      if (!hashTree.hasNodeAt(neighbour)) {
         throw new InvalidMerkleTreeException(neighbour);
       }
       stack.addLast(neighbour);
-      pos = getParent(pos);
+      pos = getPrentIndex(pos);
     }
 
     // given list of positions, create a list of path Nodes
