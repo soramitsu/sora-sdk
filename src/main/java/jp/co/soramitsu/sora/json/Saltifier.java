@@ -4,24 +4,26 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Saltifier {
 
-  private final ObjectMapper mapper;
-  private final SaltGenerator generator;
-  private final String valueKey;
-  private final String saltKey;
+  ObjectMapper mapper;
+  SaltGenerator generator;
+  String valueKey;
+  String saltKey;
 
   public Saltifier(ObjectMapper mapper, SaltGenerator generator) {
     this(mapper, generator, "v", "s");
   }
 
-
   /**
    * Add salt to the every *value* field in the input JSON.
+   *
    * @param root input JSON
    * @return new JSON, which has previous values plus random salt
    */
