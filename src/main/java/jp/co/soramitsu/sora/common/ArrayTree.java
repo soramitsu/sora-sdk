@@ -2,8 +2,12 @@ package jp.co.soramitsu.sora.common;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class ArrayTree<E> {
 
   @Getter
@@ -20,18 +24,14 @@ public class ArrayTree<E> {
   public List<E> getLeafs() {
     int leafsTotal = (tree.size() + 1) / 2;
     int leftmostLeafIndex = leafsTotal - 1;
-    return tree.stream().skip(leftmostLeafIndex).collect(Collectors.toList());
+    return tree
+        .stream()
+        .skip(leftmostLeafIndex)
+        .collect(Collectors.toList());
   }
 
   public int find(E el) {
-    for (int pos = 0; pos < tree.size(); pos++) {
-      if (tree.get(pos).equals(el)) {
-        // found
-        return pos;
-      }
-    }
-
-    return -1;
+    return tree.indexOf(el);
   }
 
   public int size() {
@@ -59,11 +59,11 @@ public class ArrayTree<E> {
    * @return parent index or -1, if no parent (root)
    */
   public static int getParent(int child) {
-    int p = (child - 1) / 2;
     if (child <= 0) {
       return -1;
     }
-    return p;
+
+    return (child - 1) / 2;
   }
 
   /**
@@ -82,15 +82,5 @@ public class ArrayTree<E> {
     } else {
       return pos + 1;
     }
-  }
-
-  @Override
-  public String toString() {
-    return tree.toString();
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    return tree.equals(other);
   }
 }
