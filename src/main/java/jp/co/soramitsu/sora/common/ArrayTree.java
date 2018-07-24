@@ -63,6 +63,8 @@ public class ArrayTree<E> {
   /**
    * Given parent index, get left child index in the binary tree.
    *
+   * Can be used only with trees, where all siblings exist (this tree).
+   *
    * @param parent parent index
    * @return left child index
    */
@@ -73,6 +75,8 @@ public class ArrayTree<E> {
   /**
    * Given parent index, get right child index in the binary tree.
    *
+   * Can be used only with trees, where all siblings exist (this tree).
+   *
    * @param parent parent index
    * @return right child index
    */
@@ -82,6 +86,8 @@ public class ArrayTree<E> {
 
   /**
    * Returns parent index in the tree.
+   *
+   * Can be used only with trees, where all siblings exist (this tree).
    *
    * @param child child index
    * @return parent index or -1, if no parent (it is root)
@@ -96,6 +102,8 @@ public class ArrayTree<E> {
 
   /**
    * Get neighbour index of node with position = <code>pos</code>
+   *
+   * Can be used only with trees, where all siblings exist (this tree).
    *
    * @param pos position of the node
    * @return -1 if pos is invalid; 0 if pos is root; right child if pos is left child and vice versa
