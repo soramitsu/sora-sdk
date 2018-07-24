@@ -2,10 +2,6 @@ package jp.co.soramitsu.sora.common;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import jp.co.soramitsu.sora.crypto.InvalidMerkleTreeException;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import lombok.Value;
 
 @Value
