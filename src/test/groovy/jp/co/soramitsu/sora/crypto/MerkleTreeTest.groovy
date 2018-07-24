@@ -1,13 +1,14 @@
 package jp.co.soramitsu.sora.crypto
 
+import jp.co.soramitsu.sora.common.ArrayTree
+import jp.co.soramitsu.sora.common.ArrayTreeFactory
+import jp.co.soramitsu.sora.common.MockSumMessageDigest
 import spock.lang.Specification
+import spock.lang.Unroll
 
-import java.security.MessageDigest
+import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2
 
 class MerkleTreeTest extends Specification {
-
-    def digest = Mock(MessageDigest)
-
 
     def "tree is constructed with the correct size"() {
         given:
@@ -15,12 +16,14 @@ class MerkleTreeTest extends Specification {
         power
 
         when:
-        def actual = MerkleTreeFactory.ceilToPowerOf2(leafs)
-        def tree = MerkleTreeFactory.allocateEmptyTree(leafs)
+        def actual = ceilToPowerOf2(leafs)
+        def fromleafs = ArrayTreeFactory.createWithNLeafs(leafs)
+        def fromcap = ArrayTreeFactory.createWithCapacity(treesize)
 
         then:
         actual == power
-        tree.length == treesize
+        fromleafs.size() == treesize
+        fromcap.size() == treesize
 
         where:
         leafs | power | treesize
@@ -32,65 +35,102 @@ class MerkleTreeTest extends Specification {
         8     | 8     | 15
     }
 
-
-    byte[][] bytes(def array) {
-        byte[][] b = new byte[array.size()][]
-        for (int i = 0; i < b.length; i++) {
-            b[i] = array[i] as byte[]
-        }
-        return b
-    }
-
-    List<byte[]> list(def array) {
-        List<byte[]> l = new ArrayList<>(array.size());
-        for (int i = 0; i < array.size(); i++) {
-            l.add(i, array[i] as byte[])
-        }
-        return l
-    }
-
-
-    def "merkle tree works"() {
+    def "valid merkle tree is created from leafs and from the full tree"() {
         given:
-        // for all
-        digest.digest([a, b] as byte[]) >> [e]
-        digest.digest([c, d] as byte[]) >> [f]
-
-        // for 4 leafs
-        digest.digest([e, f] as byte[]) >> [root]
-
-        // for 3 leafs
-        digest.digest([e, c] as byte[]) >> [root]
+        def digest = new MockSumMessageDigest()
+        def expTree = arr2list(expectedTree)
 
         MerkleTreeFactory factory = new MerkleTreeFactory(digest)
 
         when:
-        MerkleTree tree = factory.createFromLeafs(leafs)
+        MerkleTree tree = factory.createFromLeaves(arr2list(leafs) as List<Hash>)
+        MerkleTree full = factory.createFromFullTree(tree.getHashTree())
 
         then:
-        tree.root() == [root] as byte[]
-        tree.getTree() == expectedTree as byte[][]
+        noExceptionThrown()
+
+        tree.root() == expTree.get(0)
+        full.root() == expTree.get(0)
+
+        expTree.eachWithIndex { Hash entry, int i ->
+            tree.getHashTree().get(i) == entry
+            full.getHashTree().get(i) == entry
+        }
+
 
         where:
-        a | b | c | d | e | f | root
-        1 | 2 | 3 | 4 | 5 | 6 | 7
-        1 | 2 | 3 | 4 | 5 | 6 | 7
-        1 | 2 | 3 | 4 | 5 | 6 | 7
-        1 | 2 | 3 | 4 | 5 | 6 | 7
 
-        leafs << [
-                list([[a], [b], [c], [d]]),
-                list([[a], [b], [c]]),
-                list([[e], [f]]),  // e+f = root
-                list([[root]])     // single leaf tree = root
-
-        ]
-
-        expectedTree << [
-                bytes([[root], [e], [f], [a], [b], [c], [d]]),
-                bytes([[root], [e], [c], [a], [b], [c], null]),
-                bytes([[root], [e], [f]]),
-                bytes([[root]])
-        ]
+        leafs                     | expectedTree
+        [[1], [2], [3], [4], [5]] | [[15], [10], [5], [3], [7], [5], null, [1], [2], [3], [4], [5], null, null, null]
+        [[1], [2], [3], [4]]      | [[10], [3], [7], [1], [2], [3], [4]]
+        [[1], [2], [3]]           | [[6], [3], [3], [1], [2], [3], null]
+        [[1], [2]]                | [[3], [1], [2]]
+        [[1]]                     | [[1]]
     }
+
+    @Unroll
+    def "valid merkle proof is generated from valid merkle tree"() {
+        given: 'merkle tree'
+        def digest = new MockSumMessageDigest()
+
+        MerkleTreeFactory mtfactory = new MerkleTreeFactory(digest)
+
+        MerkleTree tree = mtfactory.createFromFullTree(
+                new ArrayTree<Hash>(arr2list(arraytree))
+        )
+
+        when: 'prove that `target` is in the tree'
+        Hash h = new Hash(target as byte[])
+        MerkleTreeProof p = tree.createProof(h)
+
+        then: 'proof is valid'
+        p.verify(digest, new Hash([root] as byte[]))
+        p.getPath() == arr2path(proof)
+
+        where:
+        a | b | c | d    | e     | f     | root  || target | arraytree                               | proof
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [a]    | [[root], [e], [f], [a], [b], [c], [d]]  | [[3, a], [4, b], [2, f]]
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [b]    | [[root], [e], [f], [a], [b], [c], [d]]  | [[4, b], [3, a], [2, f]]
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [c]    | [[root], [e], [f], [a], [b], [c], [d]]  | [[5, c], [6, d], [1, e]]
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [d]    | [[root], [e], [f], [a], [b], [c], [d]]  | [[6, d], [5, c], [1, e]]
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [e]    | [[root], [e], [f], [a], [b], [c], [d]]  | [[1, e], [2, f]]
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [f]    | [[root], [e], [f], [a], [b], [c], [d]]  | [[2, f], [1, e]]
+        1 | 2 | 4 | 8    | a + b | c + d | e + f || [root] | [[root], [e], [f], [a], [b], [c], [d]]  | [[0, root]]
+        1 | 2 | 4 | null | a + b | c     | e + f || [a]    | [[root], [e], [f], [a], [b], [c], null] | [[3, a], [4, b], [2, c]]
+        1 | 2 | 4 | null | a + b | c     | e + f || [b]    | [[root], [e], [f], [a], [b], [c], null] | [[4, b], [3, a], [2, c]]
+        1 | 2 | 4 | null | a + b | c     | e + f || [c]    | [[root], [e], [f], [a], [b], [c], null] | [[2, c], [1, e]]
+        1 | 2 | 4 | null | a + b | c     | e + f || [e]    | [[root], [e], [f], [a], [b], [c], null] | [[1, e], [2, c]]
+        1 | 2 | 4 | null | a + b | c     | e + f || [root] | [[root], [e], [f], [a], [b], [c], null] | [[0, root]]
+    }
+
+    ArrayList<Hash> arr2list(def arr) {
+        ArrayList<Hash> list = new ArrayList<>(arr.size() as int)
+        for (int i = 0; i < arr.size(); i++) {
+            list.add(
+                    i,
+                    arr[i] == null ?
+                            null :
+                            new Hash(arr[i] as byte[])
+            )
+        }
+        return list
+    }
+
+    List<MerkleNode> arr2path(def arr) {
+        ArrayList<MerkleNode> nodes = new ArrayList<>(arr.size() as int)
+        for (int i = 0; i < arr.size(); i++) {
+            def index = arr[i][0]
+            def element = arr[i][1]
+
+            nodes.add(
+                    new MerkleNode(
+                            index as int,
+                            new Hash([element] as byte[])
+                    )
+            )
+        }
+
+        return nodes
+    }
+
 }

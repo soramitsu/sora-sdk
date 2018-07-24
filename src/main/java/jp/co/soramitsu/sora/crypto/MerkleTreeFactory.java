@@ -1,10 +1,17 @@
 package jp.co.soramitsu.sora.crypto;
 
+import static java.util.Objects.nonNull;
+import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2;
+
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import jp.co.soramitsu.sora.common.ArrayTree;
+import jp.co.soramitsu.sora.common.ArrayTreeFactory;
+import jp.co.soramitsu.sora.common.InvalidNodeNumberException;
+import jp.co.soramitsu.sora.common.Util;
 import lombok.NonNull;
-import org.spongycastle.util.Arrays;
+import lombok.val;
 
 public class MerkleTreeFactory {
 
@@ -14,70 +21,51 @@ public class MerkleTreeFactory {
    * Creates instance of MerkleTree with given digest.
    *
    * @param digest implementation of the digest algorithm
-   * @apiNote after you created the instance, method {@link #createFromLeafs(List)}
-   * should be called to calculate tree hashes
+   * @apiNote after you created the instance, method {@link #createFromLeaves(List)} should be called
+   * to calculate tree hashes
    */
   public MerkleTreeFactory(@NonNull MessageDigest digest) {
     this.digest = digest;
   }
 
   /**
-   * Calculates hash by concatenating two hashes <code>a</code> and <code>b</code>
+   * Calculates new {@link MerkleTree} given leaves.
    *
-   * @param a left hash
-   * @param b right hash
-   * @return digest(a | | b) where || is a concatenation
+   * @param leafs the bottom-most level of the tree (e.g. leaves)
+   * @return valid {@link MerkleTree}
+   * @throws IllegalArgumentException when number of leaves is not at least 1
    */
-  public byte[] hash(byte[] a, byte[] b) {
-    return digest.digest(Arrays.concatenate(a, b));
-  }
+  public MerkleTree createFromLeaves(@NonNull final List<Hash> leafs)
+      throws InvalidNodeNumberException {
+    ArrayTree<Hash> tree = ArrayTreeFactory.createWithNLeafs(leafs.size());  // throws
 
-  /**
-   * Ceil to the next power of 2
-   *
-   * @return <code>items</code> = 2, returns 2. <code>items</code> = 3, returns 4.
-   */
-  public static int ceilToPowerOf2(int items) {
-    int highest = Integer.highestOneBit(items);
-    return items == highest ? items : highest * 2;
-  }
-
-  /**
-   * Allocates new hash tree represented as byte[][]
-   *
-   * @param leafs number of leafs in this tree
-   * @return allocated tree filled with nulls
-   */
-  public static byte[][] allocateEmptyTree(int leafs) {
-    int size = ceilToPowerOf2(leafs * 2) - 1;
-    return new byte[size][];
-  }
-
-
-  /**
-   * Calculates merkle tree given leafs.
-   *
-   * @param leafs the bottom-most level of the tree (e.g. leafs)
-   */
-  public MerkleTree createFromLeafs(final List<byte[]> leafs) {
-    if (leafs.isEmpty()) {
-      throw new IllegalArgumentException("tree can be calculated from at least one item");
-    }
-
-    byte[][] tree = allocateEmptyTree(leafs.size());
-
-    List<byte[]> nextLevel = new ArrayList<>(tree.length);
+    List<Hash> nextLevel = new ArrayList<>(tree.size());
 
     while (!leafs.isEmpty()) {
+      // copy current level (`leafs`) inside our tree at given positions
       int leftmostLevelNode = ceilToPowerOf2(leafs.size()) - 1;
-      System.arraycopy(leafs.toArray(), 0, tree, leftmostLevelNode, leafs.size());
+      for (int i = 0; i < leafs.size(); i++) {
+        tree.set(leftmostLevelNode + i, leafs.get(i));
+      }
 
       // calculate next level
       while (leafs.size() > 1) {
         // we can get 2 elements
-        nextLevel.add(
-            hash(leafs.remove(0), leafs.remove(0))
-        );
+        val left = leafs.remove(0);
+        val right = leafs.remove(0);
+
+        if (nonNull(left) && nonNull(right)) {
+          nextLevel.add(
+              Util.hash(digest, left, right)
+          );
+        } else if (nonNull(left)) {
+          nextLevel.add(left);
+        } else if (nonNull(right)) {
+          nextLevel.add(right);
+        } else {
+          // both null
+          nextLevel.add(null);
+        }
       }
 
       if (leafs.size() == 1) {
@@ -89,7 +77,7 @@ public class MerkleTreeFactory {
 
       if (nextLevel.size() == 1) {
         // this is root
-        tree[0] = nextLevel.remove(0);
+        tree.set(0, nextLevel.remove(0));
         break;
       }
 
@@ -100,5 +88,25 @@ public class MerkleTreeFactory {
     }
 
     return new MerkleTree(tree);
+  }
+
+  /**
+   * Creates new Merkle Tree from tree bytes. Performs validity check. This method should be used
+   * always when you read the tree from the untrusted source.
+   *
+   * @param tree merkle tree as described in {@link MerkleTree}
+   * @return valid {@link MerkleTree}
+   * @throws RootHashMismatchException when <code>tree</code> is not valid (roots are different).
+   */
+  public MerkleTree createFromFullTree(@NonNull final ArrayTree<Hash> tree)
+      throws RootHashMismatchException {
+    MerkleTree mt = new MerkleTree(tree);
+    MerkleTree check = createFromLeaves(tree.getLeaves());
+
+    if (!mt.root().equals(check.root())) {
+      throw new RootHashMismatchException(mt.root(), check.root());
+    }
+
+    return mt;
   }
 }

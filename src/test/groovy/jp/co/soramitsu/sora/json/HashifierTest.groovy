@@ -17,7 +17,7 @@ class HashifierTest extends Specification {
     /**
      * Generates <code>len</code> bytearrays
      * @param len number of bytearrays generated
-     * @return list
+     * @return arr2list
      */
     def bytearraygen(int len) {
         List<byte[]> list = new ArrayList<>(len)
