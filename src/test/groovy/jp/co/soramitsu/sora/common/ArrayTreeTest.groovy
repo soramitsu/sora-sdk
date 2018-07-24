@@ -9,9 +9,9 @@ class ArrayTreeTest extends Specification {
         expect:
         ArrayTree.getLeftChildIndex(parent) == left
         ArrayTree.getRightChildIndex(parent) == right
-        ArrayTree.getPrentIndex(left) == parent
-        ArrayTree.getPrentIndex(right) == parent
-        ArrayTree.getPrentIndex(0) == -1
+        ArrayTree.getParentIndex(left) == parent
+        ArrayTree.getParentIndex(right) == parent
+        ArrayTree.getParentIndex(0) == -1
         ArrayTree.getNeighborIndex(0) == 0
         ArrayTree.getNeighborIndex(-1) == -1
         ArrayTree.getNeighborIndex(left) == right

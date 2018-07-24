@@ -1,7 +1,7 @@
 package jp.co.soramitsu.sora.crypto;
 
 import static jp.co.soramitsu.sora.common.ArrayTree.getNeighborIndex;
-import static jp.co.soramitsu.sora.common.ArrayTree.getPrentIndex;
+import static jp.co.soramitsu.sora.common.ArrayTree.getParentIndex;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class MerkleTree {
         throw new InvalidMerkleTreeException(neighbour);
       }
       stack.addLast(neighbour);
-      pos = getPrentIndex(pos);
+      pos = getParentIndex(pos);
     }
 
     // given list of positions, create a list of path Nodes

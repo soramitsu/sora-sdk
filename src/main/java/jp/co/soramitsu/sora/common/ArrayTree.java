@@ -86,7 +86,7 @@ public class ArrayTree<E> {
    * @param child child index
    * @return parent index or -1, if no parent (it is root)
    */
-  public static int getPrentIndex(int child) {
+  public static int getParentIndex(int child) {
     if (child <= 0) {
       return -1;
     }
