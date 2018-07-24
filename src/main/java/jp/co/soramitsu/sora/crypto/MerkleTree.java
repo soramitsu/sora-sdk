@@ -36,7 +36,7 @@ public class MerkleTree {
    * @param hash hash that should be proved to be inside merkle tree
    * @return {@link MerkleTreeProof} if <code>hash</code> is found in tree, {@code null} otherwise
    */
-  public MerkleTreeProof createProof(final Hash hash) throws RootHashMismatchException {
+  public MerkleTreeProof createProof(final Hash hash) {
     final int rootPosition = 0;
 
     int pos = hashTree.find(hash);
