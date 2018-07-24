@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
+@AllArgsConstructor
 public class Saltifier {
 
   private final ObjectMapper mapper;
@@ -16,13 +19,12 @@ public class Saltifier {
     this(mapper, generator, "v", "s");
   }
 
-  public Saltifier(ObjectMapper mapper, SaltGenerator generator, String valueKey, String saltKey) {
-    this.mapper = mapper;
-    this.generator = generator;
-    this.valueKey = valueKey;
-    this.saltKey = saltKey;
-  }
 
+  /**
+   * Add salt to the every *value* field in the input JSON.
+   * @param root input JSON
+   * @return new JSON, which has previous values plus random salt
+   */
   public JsonNode saltify(JsonNode root) {
     if (root.isValueNode()) {
       return addSalt(root);
@@ -51,7 +53,7 @@ public class Saltifier {
     return null;
   }
 
-  protected JsonNode addSalt(JsonNode node) {
+  private JsonNode addSalt(JsonNode node) {
     ObjectNode obj = mapper.createObjectNode();
 
     obj.set(valueKey, node);
