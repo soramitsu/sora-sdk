@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.json;
+package jp.co.soramitsu.sora.common;
 
 import java.util.Random;
 import javax.xml.bind.DatatypeConverter;

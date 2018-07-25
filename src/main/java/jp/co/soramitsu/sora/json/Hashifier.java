@@ -54,7 +54,7 @@ public class Hashifier {
             byte[] serialized = onecoder.writeValueAsBytes(out);
             hashes.add(digest.digest(serialized));
           } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new BadJsonException(e);
           }
         });
 

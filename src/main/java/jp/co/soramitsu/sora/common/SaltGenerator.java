@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.json;
+package jp.co.soramitsu.sora.common;
 
 public interface SaltGenerator {
 

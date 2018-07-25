@@ -1,6 +1,7 @@
 package jp.co.soramitsu.sora.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jp.co.soramitsu.sora.common.SaltGenerator
 import spock.lang.Specification
 
 class SaltifierTest extends Specification {
@@ -18,12 +19,15 @@ class SaltifierTest extends Specification {
             next() >> "salt"
         }
 
-        def saltifier = new Saltifier(mapper, gen, "v", "s")
+        def saltifier1 = new Saltifier(mapper, gen)
+        def saltifier2 = new Saltifier(mapper, gen, "v", "s")
 
         when:
-        def salted = saltifier.saltify(initial)
+        def salted1 = saltifier1.saltify(initial)
+        def salted2 = saltifier2.saltify(initial)
 
         then:
-        salted == saltified
+        salted1 == saltified
+        salted2 == saltified
     }
 }

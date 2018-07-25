@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jp.co.soramitsu.sora.common.SaltGenerator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -50,9 +51,9 @@ public class Saltifier {
       root.fields().forEachRemaining(entry -> obj.set(entry.getKey(), saltify(entry.getValue())));
 
       return obj;
+    } else {
+      throw new BadJsonException(root);
     }
-
-    return null;
   }
 
   private JsonNode addSalt(JsonNode node) {
