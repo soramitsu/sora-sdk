@@ -30,4 +30,30 @@ class SaltifierTest extends Specification {
         salted1 == saltified
         salted2 == saltified
     }
+
+    def "desaltify works"(){
+        def saltifier = new Saltifier(mapper, null, "v", "s")
+
+        when:
+        def actual = saltifier.desaltify(saltified)
+
+        then:
+        actual == initial
+    }
+    
+    def "saltify then desaltify works"(){
+        given:
+        def gen = Mock(SaltGenerator) {
+            next() >> "salt"
+        }
+
+        def saltifier = new Saltifier(mapper, gen, "v", "s")
+
+        when:
+        def salted = saltifier.saltify(initial)
+        def actual = saltifier.desaltify(salted)
+
+        then:
+        actual == initial
+    }
 }
