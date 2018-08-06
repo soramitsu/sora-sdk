@@ -12,11 +12,11 @@ import jp.co.soramitsu.sora.crypto.proof.Options;
 import jp.co.soramitsu.sora.crypto.proof.Proof;
 import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import jp.co.soramitsu.sora.crypto.service.JSONSigner;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Value;
 
 
-@Value
+@AllArgsConstructor
 public class JSONSignerImpl implements JSONSigner {
 
   private final JSONCanonizer canonizer;

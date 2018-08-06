@@ -11,10 +11,10 @@ import jp.co.soramitsu.sora.crypto.common.Consts;
 import jp.co.soramitsu.sora.crypto.proof.Proof;
 import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import jp.co.soramitsu.sora.crypto.service.JSONVerifier;
-import lombok.Value;
+import lombok.AllArgsConstructor;
 
 
-@Value
+@AllArgsConstructor
 public class JSONVerifierImpl implements JSONVerifier {
 
   private final JSONCanonizer canonizer;
