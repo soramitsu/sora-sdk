@@ -1,5 +1,7 @@
 package jp.co.soramitsu.sora.crypto;
 
+import static org.junit.Assert.fail;
+
 import java.security.KeyFactory;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
@@ -16,21 +18,29 @@ public class CryptoProvidersTest {
 
   @Test
   public void hasEd25519WithSha3() throws NoSuchProviderException, NoSuchAlgorithmException {
-    Security.addProvider(new EdDSASecurityProvider());
+    try {
+      Security.addProvider(new EdDSASecurityProvider());
 
-    // no exception thrown
-    Signature.getInstance(EdDSAEngine.SIGNATURE_ALGORITHM, EdDSASecurityProvider.PROVIDER_NAME);
-    Signature.getInstance(EdDSAEngine.SIGNATURE_ALGORITHM);
-    KeyPairGenerator.getInstance("EdDSA", "EdDSA");
-    KeyFactory.getInstance("EdDSA", "EdDSA");
+      // no exception thrown
+      Signature.getInstance(EdDSAEngine.SIGNATURE_ALGORITHM, EdDSASecurityProvider.PROVIDER_NAME);
+      Signature.getInstance(EdDSAEngine.SIGNATURE_ALGORITHM);
+      KeyPairGenerator.getInstance("EdDSA", "EdDSA");
+      KeyFactory.getInstance("EdDSA", "EdDSA");
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
   }
 
   @Test
   public void hasSha3() throws NoSuchAlgorithmException, NoSuchProviderException {
-    Security.addProvider(new BouncyCastleProvider());
+    try {
+      Security.addProvider(new BouncyCastleProvider());
 
-    // no exception thrown
-    MessageDigest.getInstance("SHA3-256", BouncyCastleProvider.PROVIDER_NAME);
-    MessageDigest.getInstance("SHA3-256");
+      // no exception thrown
+      MessageDigest.getInstance("SHA3-256", BouncyCastleProvider.PROVIDER_NAME);
+      MessageDigest.getInstance("SHA3-256");
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
   }
 }

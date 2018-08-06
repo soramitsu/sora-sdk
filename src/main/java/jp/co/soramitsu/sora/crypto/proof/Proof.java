@@ -13,6 +13,11 @@ import lombok.NonNull;
 @EqualsAndHashCode(callSuper = true)
 public class Proof extends Options {
 
+  @NonNull
+  @JsonSerialize(using = HexValueSerializer.class)
+  @JsonDeserialize(using = HexValueDeserializer.class)
+  private byte[] signatureValue;
+
   public Proof(Options options, byte[] signatureValue) {
     super(
         options.getType(),
@@ -37,8 +42,5 @@ public class Proof extends Options {
     this.signatureValue = signatureValue;
   }
 
-  @NonNull
-  @JsonSerialize(using = HexValueSerializer.class)
-  @JsonDeserialize(using = HexValueDeserializer.class)
-  private byte[] signatureValue;
+
 }

@@ -20,22 +20,22 @@ public class MockSignature extends Signature {
 
   @Override
   protected void engineInitVerify(PublicKey publicKey) throws InvalidKeyException {
-
+    /* do nothing */
   }
 
   @Override
   protected void engineInitSign(PrivateKey privateKey) throws InvalidKeyException {
-
+    /* do nothing */
   }
 
   @Override
   protected void engineUpdate(byte b) throws SignatureException {
-
+    /* do nothing */
   }
 
   @Override
   protected void engineUpdate(byte[] b, int off, int len) throws SignatureException {
-
+    /* do nothing */
   }
 
   @Override
@@ -50,7 +50,7 @@ public class MockSignature extends Signature {
 
   @Override
   protected void engineSetParameter(String param, Object value) throws InvalidParameterException {
-
+    /* do nothing */
   }
 
   @Override
