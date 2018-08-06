@@ -1,7 +1,12 @@
 package jp.co.soramitsu.sora.common;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.security.MessageDigest;
 import jp.co.soramitsu.sora.crypto.Hash;
+import jp.co.soramitsu.sora.crypto.common.Consts;
+import jp.co.soramitsu.sora.crypto.proof.Options;
+import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import org.spongycastle.util.Arrays;
 
 public class Util {
@@ -35,5 +40,19 @@ public class Util {
             )
         )
     );
+  }
+
+  static public byte[] serializeWithOptions(
+      JSONCanonizer canonizer, ObjectNode root, Options options)
+      throws IOException {
+    byte[] canonized = canonizer.canonize(root);
+    byte[] opts = canonizer.canonize(options);
+    return Arrays.concatenate(canonized, opts);
+  }
+
+  static public ObjectNode deepCopyWithoutProofNode(ObjectNode root) {
+    ObjectNode out = root.deepCopy();
+    out.remove(Consts.PROOF_KEY);
+    return out;
   }
 }
