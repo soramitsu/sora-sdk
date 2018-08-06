@@ -5,8 +5,6 @@ import static org.junit.Assert.fail;
 import java.security.KeyFactory;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.Signature;
 import jp.co.soramitsu.crypto.ed25519.EdDSAEngine;
@@ -17,7 +15,7 @@ import org.spongycastle.jce.provider.BouncyCastleProvider;
 public class CryptoProvidersTest {
 
   @Test
-  public void hasEd25519WithSha3() throws NoSuchProviderException, NoSuchAlgorithmException {
+  public void hasEd25519WithSha3() {
     try {
       Security.addProvider(new EdDSASecurityProvider());
 
@@ -32,7 +30,7 @@ public class CryptoProvidersTest {
   }
 
   @Test
-  public void hasSha3() throws NoSuchAlgorithmException, NoSuchProviderException {
+  public void hasSha3() {
     try {
       Security.addProvider(new BouncyCastleProvider());
 
