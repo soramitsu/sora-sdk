@@ -5,7 +5,9 @@ import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider
 import org.spongycastle.jce.provider.BouncyCastleProvider
 import spock.lang.Specification
 
-import java.security.*
+import java.security.MessageDigest
+import java.security.Security
+import java.security.Signature
 
 class GroovyCryptoProvidersTest extends Specification {
 

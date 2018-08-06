@@ -2,8 +2,6 @@ package jp.co.soramitsu.sora.crypto;
 
 import static org.junit.Assert.fail;
 
-import java.security.KeyFactory;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.Security;
 import java.security.Signature;

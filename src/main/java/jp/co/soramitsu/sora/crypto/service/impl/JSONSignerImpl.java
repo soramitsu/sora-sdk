@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.Signature;
 import java.security.SignatureException;
-import javax.xml.bind.DatatypeConverter;
 import jp.co.soramitsu.sora.common.Util;
 import jp.co.soramitsu.sora.crypto.common.Consts;
 import jp.co.soramitsu.sora.crypto.proof.Options;
