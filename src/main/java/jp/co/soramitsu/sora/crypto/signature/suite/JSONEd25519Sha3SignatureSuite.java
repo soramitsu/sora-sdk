@@ -62,11 +62,13 @@ public class JSONEd25519Sha3SignatureSuite {
    * @param options signature options
    * @return signed JSON with key "proof". Previous proofs will be erased.
    * @throws IOException when input JSON can not be processed
+   * @throws SignatureException when options signature type is not the same as received crypto type
+   * from {@link SecurityProvider}
    */
-  @SneakyThrows({SignatureException.class, InvalidKeyException.class})  // never thrown
+  @SneakyThrows({InvalidKeyException.class})  // never thrown
   // these exceptions are never thrown
   public ObjectNode sign(Object object, EdDSAPrivateKey privateKey, Options options)
-      throws IOException {
+      throws IOException, SignatureException {
     signature.initSign(privateKey);
     return signer.sign(object, signature, options);
   }
