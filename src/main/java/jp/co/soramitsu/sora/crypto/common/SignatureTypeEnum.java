@@ -6,6 +6,7 @@ import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum SignatureTypeEnum {
   Ed25519Sha3Signature(
@@ -15,14 +16,10 @@ public enum SignatureTypeEnum {
       EdDSASecurityProvider.PROVIDER_NAME
   );
 
-  @Getter
   @JsonValue
   private final String signatureType;
-  @Getter
   private final String keyType;
-  @Getter
   private final String algorithm;
-  @Getter
   private final String provider;
 
 }
