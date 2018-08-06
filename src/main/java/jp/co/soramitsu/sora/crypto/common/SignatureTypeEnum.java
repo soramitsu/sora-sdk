@@ -1,6 +1,8 @@
 package jp.co.soramitsu.sora.crypto.common;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import jp.co.soramitsu.crypto.ed25519.EdDSAEngine;
+import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,7 +11,8 @@ public enum SignatureTypeEnum {
   Ed25519Sha3Signature(
       Consts.ED25519_SHA3_SIGNATURE,
       Consts.ED25519_SHA3_VERIFICATION_KEY,
-      "EdDSA", "EdDSA"
+      EdDSAEngine.SIGNATURE_ALGORITHM,
+      EdDSASecurityProvider.PROVIDER_NAME
   );
 
   @Getter

@@ -2,13 +2,15 @@ package jp.co.soramitsu.sora.crypto.proof;
 
 import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Getter
 public class Options {
 
   @NonNull

@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@ToString
+@Getter
 public class Proof extends Options {
 
   @NonNull
@@ -41,6 +41,4 @@ public class Proof extends Options {
     super(type, created, creator, nonce, purpose);
     this.signatureValue = signatureValue;
   }
-
-
 }

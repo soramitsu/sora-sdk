@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
+import jp.co.soramitsu.crypto.ed25519.KeyPairGenerator
 import jp.co.soramitsu.sora.common.MockSignature
+import jp.co.soramitsu.sora.crypto.common.Consts
 import jp.co.soramitsu.sora.crypto.common.SecurityProvider
 import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum
 import jp.co.soramitsu.sora.crypto.proof.Options
 import jp.co.soramitsu.sora.crypto.service.JSONCanonizer
 import spock.lang.Specification
 
+import java.security.KeyPair
 import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.Signature
@@ -68,6 +71,52 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
         boolean valid = suite.verify(out, publicKey)
 
         then: "proof is valid"
+        noExceptionThrown()
+        valid
+    }
+
+
+    def "ed25519-sha3 with onecoder integration test"() {
+        given:
+        JSONEd25519Sha3SignatureSuite suite = new JSONEd25519Sha3SignatureSuite()
+        def object = [
+                "a": 1
+        ] as Map<String, Object>
+
+
+        when: "generate a keypair"
+        // TODO: replace jp.co.soramitsu.crypto.ed25519.KeyPairGenerator with java.security.KeyPairGenerator
+        KeyPairGenerator generator = new KeyPairGenerator()
+        KeyPair keyPair = generator.generateKeyPair()
+
+        then: "EdDSA keypair is generated"
+        noExceptionThrown()
+        keyPair != null
+
+        when: "sign object"
+        Options options = new Options(
+                suite.type,
+                "created",
+                "creator",
+                "nonce",
+                "purpose"
+        )
+
+        ObjectNode signed = suite.sign(object, keyPair.getPrivate() as EdDSAPrivateKey, options)
+
+        then: "output object contains required fields"
+        noExceptionThrown()
+        signed != null
+        signed.hasNonNull(Consts.PROOF_KEY)
+        signed.hasNonNull("a")
+        signed.get("a").intValue() == 1
+        signed.get(Consts.PROOF_KEY).get("type").asText() == Consts.ED25519_SHA3_SIGNATURE
+        signed.get(Consts.PROOF_KEY).hasNonNull("signatureValue")
+
+        when: "signature is valid"
+        boolean valid = suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
+
+        then:
         noExceptionThrown()
         valid
     }

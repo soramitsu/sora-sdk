@@ -12,7 +12,7 @@ import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
 import org.junit.Test;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
-public class CryptoProvidersTest {
+public class JavaCryptoProvidersTest {
 
   @Test
   public void hasEd25519WithSha3() {
@@ -22,8 +22,6 @@ public class CryptoProvidersTest {
       // no exception thrown
       Signature.getInstance(EdDSAEngine.SIGNATURE_ALGORITHM, EdDSASecurityProvider.PROVIDER_NAME);
       Signature.getInstance(EdDSAEngine.SIGNATURE_ALGORITHM);
-      KeyPairGenerator.getInstance("EdDSA", "EdDSA");
-      KeyFactory.getInstance("EdDSA", "EdDSA");
     } catch (Exception e) {
       fail(e.getMessage());
     }

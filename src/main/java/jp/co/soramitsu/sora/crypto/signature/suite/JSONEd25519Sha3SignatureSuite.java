@@ -27,6 +27,8 @@ public class JSONEd25519Sha3SignatureSuite {
 
   private Signature signature;
 
+  public static final SignatureTypeEnum type = SignatureTypeEnum.Ed25519Sha3Signature;
+
   /**
    * Default constructor for Ed25519 with Sha3 signature algorithm, OneCoding as canonicalization
    * algorithm, and default JSON ObjectMapper.
@@ -50,7 +52,7 @@ public class JSONEd25519Sha3SignatureSuite {
   ) {
     this.signer = new JSONSignerImpl(canonizer, mapper);
     this.verifier = new JSONVerifierImpl(canonizer, mapper);
-    this.signature = provider.getSignature(SignatureTypeEnum.Ed25519Sha3Signature);
+    this.signature = provider.getSignature(type);
   }
 
   /**

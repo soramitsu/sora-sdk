@@ -8,6 +8,7 @@ import java.security.Signature;
 import java.security.SignatureException;
 import jp.co.soramitsu.sora.common.Util;
 import jp.co.soramitsu.sora.crypto.common.Consts;
+import jp.co.soramitsu.sora.crypto.proof.Options;
 import jp.co.soramitsu.sora.crypto.proof.Proof;
 import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import jp.co.soramitsu.sora.crypto.service.JSONVerifier;
@@ -32,10 +33,17 @@ public class JSONVerifierImpl implements JSONVerifier {
     // read proof
     JsonNode proofNode = root.get(Consts.PROOF_KEY);
     Proof proof = mapper.treeToValue(proofNode, Proof.class);
+    Options options = new Options(
+        proof.getType(),
+        proof.getCreated(),
+        proof.getCreator(),
+        proof.getNonce(),
+        proof.getPurpose()
+    );
 
     // sanitize and serialize JSON
     ObjectNode out = Util.deepCopyWithoutProofNode(root);
-    byte[] prepared = Util.serializeWithOptions(this.canonizer, out, proof);
+    byte[] prepared = Util.serializeWithOptions(this.canonizer, out, options);
 
     // verify signature
     signature.update(prepared); // throws SignatureException
