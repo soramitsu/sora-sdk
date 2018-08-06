@@ -1,6 +1,5 @@
 package jp.co.soramitsu.sora.crypto.common;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,13 +22,4 @@ public enum SignatureTypeEnum {
   @Getter
   private final String provider;
 
-//  @JsonCreator
-//  public static SignatureTypeEnum fromString(String v) {
-//    for (SignatureTypeEnum e : values()) {
-//      if (e.signatureType.equals(v)) {
-//        return e;
-//      }
-//    }
-//    throw new IllegalArgumentException("invalid string value passed: " + v);
-//  }
 }
