@@ -31,7 +31,7 @@ public class SecurityProvider {
     return MessageDigest.getInstance(type.getAlgorithm(), type.getProvider());
   }
 
-  public KeyPairGenerator getKeyPairGenerator(SignatureTypeEnum type)
+  public KeyPairGenerator getKeyPairGenerator(KeyTypeEnum type)
       throws NoSuchProviderException, NoSuchAlgorithmException {
     return KeyPairGenerator.getInstance(type.getAlgorithm(), type.getProvider());
   }

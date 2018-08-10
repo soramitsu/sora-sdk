@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
-import jp.co.soramitsu.crypto.ed25519.KeyPairGenerator
 import jp.co.soramitsu.sora.common.MockSignature
 import jp.co.soramitsu.sora.crypto.common.Consts
+import jp.co.soramitsu.sora.crypto.common.KeyTypeEnum
 import jp.co.soramitsu.sora.crypto.common.SecurityProvider
 import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum
 import jp.co.soramitsu.sora.crypto.proof.Options
@@ -14,13 +14,14 @@ import jp.co.soramitsu.sora.crypto.service.JSONCanonizer
 import spock.lang.Specification
 
 import java.security.KeyPair
+import java.security.KeyPairGenerator
 import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.Signature
 
 class JSONEd25519Sha3SignatureSuiteTest extends Specification {
 
-    def "ed25519 with sha3 signature suite unit test"() {
+    def "ed25519-sha3 signature suite unit test"() {
         given:
 
         def signatureBytes = "signature" as byte[]
@@ -78,6 +79,8 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
 
     def "ed25519-sha3 with onecoder integration test"() {
         given:
+        def securityProvider = new SecurityProvider()
+
         JSONEd25519Sha3SignatureSuite suite = new JSONEd25519Sha3SignatureSuite()
         def object = [
                 "a": 1
@@ -85,8 +88,7 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
 
 
         when: "generate a keypair"
-        // TODO: replace jp.co.soramitsu.crypto.ed25519.KeyPairGenerator with java.security.KeyPairGenerator
-        KeyPairGenerator generator = new KeyPairGenerator()
+        KeyPairGenerator generator = securityProvider.getKeyPairGenerator(KeyTypeEnum.Ed25519Sha3)
         KeyPair keyPair = generator.generateKeyPair()
 
         then: "EdDSA keypair is generated"

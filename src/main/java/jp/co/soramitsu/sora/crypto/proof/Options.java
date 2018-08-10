@@ -1,16 +1,13 @@
 package jp.co.soramitsu.sora.crypto.proof;
 
+import javax.validation.constraints.NotBlank;
 import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.ToString;
 
+@Data
 @AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@Getter
 public class Options {
 
   @NonNull
@@ -19,13 +16,13 @@ public class Options {
   /**
    * ISO8601 time.
    */
-  @NonNull
+  @NotBlank
   private String created;
 
-  @NonNull
+  @NotBlank
   private String creator;
 
-  @NonNull
+  @NotBlank
   private String nonce;
 
   private String purpose;

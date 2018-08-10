@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JSONCanonizerWithOneCoding implements JSONCanonizer {
 
-  private ObjectMapper mapper = new OneCodeMapper();
+  private final ObjectMapper mapper = new OneCodeMapper();
 
   @Override
   public byte[] canonize(Object obj) throws IOException {

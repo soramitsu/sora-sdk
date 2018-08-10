@@ -11,14 +11,14 @@ import lombok.Getter;
 public enum SignatureTypeEnum {
   Ed25519Sha3Signature(
       Consts.ED25519_SHA3_SIGNATURE,
-      Consts.ED25519_SHA3_VERIFICATION_KEY,
+      KeyTypeEnum.Ed25519Sha3,
       EdDSAEngine.SIGNATURE_ALGORITHM,
       EdDSASecurityProvider.PROVIDER_NAME
   );
 
   @JsonValue
   private final String signatureType;
-  private final String keyType;
+  private final KeyTypeEnum keyType;
   private final String algorithm;
   private final String provider;
 

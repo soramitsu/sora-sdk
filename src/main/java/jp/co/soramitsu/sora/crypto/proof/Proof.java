@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.validation.constraints.NotBlank;
 import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.ToString;
 
-@ToString
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Proof extends Options {
 
   @NonNull
@@ -32,9 +33,9 @@ public class Proof extends Options {
   @JsonCreator
   public Proof(
       @NonNull @JsonProperty("type") SignatureTypeEnum type,
-      @NonNull @JsonProperty("created") String created,
-      @NonNull @JsonProperty("creator") String creator,
-      @NonNull @JsonProperty("nonce") String nonce,
+      @NotBlank @JsonProperty("created") String created,
+      @NotBlank @JsonProperty("creator") String creator,
+      @NotBlank @JsonProperty("nonce") String nonce,
       @JsonProperty("purpose") String purpose,
       @NonNull @JsonProperty("signatureValue") byte[] signatureValue
   ) {

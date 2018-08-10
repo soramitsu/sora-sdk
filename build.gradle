@@ -47,6 +47,7 @@ final def lombokVersion = '1.18.2'
 final def cglibVersion = '3.2.7'
 final def bytebuddyVersion = '1.8.16'
 final def objgenesisVersion = '2.6'
+final def validationVersion = '2.0.1.Final'
 
 
 dependencies {
@@ -59,6 +60,8 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
     testCompile("com.nagternal:spock-genesis:${spockGenesisVersion}")
     testCompile("org.spockframework:spock-core:${spockVersion}")
+
+    compile("javax.validation:validation-api:${validationVersion}")
 
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
