@@ -22,6 +22,21 @@ public class JSONSignerImpl implements JSONSigner {
   private final JSONCanonizer canonizer;
   private final ObjectMapper mapper;
 
+  private byte[] createSignature(ObjectNode root, Signature signature, Options options)
+      throws SignatureException, IOException {
+    // hash input json and sign this hash
+    byte[] prepared = Util.serializeWithOptions(this.canonizer, root, options);
+    signature.update(prepared);
+    return signature.sign();
+  }
+
+
+
+  private void setProof(ObjectNode output, Proof proof) {
+    JsonNode proofNode = mapper.valueToTree(proof);
+    output.set(Consts.PROOF_KEY, proofNode);
+  }
+
   @Override
   public ObjectNode sign(
       @NonNull Object root,
@@ -29,27 +44,16 @@ public class JSONSignerImpl implements JSONSigner {
       @NonNull Options options
   ) throws SignatureException, IOException {
 
-    String type = options.getType().getAlgorithm();
-    if (!type.equals(signature.getAlgorithm())) {
-      throw new SignatureException(
-          String
-              .format("options (%s) and signature (%s) have different signature algorithms", type,
-                  signature.getAlgorithm())
-      );
-    }
+    Util.verifyAlgorithmType(options, signature);
 
     ObjectNode jsonDocument = mapper.valueToTree(root);
     ObjectNode output = Util.deepCopyWithoutProofNode(jsonDocument);
 
-    // hash input json and sign this hash
-    byte[] prepared = Util.serializeWithOptions(this.canonizer, output, options);
-    signature.update(prepared);
-    byte[] sig = signature.sign();
+    byte[] sig = createSignature(output, signature, options);
 
     // insert "proof" node into json
     Proof proof = new Proof(options, sig);
-    JsonNode proofNode = mapper.valueToTree(proof);
-    output.set(Consts.PROOF_KEY, proofNode);
+    setProof(output, proof);
 
     // return signed JSON
     return output;

@@ -3,6 +3,8 @@ package jp.co.soramitsu.sora.common;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.security.Signature;
+import java.security.SignatureException;
 import jp.co.soramitsu.sora.crypto.Hash;
 import jp.co.soramitsu.sora.crypto.common.Consts;
 import jp.co.soramitsu.sora.crypto.proof.Options;
@@ -42,7 +44,7 @@ public class Util {
     );
   }
 
-  static public byte[] serializeWithOptions(
+  public static byte[] serializeWithOptions(
       JSONCanonizer canonizer, ObjectNode root, Options options)
       throws IOException {
     byte[] canonized = canonizer.canonize(root);
@@ -50,9 +52,21 @@ public class Util {
     return Arrays.concatenate(canonized, opts);
   }
 
-  static public ObjectNode deepCopyWithoutProofNode(ObjectNode root) {
+  public static ObjectNode deepCopyWithoutProofNode(ObjectNode root) {
     ObjectNode out = root.deepCopy();
     out.remove(Consts.PROOF_KEY);
     return out;
+  }
+
+  public static void verifyAlgorithmType(Options options, Signature signature)
+      throws SignatureException {
+    String type = options.getType().getAlgorithm();
+    if (!type.equals(signature.getAlgorithm())) {
+      throw new SignatureException(
+          String
+              .format("options (%s) and signature (%s) have different signature algorithms", type,
+                  signature.getAlgorithm())
+      );
+    }
   }
 }

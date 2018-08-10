@@ -41,6 +41,8 @@ public class JSONVerifierImpl implements JSONVerifier {
         proof.getPurpose()
     );
 
+    Util.verifyAlgorithmType(options, signature);
+
     // sanitize and serialize JSON
     ObjectNode out = Util.deepCopyWithoutProofNode(root);
     byte[] prepared = Util.serializeWithOptions(this.canonizer, out, options);
