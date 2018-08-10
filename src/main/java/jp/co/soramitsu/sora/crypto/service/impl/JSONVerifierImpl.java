@@ -30,7 +30,6 @@ public class JSONVerifierImpl implements JSONVerifier {
       return false;
     }
 
-    // read proof
     JsonNode proofNode = root.get(Consts.PROOF_KEY);
     Proof proof = mapper.treeToValue(proofNode, Proof.class);
     Options options = new Options(
@@ -43,11 +42,9 @@ public class JSONVerifierImpl implements JSONVerifier {
 
     Util.verifyAlgorithmType(options, signature);
 
-    // sanitize and serialize JSON
     ObjectNode out = Util.deepCopyWithoutProofNode(root);
     byte[] prepared = Util.serializeWithOptions(this.canonizer, out, options);
 
-    // verify signature
     signature.update(prepared); // throws SignatureException
     return signature.verify(proof.getSignatureValue());
   }

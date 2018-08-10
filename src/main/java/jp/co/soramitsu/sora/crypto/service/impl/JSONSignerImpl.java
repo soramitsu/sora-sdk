@@ -51,11 +51,9 @@ public class JSONSignerImpl implements JSONSigner {
 
     byte[] sig = createSignature(output, signature, options);
 
-    // insert "proof" node into json
     Proof proof = new Proof(options, sig);
     setProof(output, proof);
 
-    // return signed JSON
     return output;
   }
 }
