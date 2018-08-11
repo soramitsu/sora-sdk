@@ -3,11 +3,14 @@ package jp.co.soramitsu.sora.crypto.common;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jp.co.soramitsu.crypto.ed25519.EdDSAEngine;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public enum SignatureTypeEnum {
   Ed25519Sha3Signature(
       Consts.ED25519_SHA3_SIGNATURE,
@@ -17,9 +20,9 @@ public enum SignatureTypeEnum {
   );
 
   @JsonValue
-  private final String signatureType;
-  private final KeyTypeEnum keyType;
-  private final String algorithm;
-  private final String provider;
+  String signatureType;
+  KeyTypeEnum keyType;
+  String algorithm;
+  String provider;
 
 }

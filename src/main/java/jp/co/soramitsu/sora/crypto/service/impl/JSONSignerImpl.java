@@ -12,15 +12,19 @@ import jp.co.soramitsu.sora.crypto.proof.Options;
 import jp.co.soramitsu.sora.crypto.proof.Proof;
 import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import jp.co.soramitsu.sora.crypto.service.JSONSigner;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
 
 
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+
 public class JSONSignerImpl implements JSONSigner {
 
-  private final JSONCanonizer canonizer;
-  private final ObjectMapper mapper;
+  JSONCanonizer canonizer;
+  ObjectMapper mapper;
 
   private byte[] createSignature(ObjectNode root, Signature signature, Options options)
       throws SignatureException, IOException {
@@ -29,7 +33,6 @@ public class JSONSignerImpl implements JSONSigner {
     signature.update(prepared);
     return signature.sign();
   }
-
 
 
   private void setProof(ObjectNode output, Proof proof) {

@@ -12,14 +12,17 @@ import jp.co.soramitsu.sora.crypto.proof.Options;
 import jp.co.soramitsu.sora.crypto.proof.Proof;
 import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import jp.co.soramitsu.sora.crypto.service.JSONVerifier;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class JSONVerifierImpl implements JSONVerifier {
 
-  private final JSONCanonizer canonizer;
-  private final ObjectMapper mapper;
+  JSONCanonizer canonizer;
+  ObjectMapper mapper;
 
   @Override
   public boolean verify(Object object, Signature signature)
