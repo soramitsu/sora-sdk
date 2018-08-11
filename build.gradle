@@ -39,20 +39,29 @@ repositories {
 }
 
 final def spockVersion = '1.1-groovy-2.4'
-final def edVersion = '1.2.0'
+final def edVersion = '1.3.3'
 final def spockGenesisVersion = '0.6.0'
 final def jacksonVersion = '2.9.6'
 final def onecodeVersion = '1.0.1'
-final def lombokVersion = '1.18.0'
+final def lombokVersion = '1.18.2'
 final def cglibVersion = '3.2.7'
+final def bytebuddyVersion = '1.8.16'
+final def objgenesisVersion = '2.6'
+final def validationVersion = '2.0.1.Final'
 
 
 dependencies {
+    // for mocking in groovy
+    testCompile("net.bytebuddy:byte-buddy:${bytebuddyVersion}")
+    testCompile("org.objenesis:objenesis:${objgenesisVersion}")
+    testCompile("cglib:cglib-nodep:${cglibVersion}")
+
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
     testCompile("com.nagternal:spock-genesis:${spockGenesisVersion}")
-    testCompile("cglib:cglib-nodep:${cglibVersion}") // for mocking in spock
     testCompile("org.spockframework:spock-core:${spockVersion}")
+
+    compile("javax.validation:validation-api:${validationVersion}")
 
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"

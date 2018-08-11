@@ -95,7 +95,7 @@ public class Flattener {
       if (!value.isValueNode() &&  // not value node
           // and not empty object or empty array
           (value.size() != 0 && (value.isArray() || value.isObject()))
-          ) {
+      ) {
         return false;
       }
 

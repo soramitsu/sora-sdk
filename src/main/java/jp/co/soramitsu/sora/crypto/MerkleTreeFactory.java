@@ -15,14 +15,14 @@ import lombok.val;
 
 public class MerkleTreeFactory {
 
-  private MessageDigest digest;
+  private final MessageDigest digest;
 
   /**
    * Creates instance of MerkleTree with given digest.
    *
    * @param digest implementation of the digest algorithm
-   * @apiNote after you created the instance, method {@link #createFromLeaves(List)} should be called
-   * to calculate tree hashes
+   * @apiNote after you created the instance, method {@link #createFromLeaves(List)} should be
+   * called to calculate tree hashes
    */
   public MerkleTreeFactory(@NonNull MessageDigest digest) {
     this.digest = digest;
