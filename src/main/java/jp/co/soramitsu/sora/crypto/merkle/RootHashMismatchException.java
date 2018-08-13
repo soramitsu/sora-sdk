@@ -1,6 +1,7 @@
 package jp.co.soramitsu.sora.crypto.merkle;
 
 import javax.xml.bind.DatatypeConverter;
+import jp.co.soramitsu.sora.crypto.common.Hash;
 import lombok.Getter;
 
 public class RootHashMismatchException extends Exception {

@@ -1,11 +1,13 @@
 package jp.co.soramitsu.sora.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jp.co.soramitsu.sora.crypto.common.Hash
 import jp.co.soramitsu.sora.crypto.json.Hashifier
 import spock.genesis.Gen
 import spock.lang.Specification
 
 import java.security.MessageDigest
+import java.util.stream.Collectors
 
 class HashifierTest extends Specification {
 
@@ -37,6 +39,12 @@ class HashifierTest extends Specification {
         return list
     }
 
+    List<Hash> toHashes(List<byte[]> arr) {
+        return arr.stream().map({ i ->
+            new Hash(i)
+        }).collect(Collectors.toList())
+    }
+
     def "hashify"() {
         given:
         def tree = mapper.readTree(json)
@@ -53,7 +61,7 @@ class HashifierTest extends Specification {
 
         then:
         hashes.size() == onecoded.size()
-        hashes == expected
+        hashes == toHashes(expected)
 
 
         where:
