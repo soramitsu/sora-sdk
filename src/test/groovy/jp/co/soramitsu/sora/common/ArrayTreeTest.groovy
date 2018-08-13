@@ -1,5 +1,8 @@
 package jp.co.soramitsu.sora.common
 
+import jp.co.soramitsu.sora.crypto.common.ArrayTree
+import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory
+import jp.co.soramitsu.sora.crypto.common.InvalidNodeNumberException
 import spock.lang.Specification
 
 
