@@ -9,14 +9,14 @@ import java.security.SignatureException;
 import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey;
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey;
 import jp.co.soramitsu.sora.crypto.common.SecurityProvider;
-import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizer;
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizerWithOneCoding;
+import jp.co.soramitsu.sora.crypto.json.JSONSigner;
+import jp.co.soramitsu.sora.crypto.json.JSONSignerImpl;
+import jp.co.soramitsu.sora.crypto.json.JSONVerifier;
+import jp.co.soramitsu.sora.crypto.json.JSONVerifierImpl;
 import jp.co.soramitsu.sora.crypto.proof.Options;
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
-import jp.co.soramitsu.sora.crypto.service.JSONSigner;
-import jp.co.soramitsu.sora.crypto.service.JSONVerifier;
-import jp.co.soramitsu.sora.crypto.service.impl.JSONCanonizerWithOneCoding;
-import jp.co.soramitsu.sora.crypto.service.impl.JSONSignerImpl;
-import jp.co.soramitsu.sora.crypto.service.impl.JSONVerifierImpl;
+import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum;
 import lombok.SneakyThrows;
 
 

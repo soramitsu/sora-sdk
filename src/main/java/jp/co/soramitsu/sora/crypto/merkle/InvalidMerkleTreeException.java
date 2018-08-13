@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.crypto;
+package jp.co.soramitsu.sora.crypto.merkle;
 
 public class InvalidMerkleTreeException extends RuntimeException {
 

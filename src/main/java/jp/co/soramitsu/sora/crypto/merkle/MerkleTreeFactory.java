@@ -1,15 +1,15 @@
-package jp.co.soramitsu.sora.crypto;
+package jp.co.soramitsu.sora.crypto.merkle;
 
 import static java.util.Objects.nonNull;
-import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2;
+import static jp.co.soramitsu.sora.crypto.common.Util.ceilToPowerOf2;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import jp.co.soramitsu.sora.common.ArrayTree;
-import jp.co.soramitsu.sora.common.ArrayTreeFactory;
-import jp.co.soramitsu.sora.common.InvalidNodeNumberException;
-import jp.co.soramitsu.sora.common.Util;
+import jp.co.soramitsu.sora.crypto.common.ArrayTree;
+import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory;
+import jp.co.soramitsu.sora.crypto.common.InvalidNodeNumberException;
+import jp.co.soramitsu.sora.crypto.common.Util;
 import lombok.NonNull;
 import lombok.val;
 

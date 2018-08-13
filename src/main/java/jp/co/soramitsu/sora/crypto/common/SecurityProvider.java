@@ -7,6 +7,9 @@ import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.Signature;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
+import jp.co.soramitsu.sora.crypto.type.DigestTypeEnum;
+import jp.co.soramitsu.sora.crypto.type.KeyTypeEnum;
+import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 

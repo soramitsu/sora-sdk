@@ -1,14 +1,13 @@
-package jp.co.soramitsu.sora.common;
+package jp.co.soramitsu.sora.crypto.common;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.Signature;
 import java.security.SignatureException;
-import jp.co.soramitsu.sora.crypto.Hash;
-import jp.co.soramitsu.sora.crypto.common.Consts;
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizer;
+import jp.co.soramitsu.sora.crypto.merkle.Hash;
 import jp.co.soramitsu.sora.crypto.proof.Options;
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import org.spongycastle.util.Arrays;
 
 public class Util {

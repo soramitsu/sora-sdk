@@ -1,6 +1,6 @@
-package jp.co.soramitsu.sora.common;
+package jp.co.soramitsu.sora.crypto.common;
 
-import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2;
+import static jp.co.soramitsu.sora.crypto.common.Util.ceilToPowerOf2;
 
 import java.util.ArrayList;
 import java.util.Collections;

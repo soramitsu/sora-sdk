@@ -1,6 +1,7 @@
 package jp.co.soramitsu.sora.crypto.service.impl
 
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizer
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizerWithOneCoding
 import spock.lang.Specification
 
 

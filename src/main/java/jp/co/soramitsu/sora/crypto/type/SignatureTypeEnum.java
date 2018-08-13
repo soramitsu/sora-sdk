@@ -1,8 +1,9 @@
-package jp.co.soramitsu.sora.crypto.common;
+package jp.co.soramitsu.sora.crypto.type;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import jp.co.soramitsu.crypto.ed25519.EdDSAEngine;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
+import jp.co.soramitsu.sora.crypto.common.Consts;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

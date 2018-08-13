@@ -1,6 +1,7 @@
 package jp.co.soramitsu.sora.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jp.co.soramitsu.sora.crypto.json.Hashifier
 import spock.genesis.Gen
 import spock.lang.Specification
 

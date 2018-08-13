@@ -1,10 +1,10 @@
-package jp.co.soramitsu.sora.json;
+package jp.co.soramitsu.sora.crypto.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import jp.co.soramitsu.sora.common.SaltGenerator;
+import jp.co.soramitsu.sora.crypto.common.SaltGenerator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

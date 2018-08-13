@@ -1,9 +1,8 @@
-package jp.co.soramitsu.sora.crypto.service.impl;
+package jp.co.soramitsu.sora.crypto.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import jp.co.soramitsu.jackson.OneCodeMapper;
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
 import lombok.NoArgsConstructor;
 
 

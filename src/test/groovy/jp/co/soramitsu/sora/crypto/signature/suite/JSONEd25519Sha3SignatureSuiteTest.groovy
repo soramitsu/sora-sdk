@@ -6,18 +6,14 @@ import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
 import jp.co.soramitsu.sora.common.MockSignature
 import jp.co.soramitsu.sora.crypto.common.Consts
-import jp.co.soramitsu.sora.crypto.common.KeyTypeEnum
 import jp.co.soramitsu.sora.crypto.common.SecurityProvider
-import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizer
 import jp.co.soramitsu.sora.crypto.proof.Options
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer
+import jp.co.soramitsu.sora.crypto.type.KeyTypeEnum
+import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum
 import spock.lang.Specification
 
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.PrivateKey
-import java.security.PublicKey
-import java.security.Signature
+import java.security.*
 
 class JSONEd25519Sha3SignatureSuiteTest extends Specification {
 
