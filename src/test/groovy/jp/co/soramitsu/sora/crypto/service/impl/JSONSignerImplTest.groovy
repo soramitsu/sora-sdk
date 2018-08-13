@@ -3,11 +3,12 @@ package jp.co.soramitsu.sora.crypto.service.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.sora.common.MockSignature
-import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum
+import jp.co.soramitsu.sora.crypto.json.JSONCanonizer
+import jp.co.soramitsu.sora.crypto.json.JSONSigner
+import jp.co.soramitsu.sora.crypto.json.JSONSignerImpl
 import jp.co.soramitsu.sora.crypto.proof.Options
 import jp.co.soramitsu.sora.crypto.proof.Proof
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer
-import jp.co.soramitsu.sora.crypto.service.JSONSigner
+import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum
 import spock.lang.Specification
 
 import java.security.PrivateKey

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.validation.constraints.NotBlank;
-import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
+import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;

@@ -1,7 +1,8 @@
 package jp.co.soramitsu.sora.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jp.co.soramitsu.sora.common.SaltGenerator
+import jp.co.soramitsu.sora.crypto.common.SaltGenerator
+import jp.co.soramitsu.sora.crypto.json.Saltifier
 import spock.lang.Specification
 
 class SaltifierTest extends Specification {

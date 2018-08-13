@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.crypto.service.impl;
+package jp.co.soramitsu.sora.crypto.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,12 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.Signature;
 import java.security.SignatureException;
-import jp.co.soramitsu.sora.common.Util;
 import jp.co.soramitsu.sora.crypto.common.Consts;
+import jp.co.soramitsu.sora.crypto.common.Util;
 import jp.co.soramitsu.sora.crypto.proof.Options;
 import jp.co.soramitsu.sora.crypto.proof.Proof;
-import jp.co.soramitsu.sora.crypto.service.JSONCanonizer;
-import jp.co.soramitsu.sora.crypto.service.JSONVerifier;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

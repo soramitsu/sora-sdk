@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.common;
+package jp.co.soramitsu.sora.crypto.common;
 
 public class InvalidNodeNumberException extends RuntimeException {
 

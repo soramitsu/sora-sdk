@@ -1,5 +1,6 @@
 package jp.co.soramitsu.sora.common
 
+import jp.co.soramitsu.sora.crypto.common.HexdigestSaltGenerator
 import spock.lang.Specification
 
 import javax.xml.bind.DatatypeConverter

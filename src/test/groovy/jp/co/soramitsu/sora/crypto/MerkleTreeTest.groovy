@@ -1,12 +1,14 @@
 package jp.co.soramitsu.sora.crypto
 
-import jp.co.soramitsu.sora.common.ArrayTree
-import jp.co.soramitsu.sora.common.ArrayTreeFactory
 import jp.co.soramitsu.sora.common.MockSumMessageDigest
+import jp.co.soramitsu.sora.crypto.common.ArrayTree
+import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory
+import jp.co.soramitsu.sora.crypto.merkle.*
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static jp.co.soramitsu.sora.common.Util.ceilToPowerOf2
+import static jp.co.soramitsu.sora.crypto.common.Util.ceilToPowerOf2
+
 
 class MerkleTreeTest extends Specification {
 

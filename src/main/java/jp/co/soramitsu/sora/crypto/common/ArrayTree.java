@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.common;
+package jp.co.soramitsu.sora.crypto.common;
 
 import java.util.List;
 import java.util.stream.Collectors;

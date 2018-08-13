@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.crypto.service;
+package jp.co.soramitsu.sora.crypto.json;
 
 import java.io.IOException;
 import java.security.Signature;

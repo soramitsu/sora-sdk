@@ -1,7 +1,7 @@
 package jp.co.soramitsu.sora.crypto.proof;
 
 import javax.validation.constraints.NotBlank;
-import jp.co.soramitsu.sora.crypto.common.SignatureTypeEnum;
+import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;

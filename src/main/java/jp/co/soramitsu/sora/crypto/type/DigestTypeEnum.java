@@ -1,5 +1,6 @@
-package jp.co.soramitsu.sora.crypto.common;
+package jp.co.soramitsu.sora.crypto.type;
 
+import jp.co.soramitsu.sora.crypto.common.Consts;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.json;
+package jp.co.soramitsu.sora.crypto.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

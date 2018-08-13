@@ -2,6 +2,7 @@ package jp.co.soramitsu.sora.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import jp.co.soramitsu.sora.crypto.json.Flattener
 import spock.genesis.Gen
 import spock.genesis.transform.Iterations
 import spock.lang.Specification

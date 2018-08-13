@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.crypto;
+package jp.co.soramitsu.sora.crypto.merkle;
 
 import lombok.Value;
 

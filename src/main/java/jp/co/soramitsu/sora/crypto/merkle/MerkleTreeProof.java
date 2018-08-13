@@ -1,12 +1,12 @@
-package jp.co.soramitsu.sora.crypto;
+package jp.co.soramitsu.sora.crypto.merkle;
 
-import static jp.co.soramitsu.sora.common.ArrayTree.getParentIndex;
+import static jp.co.soramitsu.sora.crypto.common.ArrayTree.getParentIndex;
 
 import java.security.MessageDigest;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import jp.co.soramitsu.sora.common.Util;
+import jp.co.soramitsu.sora.crypto.common.Util;
 import lombok.NonNull;
 import lombok.Value;
 
