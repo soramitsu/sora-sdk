@@ -1,32 +1,31 @@
 package jp.co.soramitsu.sora.crypto.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import jp.co.soramitsu.jackson.OneCodeMapper;
+import java.util.Map.Entry;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Value;
+import lombok.experimental.FieldDefaults;
+import lombok.val;
 
-@Value
+@AllArgsConstructor
+@FieldDefaults(makeFinal = true)
 public class Hashifier {
 
   private MessageDigest digest;
 
   private ObjectMapper mapper;
 
-  private ObjectMapper onecoder = new OneCodeMapper();
+  private JSONCanonizer canonizer;
 
   public Hashifier(@NonNull MessageDigest digest) {
-    this(digest, new ObjectMapper());
-  }
-
-  public Hashifier(@NonNull MessageDigest digest, @NonNull ObjectMapper mapper) {
-    this.digest = digest;
-    this.mapper = mapper;
+    this(digest, new ObjectMapper(), new JSONCanonizerWithOneCoding());
   }
 
   /**
@@ -37,26 +36,19 @@ public class Hashifier {
    * @return list of hashes. Hash is specified by {@link #digest}
    * @throws NotJsonObjectException when input json is not an object
    */
-  public List<byte[]> hashify(JsonNode root) {
-    if (!root.isObject()) {
-      throw new NotJsonObjectException(root);
-    }
-
+  public List<byte[]> hashify(ObjectNode root) throws IOException {
     List<byte[]> hashes = new ArrayList<>(root.size());
 
-    root.fields()
-        .forEachRemaining(field -> {
-          // create new object, one per key-value
-          ObjectNode out = mapper.createObjectNode();
-          out.set(field.getKey(), field.getValue());
+    for (Iterator<Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
+      val field = it.next();
 
-          try {
-            byte[] serialized = onecoder.writeValueAsBytes(out);
-            hashes.add(digest.digest(serialized));
-          } catch (JsonProcessingException e) {
-            throw new BadJsonException(e);
-          }
-        });
+      // create new object, one per key-value
+      ObjectNode out = mapper.createObjectNode();
+      out.set(field.getKey(), field.getValue());
+
+      byte[] serialized = canonizer.canonize(out);
+      hashes.add(digest.digest(serialized));
+    }
 
     return hashes;
   }

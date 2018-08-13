@@ -4,25 +4,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.stream.IntStream;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.val;
 
 
 @NoArgsConstructor
+@AllArgsConstructor
 public class Flattener {
 
-  @Setter
   private char dictkey = '/';
-  @Setter
   private char arrkey = '_';
-  @Setter
   private ObjectMapper mapper = new ObjectMapper();
 
   private void flatten(JsonNode root, String path, ObjectNode out) {
     if (root.isObject()) {
       if (root.size() == 0) {
-        // it is empty object
+        // it is an empty object
         out.set(path, root);
         return;
       }
@@ -33,7 +31,7 @@ public class Flattener {
           );
     } else if (root.isArray()) {
       if (root.size() == 0) {
-        // it is empty array
+        // it is an empty array
         out.set(path, root);
         return;
       }
@@ -45,47 +43,30 @@ public class Flattener {
       out.set(path, root);
 
     } else {
-      throw new FlattenException("type is neigher object, array or value");
+      throw new BadJsonException(root);
     }
   }
 
-  private void deflatten(JsonNode root, ObjectNode out) {
+  private void deflatten(ObjectNode root, ObjectNode out) {
     // TODO: implement BSM-91
     throw new RuntimeException("not implemented");
   }
 
-  public Flattener(ObjectMapper mapper) {
-    this.mapper = mapper;
-  }
-
-
-  public JsonNode flatten(JsonNode root) {
-    if (!root.isObject()) {
-      return root;
-    }
-
+  public ObjectNode flatten(ObjectNode root) {
     ObjectNode node = mapper.createObjectNode();
     flatten(root, "", node);
 
     return node;
   }
 
-  public JsonNode deflatten(JsonNode root) {
-    if (!isFlattened(root)) {
-      throw new FlattenException("input json is not flattened");
-    }
-
+  public ObjectNode deflatten(ObjectNode root) {
     ObjectNode out = mapper.createObjectNode();
     deflatten(root, out);
 
     return out;
   }
 
-  public boolean isFlattened(JsonNode root) {
-    if (!root.isObject()) {
-      return false;
-    }
-
+  public boolean isFlattened(ObjectNode root) {
     val fields = root.fields();
     while (fields.hasNext()) {
       val field = fields.next();
