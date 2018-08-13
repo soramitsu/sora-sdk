@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import jp.co.soramitsu.sora.crypto.common.ArrayTree;
+import jp.co.soramitsu.sora.crypto.common.Hash;
 import lombok.Value;
 
 @Value

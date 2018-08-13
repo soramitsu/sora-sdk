@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import jp.co.soramitsu.sora.crypto.common.Hash;
+import jp.co.soramitsu.sora.crypto.common.SecurityProvider;
+import jp.co.soramitsu.sora.crypto.type.DigestTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +27,10 @@ public class Hashifier {
 
   private JSONCanonizer canonizer;
 
+  public Hashifier() {
+    this(new SecurityProvider().getMessageDigest(DigestTypeEnum.SHA3_256));
+  }
+
   public Hashifier(@NonNull MessageDigest digest) {
     this(digest, new ObjectMapper(), new JSONCanonizerWithOneCoding());
   }
@@ -36,8 +43,8 @@ public class Hashifier {
    * @return list of hashes. Hash is specified by {@link #digest}
    * @throws NotJsonObjectException when input json is not an object
    */
-  public List<byte[]> hashify(ObjectNode root) throws IOException {
-    List<byte[]> hashes = new ArrayList<>(root.size());
+  public List<Hash> hashify(ObjectNode root) throws IOException {
+    List<Hash> hashes = new ArrayList<>(root.size());
 
     for (Iterator<Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
       val field = it.next();
@@ -47,7 +54,10 @@ public class Hashifier {
       out.set(field.getKey(), field.getValue());
 
       byte[] serialized = canonizer.canonize(out);
-      hashes.add(digest.digest(serialized));
+      byte[] hash = digest.digest(serialized);
+      hashes.add(
+          new Hash(hash)
+      );
     }
 
     return hashes;

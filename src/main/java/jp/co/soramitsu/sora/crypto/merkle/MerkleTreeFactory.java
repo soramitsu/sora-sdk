@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jp.co.soramitsu.sora.crypto.common.ArrayTree;
 import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory;
+import jp.co.soramitsu.sora.crypto.common.Hash;
 import jp.co.soramitsu.sora.crypto.common.InvalidNodeNumberException;
 import jp.co.soramitsu.sora.crypto.common.Util;
 import lombok.NonNull;

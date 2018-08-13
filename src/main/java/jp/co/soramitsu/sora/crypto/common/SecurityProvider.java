@@ -2,14 +2,13 @@ package jp.co.soramitsu.sora.crypto.common;
 
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.Signature;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
 import jp.co.soramitsu.sora.crypto.type.DigestTypeEnum;
 import jp.co.soramitsu.sora.crypto.type.KeyTypeEnum;
 import jp.co.soramitsu.sora.crypto.type.SignatureTypeEnum;
+import lombok.SneakyThrows;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 
@@ -24,18 +23,18 @@ public class SecurityProvider {
     Security.addProvider(new BouncyCastleProvider());  // for sha3 hash
   }
 
-  public Signature getSignature(SignatureTypeEnum type)
-      throws NoSuchAlgorithmException, NoSuchProviderException {
+  @SneakyThrows
+  public Signature getSignature(SignatureTypeEnum type) {
     return Signature.getInstance(type.getAlgorithm(), type.getProvider());
   }
 
-  public MessageDigest getMessageDigest(DigestTypeEnum type)
-      throws NoSuchProviderException, NoSuchAlgorithmException {
+  @SneakyThrows
+  public MessageDigest getMessageDigest(DigestTypeEnum type) {
     return MessageDigest.getInstance(type.getAlgorithm(), type.getProvider());
   }
 
-  public KeyPairGenerator getKeyPairGenerator(KeyTypeEnum type)
-      throws NoSuchProviderException, NoSuchAlgorithmException {
+  @SneakyThrows
+  public KeyPairGenerator getKeyPairGenerator(KeyTypeEnum type) {
     return KeyPairGenerator.getInstance(type.getAlgorithm(), type.getProvider());
   }
 }
