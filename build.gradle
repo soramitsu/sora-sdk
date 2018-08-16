@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'groovy'
+    id "org.sonarqube" version "2.6"
 }
 
 group = 'jp.co.soramitsu'
