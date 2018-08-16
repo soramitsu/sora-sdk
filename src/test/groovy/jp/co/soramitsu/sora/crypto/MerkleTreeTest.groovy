@@ -4,12 +4,14 @@ import jp.co.soramitsu.sora.common.MockSumMessageDigest
 import jp.co.soramitsu.sora.crypto.common.ArrayTree
 import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory
 import jp.co.soramitsu.sora.crypto.common.Hash
-import jp.co.soramitsu.sora.crypto.merkle.*
+import jp.co.soramitsu.sora.crypto.merkle.MerkleNode
+import jp.co.soramitsu.sora.crypto.merkle.MerkleTree
+import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeFactory
+import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeProof
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import static jp.co.soramitsu.sora.crypto.common.Util.ceilToPowerOf2
-
 
 class MerkleTreeTest extends Specification {
 

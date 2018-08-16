@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -76,6 +75,15 @@ public class SelectiveDisclosureFactory {
 
     public Hash getCommitment() {
       return merkleTree.getRoot();
+    }
+
+    public MerkleTreeProof createProofForKey(String key) throws IOException {
+      Hash hash = hashifier.hashJsonField(new SimpleEntry<>(
+          key,
+          saltifiedJson.get(key)
+      ));
+
+      return createProof(hash);
     }
 
     public MerkleTreeProof createProof(Hash hash) {

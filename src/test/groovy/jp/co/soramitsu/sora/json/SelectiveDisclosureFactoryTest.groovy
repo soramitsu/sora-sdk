@@ -87,4 +87,24 @@ class SelectiveDisclosureFactoryTest extends Specification {
         then: "should be equal to the first two keys in JSON"
         keys2.toSet() == ["/4:name", "/3:has/9:documents_0"].toSet()
     }
+
+    def "usage example"() {
+        given:
+        def obj = [
+                "name": "Bogdan",
+                "age" : "25"
+        ]
+
+        def factory = new SelectiveDisclosureFactory()
+
+        when: "create a commitment and proof for 'name'"
+        def sd = factory.createCommitment(obj)
+        def proof = sd.createProofForKey("/4:name")
+
+        then: "proof is valid for valid commitment"
+        proof.verify(sd.getCommitment())
+
+        and: "proof is not valid for invalid commitment"
+        !proof.verify(Hash.fromHex("0000000000000000000000000000000000000000000000000000000000000000"))
+    }
 }
