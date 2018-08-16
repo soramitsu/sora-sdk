@@ -11,7 +11,6 @@ class SaltGeneratorTest extends Specification {
         given:
         def mockRandom = new MockRandom(singlebyte as byte)
         def gen = new HexdigestSaltGenerator(mockRandom, length)
-
         when:
         String salt = gen.next()
 

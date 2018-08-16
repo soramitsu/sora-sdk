@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jp.co.soramitsu.sora.crypto.common.SaltGenerator;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true)
 public class Saltifier {
 
   ObjectMapper mapper;
@@ -67,7 +66,7 @@ public class Saltifier {
 
     } else if (root.isObject()) {
 
-      if (isSalted(root)) {
+      if (isValueSalted(root)) {
         return desaltify(root.get(valueKey));
       }
 
@@ -89,7 +88,29 @@ public class Saltifier {
     return obj;
   }
 
-  private boolean isSalted(JsonNode node) {
+  public boolean isSalted(JsonNode node) {
+    if (node.isValueNode()) {
+      return false;
+    }
+
+    if (node.isObject() && isValueSalted(node)) {
+      return true;
+    }
+
+    if (node.isArray() || node.isObject()) {
+      for (JsonNode n : node) {
+        if (!isSalted(n)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    throw new NotJsonObjectException(node);
+  }
+
+  private boolean isValueSalted(JsonNode node) {
     return node.hasNonNull(saltKey) && node.has(valueKey);
   }
 }

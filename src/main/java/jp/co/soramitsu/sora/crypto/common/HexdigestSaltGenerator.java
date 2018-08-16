@@ -1,14 +1,16 @@
 package jp.co.soramitsu.sora.crypto.common;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import javax.xml.bind.DatatypeConverter;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Value
+@AllArgsConstructor
+@NoArgsConstructor
 public class HexdigestSaltGenerator implements SaltGenerator {
 
-  private Random random;
-  private int length;
+  private SecureRandom random = new SecureRandom();
+  private int length = 8 /* bytes */;
 
   @Override
   public String next() {

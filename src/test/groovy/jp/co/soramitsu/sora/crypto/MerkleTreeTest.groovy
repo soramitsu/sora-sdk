@@ -52,8 +52,8 @@ class MerkleTreeTest extends Specification {
         then:
         noExceptionThrown()
 
-        tree.root() == expTree.get(0)
-        full.root() == expTree.get(0)
+        tree.getRoot() == expTree.get(0)
+        full.getRoot() == expTree.get(0)
 
         expTree.eachWithIndex { Hash entry, int i ->
             tree.getHashTree().get(i) == entry
@@ -87,7 +87,7 @@ class MerkleTreeTest extends Specification {
         MerkleTreeProof p = tree.createProof(h)
 
         then: 'proof is valid'
-        p.verify(digest, new Hash([root] as byte[]))
+        p.verify(new Hash([root] as byte[]))
         p.getPath() == arr2path(proof)
 
         where:

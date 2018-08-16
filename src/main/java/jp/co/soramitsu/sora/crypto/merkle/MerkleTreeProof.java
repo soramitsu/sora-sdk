@@ -8,19 +8,25 @@ import java.util.LinkedList;
 import java.util.List;
 import jp.co.soramitsu.sora.crypto.common.Hash;
 import jp.co.soramitsu.sora.crypto.common.Util;
+import lombok.Getter;
 import lombok.NonNull;
-import lombok.Value;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-@Value
+@ToString
+@RequiredArgsConstructor
+@Getter
 public class MerkleTreeProof {
 
+  private final MessageDigest digest;
+
   // [element] [path...]
-  List<MerkleNode> path;
+  private final List<MerkleNode> path;
 
   /**
    * Verifies {@link MerkleTreeProof} path against supplied <code>root</code>
    */
-  public boolean verify(@NonNull MessageDigest digest, @NonNull Hash root) {
+  public boolean verify(@NonNull Hash root) {
     LinkedList<MerkleNode> copy = new LinkedList<>(path);
 
     while (copy.size() > 1) {

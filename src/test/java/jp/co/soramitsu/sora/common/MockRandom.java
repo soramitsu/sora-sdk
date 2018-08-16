@@ -1,11 +1,11 @@
 package jp.co.soramitsu.sora.common;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class MockRandom extends Random {
+public class MockRandom extends SecureRandom {
 
   private byte fixed;
 
