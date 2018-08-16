@@ -98,7 +98,7 @@ public class MerkleTree {
    * </code>
    */
   public List<Integer> getLeavesIndicesBelowIndex(int index) {
-    if (index < 0) {
+    if (index < 0 || index >= hashTree.size()) {
       return Collections.emptyList();  // not found, no leafs affected
     }
 
