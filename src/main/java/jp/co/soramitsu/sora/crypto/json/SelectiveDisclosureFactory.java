@@ -45,6 +45,14 @@ public class SelectiveDisclosureFactory {
   }
 
 
+  /**
+   * Create cryptographic commitment for given input.
+   *
+   * @param input can be a Map<String, Object>, POJO, JsonNode; anything that {@link ObjectMapper}
+   * can process
+   * @return single selective disclosure item, which is used to create cryptographic proofs
+   * @throws IOException is thrown when {@link ObjectMapper} can not process input JSON
+   */
   public SelectiveDisclosureItem createCommitment(Object input) throws IOException {
     JsonNode json = mapper.valueToTree(input);
 
@@ -52,8 +60,7 @@ public class SelectiveDisclosureFactory {
       throw new NotJsonObjectException(json);
     }
 
-    ObjectNode obj;
-    obj = flattener.flatten((ObjectNode) json);
+    ObjectNode obj = flattener.flatten((ObjectNode) json);
     ObjectNode saltified = (ObjectNode) saltifier.saltify(obj);
     List<Hash> hashes = hashifier.hashify(saltified);
     MerkleTree tree = merkleTreeFactory.createFromLeaves(hashes);
@@ -61,11 +68,22 @@ public class SelectiveDisclosureFactory {
     return new SelectiveDisclosureItem(tree, saltified);
   }
 
+  /**
+   * Create cryptographic commitment, when tree and json are read from a disk.
+   *
+   * @param merkleTree valid merkle tree (validity is not checked)
+   * @param saltifiedJson saltified json (validity is not checked)
+   * @return selective disclosure item
+   */
   public SelectiveDisclosureItem createCommitment(MerkleTree merkleTree, ObjectNode saltifiedJson) {
     return new SelectiveDisclosureItem(merkleTree, saltifiedJson);
   }
 
 
+  /**
+   * An object, which stores state, enough to create cryptographic proofs for given JSON. JSON is
+   * stored as saltified JSON.
+   */
   @RequiredArgsConstructor
   @Getter
   public class SelectiveDisclosureItem {
@@ -73,10 +91,19 @@ public class SelectiveDisclosureFactory {
     private final MerkleTree merkleTree;
     private final ObjectNode saltifiedJson;
 
+    /**
+     * Getter for the merkle root.
+     *
+     * @return hash
+     */
     public Hash getCommitment() {
       return merkleTree.getRoot();
     }
 
+    /**
+     * Creates a cryptographic proof for given key in JSON (key from flattened JSON), which can be
+     * resolved (validated) in TRUE or FALSE
+     */
     public MerkleTreeProof createProofForKey(String key) throws IOException {
       Hash hash = hashifier.hashJsonField(new SimpleEntry<>(
           key,
@@ -90,11 +117,21 @@ public class SelectiveDisclosureFactory {
       return merkleTree.createProof(hash);
     }
 
+    /**
+     * Getter for the original JSON, without salt and without flat keys.
+     */
     public ObjectNode getOriginalJson() {
       ObjectNode node = (ObjectNode) saltifier.desaltify(saltifiedJson);
       return flattener.deflatten(node);
     }
 
+    /**
+     * Getter for all keys, affected (which are "hang") by given hash (or list of hashes).
+     *
+     * @param hashes list of hashes
+     * @return list of keys in salted JSON
+     * @throws IOException is thrown when JSON can not be processed
+     */
     public Collection<String> getAffectedKeys(List<Hash> hashes) throws IOException {
       Set<Hash> affectedLeafHashes = new HashSet<>();
       val hashTree = merkleTree.getHashTree();

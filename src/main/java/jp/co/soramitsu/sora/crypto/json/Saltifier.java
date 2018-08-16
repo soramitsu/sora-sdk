@@ -24,6 +24,23 @@ public class Saltifier {
   /**
    * Add salt to the every *value* field in the input JSON.
    *
+   * <pre>
+   *   {
+   *     "a": 1,
+   *     "b": [1, 2]
+   *   }
+   *
+   *   =>
+   *
+   *   {
+   *     "a": {"v": 1, "s": "<salt>"},
+   *     "b": [
+   *       {"v": 1, "s": "<salt>"},
+   *       {"v": 2, "s": "<salt>"},
+   *     ]
+   *   }
+   * </pre>
+   *
    * @param root input JSON
    * @return new JSON, which has previous values plus random salt
    */
@@ -55,6 +72,12 @@ public class Saltifier {
     }
   }
 
+  /**
+   * The opposite operation to {@link #saltify(JsonNode)}
+   *
+   * @param root saltified JSON
+   * @return initial JSON, before saltify operation
+   */
   public JsonNode desaltify(JsonNode root) {
     if (root.isValueNode()) {
       return root;
@@ -88,6 +111,9 @@ public class Saltifier {
     return obj;
   }
 
+  /**
+   * Checks, if given json node is salted.
+   */
   public boolean isSalted(JsonNode node) {
     if (node.isValueNode()) {
       return false;
