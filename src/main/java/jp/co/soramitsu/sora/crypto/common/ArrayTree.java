@@ -1,12 +1,14 @@
 package jp.co.soramitsu.sora.crypto.common;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import lombok.Value;
 
 @Value
 public class ArrayTree<E> {
 
+  private final int rootPosition = 0;
   private List<E> tree;
 
   public ArrayTree(List<E> tree) {
@@ -17,12 +19,13 @@ public class ArrayTree<E> {
     this.tree = tree;
   }
 
+  public int leftmostLeafIndex() {
+    return (tree.size() + 1) / 2 - 1;
+  }
 
   public List<E> getLeaves() {
-    int leafsTotal = (tree.size() + 1) / 2;
-    int leftmostLeafIndex = leafsTotal - 1;
     return tree.stream()
-        .skip(leftmostLeafIndex)
+        .skip(leftmostLeafIndex())
         .collect(Collectors.toList());
   }
 
@@ -32,6 +35,19 @@ public class ArrayTree<E> {
    */
   public boolean hasNodeAt(int i) {
     return i >= 0 && i < tree.size() && get(i) != null;
+  }
+
+  public void preorderTraversal(int pos, BiConsumer<Integer, E> consumer) {
+    if (hasNodeAt(pos)) {
+      consumer.accept(pos, tree.get(pos));
+
+      preorderTraversal(getLeftChildIndex(pos), consumer);
+      preorderTraversal(getRightChildIndex(pos), consumer);
+    }
+  }
+
+  public boolean isLeaf(int index) {
+    return index >= leftmostLeafIndex();
   }
 
   /**

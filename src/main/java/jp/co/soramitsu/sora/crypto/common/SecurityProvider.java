@@ -23,7 +23,7 @@ public class SecurityProvider {
     Security.addProvider(new BouncyCastleProvider());  // for sha3 hash
   }
 
-  @SneakyThrows
+  @SneakyThrows // method is guaranteed to NOT throw
   public Signature getSignature(SignatureTypeEnum type) {
     return Signature.getInstance(type.getAlgorithm(), type.getProvider());
   }

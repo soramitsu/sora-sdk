@@ -3,14 +3,17 @@ package jp.co.soramitsu.sora.json
 import com.fasterxml.jackson.databind.ObjectMapper
 import jp.co.soramitsu.sora.crypto.common.SaltGenerator
 import jp.co.soramitsu.sora.crypto.json.Saltifier
+import spock.lang.Shared
 import spock.lang.Specification
 
 class SaltifierTest extends Specification {
 
 
-    def mapper = new ObjectMapper()
+    static def mapper = new ObjectMapper()
 
+    @Shared
     def initial = mapper.readTree(this.getClass().getResourceAsStream('/json/_initial.json'))
+    @Shared
     def saltified = mapper.readTree(this.getClass().getResourceAsStream('/json/saltified.json'))
 
 
@@ -32,7 +35,7 @@ class SaltifierTest extends Specification {
         salted2 == saltified
     }
 
-    def "desaltify works"(){
+    def "desaltify works"() {
         def saltifier = new Saltifier(mapper, null, "v", "s")
 
         when:
@@ -41,8 +44,8 @@ class SaltifierTest extends Specification {
         then:
         actual == initial
     }
-    
-    def "saltify then desaltify works"(){
+
+    def "saltify then desaltify works"() {
         given:
         def gen = Mock(SaltGenerator) {
             next() >> "salt"
@@ -56,5 +59,25 @@ class SaltifierTest extends Specification {
 
         then:
         actual == initial
+    }
+
+    def "is salted works"() {
+        given:
+        def gen = Mock(SaltGenerator) {
+            next() >> "salt"
+        }
+
+        def saltifier = new Saltifier(mapper, gen)
+
+        when:
+        def actual = saltifier.isSalted(json)
+
+        then:
+        actual == expected
+
+        where:
+        json      | expected
+        initial   | false
+        saltified | true
     }
 }

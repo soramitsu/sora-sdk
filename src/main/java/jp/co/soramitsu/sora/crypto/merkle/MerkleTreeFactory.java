@@ -9,25 +9,15 @@ import java.util.List;
 import jp.co.soramitsu.sora.crypto.common.ArrayTree;
 import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory;
 import jp.co.soramitsu.sora.crypto.common.Hash;
-import jp.co.soramitsu.sora.crypto.common.InvalidNodeNumberException;
 import jp.co.soramitsu.sora.crypto.common.Util;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
 
+@AllArgsConstructor
 public class MerkleTreeFactory {
 
   private final MessageDigest digest;
-
-  /**
-   * Creates instance of MerkleTree with given digest.
-   *
-   * @param digest implementation of the digest algorithm
-   * @apiNote after you created the instance, method {@link #createFromLeaves(List)} should be
-   * called to calculate tree hashes
-   */
-  public MerkleTreeFactory(@NonNull MessageDigest digest) {
-    this.digest = digest;
-  }
 
   /**
    * Calculates new {@link MerkleTree} given leaves.
@@ -36,8 +26,7 @@ public class MerkleTreeFactory {
    * @return valid {@link MerkleTree}
    * @throws IllegalArgumentException when number of leaves is not at least 1
    */
-  public MerkleTree createFromLeaves(@NonNull final List<Hash> leafs)
-      throws InvalidNodeNumberException {
+  public MerkleTree createFromLeaves(@NonNull final List<Hash> leafs) {
     ArrayTree<Hash> tree = ArrayTreeFactory.createWithNLeafs(leafs.size());  // throws
 
     List<Hash> nextLevel = new ArrayList<>(tree.size());
@@ -88,7 +77,7 @@ public class MerkleTreeFactory {
       nextLevel.clear();
     }
 
-    return new MerkleTree(tree);
+    return new MerkleTree(digest, tree);
   }
 
   /**
@@ -101,11 +90,11 @@ public class MerkleTreeFactory {
    */
   public MerkleTree createFromFullTree(@NonNull final ArrayTree<Hash> tree)
       throws RootHashMismatchException {
-    MerkleTree mt = new MerkleTree(tree);
+    MerkleTree mt = new MerkleTree(digest, tree);
     MerkleTree check = createFromLeaves(tree.getLeaves());
 
-    if (!mt.root().equals(check.root())) {
-      throw new RootHashMismatchException(mt.root(), check.root());
+    if (!mt.getRoot().equals(check.getRoot())) {
+      throw new RootHashMismatchException(mt.getRoot(), check.getRoot());
     }
 
     return mt;

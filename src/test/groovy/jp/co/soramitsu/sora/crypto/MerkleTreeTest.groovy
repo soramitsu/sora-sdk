@@ -4,12 +4,14 @@ import jp.co.soramitsu.sora.common.MockSumMessageDigest
 import jp.co.soramitsu.sora.crypto.common.ArrayTree
 import jp.co.soramitsu.sora.crypto.common.ArrayTreeFactory
 import jp.co.soramitsu.sora.crypto.common.Hash
-import jp.co.soramitsu.sora.crypto.merkle.*
+import jp.co.soramitsu.sora.crypto.merkle.MerkleNode
+import jp.co.soramitsu.sora.crypto.merkle.MerkleTree
+import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeFactory
+import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeProof
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import static jp.co.soramitsu.sora.crypto.common.Util.ceilToPowerOf2
-
 
 class MerkleTreeTest extends Specification {
 
@@ -52,8 +54,8 @@ class MerkleTreeTest extends Specification {
         then:
         noExceptionThrown()
 
-        tree.root() == expTree.get(0)
-        full.root() == expTree.get(0)
+        tree.getRoot() == expTree.get(0)
+        full.getRoot() == expTree.get(0)
 
         expTree.eachWithIndex { Hash entry, int i ->
             tree.getHashTree().get(i) == entry
@@ -87,7 +89,7 @@ class MerkleTreeTest extends Specification {
         MerkleTreeProof p = tree.createProof(h)
 
         then: 'proof is valid'
-        p.verify(digest, new Hash([root] as byte[]))
+        p.verify(new Hash([root] as byte[]))
         p.getPath() == arr2path(proof)
 
         where:

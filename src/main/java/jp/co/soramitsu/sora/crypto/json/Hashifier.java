@@ -1,38 +1,64 @@
 package jp.co.soramitsu.sora.crypto.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import jp.co.soramitsu.sora.crypto.common.Hash;
 import jp.co.soramitsu.sora.crypto.common.SecurityProvider;
 import jp.co.soramitsu.sora.crypto.type.DigestTypeEnum;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
+import org.spongycastle.util.Arrays;
 
-@AllArgsConstructor
 @FieldDefaults(makeFinal = true)
+@RequiredArgsConstructor
 public class Hashifier {
 
-  private MessageDigest digest;
-
-  private ObjectMapper mapper;
-
-  private JSONCanonizer canonizer;
+  private final MessageDigest digest;
+  private final JSONCanonizer canonizer;
 
   public Hashifier() {
     this(new SecurityProvider().getMessageDigest(DigestTypeEnum.SHA3_256));
   }
 
-  public Hashifier(@NonNull MessageDigest digest) {
-    this(digest, new ObjectMapper(), new JSONCanonizerWithOneCoding());
+  public Hashifier(MessageDigest digest) {
+    this.digest = digest;
+    this.canonizer = new JSONCanonizerWithOneCoding();
+  }
+
+  public Hash hashJsonField(Entry<String, JsonNode> field) throws IOException {
+    // json: {key}canonize({value})
+    byte[] serialized = Arrays.concatenate(
+        field.getKey().getBytes(),
+        canonizer.canonize(field.getValue())
+    );
+
+    byte[] hash = digest.digest(serialized);
+
+    return new Hash(hash);
+
+  }
+
+  public void hashify(ObjectNode root, Consumer<Hash> consumer) throws IOException {
+    hashify(root, (k, h) -> consumer.accept(h));
+  }
+
+  public void hashify(ObjectNode root, BiConsumer<String, Hash> consumer) throws IOException {
+    for (Iterator<Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
+      val field = it.next();
+      consumer.accept(field.getKey(), hashJsonField(field));
+    }
   }
 
   /**
@@ -45,21 +71,27 @@ public class Hashifier {
    */
   public List<Hash> hashify(ObjectNode root) throws IOException {
     List<Hash> hashes = new ArrayList<>(root.size());
-
-    for (Iterator<Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
-      val field = it.next();
-
-      // create new object, one per key-value
-      ObjectNode out = mapper.createObjectNode();
-      out.set(field.getKey(), field.getValue());
-
-      byte[] serialized = canonizer.canonize(out);
-      byte[] hash = digest.digest(serialized);
-      hashes.add(
-          new Hash(hash)
-      );
-    }
-
+    hashify(root, (Consumer<Hash>) hashes::add);
     return hashes;
+  }
+
+  /**
+   * The opposite operation to hashify.
+   *
+   * @param hashes a set of hashes required to dehashify
+   * @param root preimage JSON of the hashes
+   * @return a Map, where hash maps to the key in JSON
+   * @throws IOException when JSON can not be processed
+   */
+  public Map<Hash, String> dehashify(Set<Hash> hashes, ObjectNode root) throws IOException {
+    Map<Hash, String> map = new HashMap<>(hashes.size());
+
+    hashify(root, (key, h) -> {
+      if (hashes.contains(h)) {
+        map.put(h, key);
+      }
+    });
+
+    return map;
   }
 }
