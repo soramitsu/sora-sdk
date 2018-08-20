@@ -43,7 +43,7 @@ final def spockVersion = '1.1-groovy-2.4'
 final def edVersion = '1.3.3'
 final def spockGenesisVersion = '0.6.0'
 final def jacksonVersion = '2.9.6'
-final def onecodeVersion = '1.0.1'
+final def onecodeVersion = '1.0.6'
 final def lombokVersion = '1.18.2'
 final def cglibVersion = '3.2.7'
 final def bytebuddyVersion = '1.8.16'
@@ -67,6 +67,7 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
 
     compile("com.github.warchant:ed25519-sha3-java:${edVersion}")
     compile("com.github.soramitsu:1code-java:${onecodeVersion}")
