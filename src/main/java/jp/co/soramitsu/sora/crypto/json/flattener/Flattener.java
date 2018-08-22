@@ -94,34 +94,32 @@ public class Flattener {
     }
 
     JsonNode current = out;
-    for (int i = 0, size = tokens.size(); i < size; i++) {
+    for (int i = 0, size = tokens.size() - 1; i < size; i++) {
       val token = tokens.get(i);
 
-      if (i == size - 1) {  // last token
-        setValue(current, token, field.getValue());
+      val nextToken = tokens.get(i + 1);
 
-      } else {
-        val nextToken = tokens.get(i + 1);
+      String key = null;
+      Integer index = null;
+      JsonNode node = null;
 
-        String key = null;
-        Integer index = null;
-        JsonNode node = null;
-
-        if (token.getType() == DICT) {
-          key = (String) token.getValue();
-        } else if (token.getType() == ARRAY) {
-          index = (Integer) token.getValue();
-        }
-
-        if (nextToken.getType() == DICT) {
-          node = mapper.createObjectNode();
-        } else if (nextToken.getType() == ARRAY) {
-          node = mapper.createArrayNode();
-        }
-
-        current = findOrCreateNode(current, key, index, node);
+      if (token.getType() == DICT) {
+        key = (String) token.getValue();
+      } else if (token.getType() == ARRAY) {
+        index = (Integer) token.getValue();
       }
+
+      if (nextToken.getType() == DICT) {
+        node = mapper.createObjectNode();
+      } else if (nextToken.getType() == ARRAY) {
+        node = mapper.createArrayNode();
+      }
+
+      current = findOrCreateNode(current, key, index, node);
     }
+
+    val lastToken = tokens.get(tokens.size() - 1);
+    setValue(current, lastToken, field.getValue());
   }
 
   private void setValue(JsonNode root, Token token, JsonNode value) {
