@@ -93,8 +93,9 @@ public class Flattener {
       throw new DeflattenException("array top level key are not allowed: " + field.getKey());
     }
 
+    final int totalTokens = tokens.size();
     JsonNode current = out;
-    for (int i = 0, size = tokens.size() - 1; i < size; i++) {
+    for (int i = 0; i < totalTokens - 1; i++) {
       val token = tokens.get(i);
       val nextToken = tokens.get(i + 1);
       String key = null;
@@ -116,7 +117,7 @@ public class Flattener {
       current = findOrCreateNode(current, key, index, node);
     }
 
-    val lastToken = tokens.get(tokens.size() - 1);
+    val lastToken = tokens.get(totalTokens - 1);
     setValue(current, lastToken, field.getValue());
   }
 
