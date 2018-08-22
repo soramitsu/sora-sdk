@@ -1,5 +1,6 @@
 package jp.co.soramitsu.sora.crypto.json.flattener;
 
+import static java.lang.String.valueOf;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.DICT;
 
@@ -194,30 +195,6 @@ public class Flattener {
    * @return encoded string
    */
   protected String sanitize(String k) {
-    return String.format("%s:%s",
-        String.valueOf(k.length()),
-        k
-    );
-  }
-
-  /**
-   * Decodes string from {length base 10}:{string}
-   *
-   * @param k encoded string
-   * @return decoded string
-   * @throws NumberFormatException when first part (before :) is not base 10 number
-   * @throws FlattenException when length of the first part is not equal to length of second part
-   */
-  protected String desanitize(String k) {
-    String[] a = k.split(":", 2);
-    assert a.length == 2;
-
-    int len = Integer.parseInt(a[0]);
-    String key = a[1];
-    if (len != key.length()) {
-      throw new FlattenException("wrongly escaped key: " + k);
-    }
-
-    return key;
+    return valueOf(k.length()) + ":" + k;
   }
 }

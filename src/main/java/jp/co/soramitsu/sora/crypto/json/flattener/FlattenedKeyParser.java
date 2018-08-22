@@ -1,9 +1,14 @@
 package jp.co.soramitsu.sora.crypto.json.flattener;
 
+import static java.lang.Integer.parseUnsignedInt;
+import static java.lang.String.format;
+import static java.util.regex.Pattern.compile;
 import static jp.co.soramitsu.sora.crypto.json.flattener.Flattener.ARRAY_DELIMITER;
 import static jp.co.soramitsu.sora.crypto.json.flattener.Flattener.DICT_DELIMITER;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.DICT;
+import static jp.co.soramitsu.sora.crypto.json.flattener.TokenType.COLON;
+import static jp.co.soramitsu.sora.crypto.json.flattener.TokenType.NUMBER;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,18 +24,14 @@ public class FlattenedKeyParser {
   private String stream;
 
   private String consumeString(int length) throws ParsingException {
-    return consume(
-        Pattern.compile(
-            String.format(".{%d}", length)
-        )
-    );
+    return consume(compile(format(".{%d}", length)));
   }
 
   private Integer consumeInt() throws ParsingException {
     try {
-      Pattern pattern = TokenType.NUMBER.getPattern();
+      Pattern pattern = NUMBER.getPattern();
       String consumed = consume(pattern);
-      return Integer.parseUnsignedInt(consumed);
+      return parseUnsignedInt(consumed);
 
     } catch (NumberFormatException e) {
       throw new ParsingException(e);
@@ -44,7 +45,7 @@ public class FlattenedKeyParser {
   private String parseDictKey() throws ParsingException {
     consumeToken(TokenType.DICT_DELIMITER);
     Integer len = consumeInt();
-    consumeToken(TokenType.COLON);
+    consumeToken(COLON);
     return consumeString(len);
   }
 
@@ -55,14 +56,14 @@ public class FlattenedKeyParser {
 
   private String consume(Pattern pattern) throws ParsingException {
     Matcher m = pattern.matcher(stream);
-    if (m.find(0)) {
+    if (m.find()) {
       int start = m.start();
       int end = m.end();
 
       if (start != 0) {
         // there are some tokens before match
         throw new ParsingException(
-            String.format(
+            format(
                 "expected %s, got %s",
                 pattern.pattern(),
                 stream.substring(0, start)
@@ -76,7 +77,7 @@ public class FlattenedKeyParser {
     }
 
     throw new ParsingException(
-        String.format("missing expected token: %s", pattern.pattern())
+        format("missing expected token: %s", pattern.pattern())
     );
   }
 
@@ -90,7 +91,7 @@ public class FlattenedKeyParser {
         visitor.visitArrayKey(parsed);
       } else {
         throw new ParsingException(
-            String.format(
+            format(
                 "'%s' does not start with %s",
                 stream,
                 DICT_DELIMITER
