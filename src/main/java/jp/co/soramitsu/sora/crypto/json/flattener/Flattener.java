@@ -111,18 +111,12 @@ public class Flattener {
           key = (String) token.getValue();
         } else if (token.getType() == ARRAY) {
           index = (Integer) token.getValue();
-        } else {
-          // should never happen with ENUM. but maybe someone will add new type.
-          throw new DeflattenException("token is neither dict nor array");
         }
 
         if (nextToken.getType() == DICT) {
           node = mapper.createObjectNode();
         } else if (nextToken.getType() == ARRAY) {
           node = mapper.createArrayNode();
-        } else {
-          // should never happen with ENUM. but maybe someone will add new type.
-          throw new DeflattenException("token is neither dict nor array");
         }
 
         current = findOrCreateNode(current, key, index, node);
@@ -131,13 +125,13 @@ public class Flattener {
   }
 
   private void setValue(JsonNode root, Token token, JsonNode value) {
-    if (token.getType() == KeyTypeEnum.DICT) {
+    if (token.getType() == DICT) {
       assert root.isObject();
       String key = (String) token.getValue();
       ObjectNode obj = (ObjectNode) root;
       obj.set(key, value);
 
-    } else if (token.getType() == KeyTypeEnum.ARRAY) {
+    } else if (token.getType() == ARRAY) {
       assert root.isArray();
       Integer index = (Integer) token.getValue();
       ArrayNode obj = (ArrayNode) root;
