@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParsingException extends Exception {
 
-  public ParsingException(Exception e) {
+  ParsingException(Exception e) {
     super(e);
   }
 
-  public ParsingException(String cause) {
+  ParsingException(String cause) {
     super(cause);
   }
 }

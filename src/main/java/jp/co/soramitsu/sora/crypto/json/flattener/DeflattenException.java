@@ -8,11 +8,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public class DeflattenException extends RuntimeException {
 
-  public DeflattenException(Exception e) {
+  DeflattenException(Exception e) {
     super(e);
   }
 
-  public DeflattenException(String msg) {
+  DeflattenException(String msg) {
     super(msg);
   }
 }
