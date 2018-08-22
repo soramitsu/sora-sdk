@@ -89,7 +89,7 @@ public class Flattener {
     }
 
     if (tokens.get(0).getType() == ARRAY) {
-      throw new DeflattenException("array top level key are not allowed: " + field.getKey());
+      throw new DeflattenException("array top level key is not allowed: " + field.getKey());
     }
 
     final int totalTokens = tokens.size();
