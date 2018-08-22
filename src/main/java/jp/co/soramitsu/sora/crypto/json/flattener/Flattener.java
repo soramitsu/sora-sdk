@@ -194,7 +194,7 @@ public class Flattener {
    * @param k input string
    * @return encoded string
    */
-  protected String sanitize(String k) {
+  private String sanitize(String k) {
     return valueOf(k.length()) + ":" + k;
   }
 }
