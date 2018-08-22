@@ -1,6 +1,5 @@
 package jp.co.soramitsu.sora.crypto.json.flattener;
 
-import static java.util.Objects.nonNull;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.DICT;
 
@@ -98,15 +97,7 @@ public class Flattener {
     for (int i = 0; i < totalTokens - 1; i++) {
       val token = tokens.get(i);
       val nextToken = tokens.get(i + 1);
-      String key = null;
-      Integer index = null;
       JsonNode node = null;
-
-      if (token.getType() == DICT) {
-        key = (String) token.getValue();
-      } else if (token.getType() == ARRAY) {
-        index = (Integer) token.getValue();
-      }
 
       if (nextToken.getType() == DICT) {
         node = mapper.createObjectNode();
@@ -114,7 +105,7 @@ public class Flattener {
         node = mapper.createArrayNode();
       }
 
-      current = findOrCreateNode(current, key, index, node);
+      current = findOrCreateNode(current, token, node);
     }
 
     val lastToken = tokens.get(totalTokens - 1);
@@ -138,9 +129,9 @@ public class Flattener {
     }
   }
 
-  private JsonNode findOrCreateNode(JsonNode root, String key, Integer index, JsonNode node) {
+  private JsonNode findOrCreateNode(JsonNode root, Token token, JsonNode node) {
     if (root.isObject()) {
-      assert nonNull(key);
+      String key = (String) token.getValue();
 
       ObjectNode n = (ObjectNode) root;
       if (!n.has(key)) {
@@ -151,7 +142,7 @@ public class Flattener {
       return n.get(key);
 
     } else if (root.isArray()) {
-      assert nonNull(index);
+      Integer index = (Integer) token.getValue();
 
       ArrayNode n = (ArrayNode) root;
       if (index > n.size() || !n.hasNonNull(index)) {
