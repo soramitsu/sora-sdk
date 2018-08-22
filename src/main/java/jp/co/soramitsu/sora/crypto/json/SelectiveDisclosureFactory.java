@@ -16,6 +16,7 @@ import jp.co.soramitsu.sora.crypto.common.Hash;
 import jp.co.soramitsu.sora.crypto.common.HexdigestSaltGenerator;
 import jp.co.soramitsu.sora.crypto.common.SaltGenerator;
 import jp.co.soramitsu.sora.crypto.common.SecurityProvider;
+import jp.co.soramitsu.sora.crypto.json.flattener.Flattener;
 import jp.co.soramitsu.sora.crypto.merkle.MerkleTree;
 import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeFactory;
 import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeProof;
@@ -122,7 +123,7 @@ public class SelectiveDisclosureFactory {
      */
     public ObjectNode getOriginalJson() {
       ObjectNode node = (ObjectNode) saltifier.desaltify(saltifiedJson);
-      return flattener.deflatten(node);
+      return (ObjectNode) flattener.deflatten(node);
     }
 
     /**

@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.crypto.json;
+package jp.co.soramitsu.sora.crypto.json.flattener;
 
 public class FlattenException extends RuntimeException {
 

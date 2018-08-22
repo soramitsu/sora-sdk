@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.sora.crypto.common.Hash
 import jp.co.soramitsu.sora.crypto.common.SaltGenerator
-import jp.co.soramitsu.sora.crypto.json.Flattener
 import jp.co.soramitsu.sora.crypto.json.Hashifier
 import jp.co.soramitsu.sora.crypto.json.Saltifier
 import jp.co.soramitsu.sora.crypto.json.SelectiveDisclosureFactory
+import jp.co.soramitsu.sora.crypto.json.flattener.Flattener
 import jp.co.soramitsu.sora.crypto.merkle.MerkleTreeFactory
 import org.spongycastle.jcajce.provider.digest.SHA3
 import spock.lang.Specification
