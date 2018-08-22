@@ -96,9 +96,7 @@ public class Flattener {
     JsonNode current = out;
     for (int i = 0, size = tokens.size() - 1; i < size; i++) {
       val token = tokens.get(i);
-
       val nextToken = tokens.get(i + 1);
-
       String key = null;
       Integer index = null;
       JsonNode node = null;
