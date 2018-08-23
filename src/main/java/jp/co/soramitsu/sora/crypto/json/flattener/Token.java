@@ -1,10 +1,20 @@
 package jp.co.soramitsu.sora.crypto.json.flattener;
 
-import lombok.Value;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Value
-class Token {
+interface Token {
 
-  private KeyTypeEnum type;
-  private Object value;
+  Object getValue();
+
+  JsonNode createNode(ObjectMapper mapper);
+
+  KeyTypeEnum getType();
+
+  void setValue(JsonNode parent, JsonNode value);
 }
+
+
+
+
+
