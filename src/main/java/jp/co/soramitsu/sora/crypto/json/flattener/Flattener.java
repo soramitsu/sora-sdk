@@ -98,20 +98,21 @@ public class Flattener {
     for (int i = 0; i < totalTokens - 1; i++) {
       val token = tokens.get(i);
       val nextToken = tokens.get(i + 1);
-      current = findOrCreateNode(current, token, nextToken.createNode(mapper));
+      current = findOrCreateNode(current, token, nextToken);
     }
 
     val lastToken = tokens.get(totalTokens - 1);
     lastToken.setValue(current, field.getValue());
   }
 
-  private JsonNode findOrCreateNode(JsonNode root, Token token, JsonNode node) {
+  private JsonNode findOrCreateNode(JsonNode root, Token token, Token nextToken) {
     if (root.isObject()) {
       assert token.getType() == DICT;
       String key = (String) token.getValue();
 
       ObjectNode n = (ObjectNode) root;
       if (!n.has(key)) {
+        JsonNode node = nextToken.createNode(mapper);
         n.set(key, node);
         return node;
       }
@@ -125,6 +126,7 @@ public class Flattener {
       ArrayNode n = (ArrayNode) root;
       if (index > n.size() || !n.hasNonNull(index)) {
         ensureArraySize(n, index);
+        JsonNode node = nextToken.createNode(mapper);
         n.set(index, node);
         return node;
       }
@@ -135,7 +137,6 @@ public class Flattener {
       throw new DeflattenException("node is not array or object type");
     }
   }
-
 
 
   public boolean isFlattened(ObjectNode root) {
