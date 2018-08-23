@@ -5,8 +5,6 @@ import static java.lang.String.format;
 import static java.util.regex.Pattern.compile;
 import static jp.co.soramitsu.sora.crypto.json.flattener.Flattener.ARRAY_DELIMITER;
 import static jp.co.soramitsu.sora.crypto.json.flattener.Flattener.DICT_DELIMITER;
-import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
-import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.DICT;
 import static jp.co.soramitsu.sora.crypto.json.flattener.TokenType.COLON;
 import static jp.co.soramitsu.sora.crypto.json.flattener.TokenType.NUMBER;
 
@@ -105,8 +103,8 @@ public class FlattenedKeyParser {
     LinkedList<Token> tokens = new LinkedList<>();
 
     parse(new LambdaDeflattenVisitor(
-        k -> tokens.addLast(new Token(DICT, k)),
-        k -> tokens.addLast(new Token(ARRAY, k))
+        k -> tokens.addLast(new DictToken(k)),
+        k -> tokens.addLast(new ArrayToken(k))
     ));
 
     return tokens;

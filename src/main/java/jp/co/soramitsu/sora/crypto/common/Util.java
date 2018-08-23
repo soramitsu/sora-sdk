@@ -1,5 +1,7 @@
 package jp.co.soramitsu.sora.crypto.common;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -65,6 +67,15 @@ public class Util {
               .format("options (%s) and signature (%s) have different signature algorithms", type,
                   signature.getAlgorithm())
       );
+    }
+  }
+
+  /**
+   * Appends null nodes to an array node until it has given size.
+   */
+  public static void ensureArraySize(ArrayNode node, Integer size) {
+    while (node.size() <= size) {
+      node.add(NullNode.getInstance());
     }
   }
 }

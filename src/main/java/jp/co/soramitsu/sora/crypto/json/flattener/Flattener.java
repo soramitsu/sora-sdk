@@ -1,6 +1,7 @@
 package jp.co.soramitsu.sora.crypto.json.flattener;
 
 import static java.lang.String.valueOf;
+import static jp.co.soramitsu.sora.crypto.common.Util.ensureArraySize;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
 import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.DICT;
 
@@ -98,40 +99,16 @@ public class Flattener {
     for (int i = 0; i < totalTokens - 1; i++) {
       val token = tokens.get(i);
       val nextToken = tokens.get(i + 1);
-      JsonNode node = null;
-
-      if (nextToken.getType() == DICT) {
-        node = mapper.createObjectNode();
-      } else if (nextToken.getType() == ARRAY) {
-        node = mapper.createArrayNode();
-      }
-
-      current = findOrCreateNode(current, token, node);
+      current = findOrCreateNode(current, token, nextToken.createNode(mapper));
     }
 
     val lastToken = tokens.get(totalTokens - 1);
-    setValue(current, lastToken, field.getValue());
-  }
-
-  private void setValue(JsonNode root, Token token, JsonNode value) {
-    if (token.getType() == DICT) {
-      assert root.isObject();
-      String key = (String) token.getValue();
-      ObjectNode obj = (ObjectNode) root;
-      obj.set(key, value);
-
-    } else if (token.getType() == ARRAY) {
-      assert root.isArray();
-      Integer index = (Integer) token.getValue();
-      ArrayNode obj = (ArrayNode) root;
-      ensureArraySize(obj, index);
-      obj.set(index, value);
-
-    }
+    lastToken.setValue(current, field.getValue());
   }
 
   private JsonNode findOrCreateNode(JsonNode root, Token token, JsonNode node) {
     if (root.isObject()) {
+      assert token.getType() == DICT;
       String key = (String) token.getValue();
 
       ObjectNode n = (ObjectNode) root;
@@ -143,6 +120,7 @@ public class Flattener {
       return n.get(key);
 
     } else if (root.isArray()) {
+      assert token.getType() == ARRAY;
       Integer index = (Integer) token.getValue();
 
       ArrayNode n = (ArrayNode) root;
@@ -159,11 +137,7 @@ public class Flattener {
     }
   }
 
-  private void ensureArraySize(ArrayNode node, Integer size) {
-    while (node.size() <= size) {
-      node.add(NullNode.getInstance());
-    }
-  }
+
 
   public boolean isFlattened(ObjectNode root) {
     val fields = root.fields();
