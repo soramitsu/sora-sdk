@@ -1,5 +1,6 @@
 package jp.co.soramitsu.sora.crypto.type;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jp.co.soramitsu.sora.crypto.common.Consts;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ public enum DigestTypeEnum {
   SHA3_256(Consts.SHA3_256, "SHA3-256", BouncyCastleProvider.PROVIDER_NAME),
   SHA3_512(Consts.SHA3_512, "SHA3-512", BouncyCastleProvider.PROVIDER_NAME);
 
+  @JsonValue
   String type;
   String algorithm;
   String provider;

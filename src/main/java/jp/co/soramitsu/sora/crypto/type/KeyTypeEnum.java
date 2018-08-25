@@ -1,5 +1,6 @@
 package jp.co.soramitsu.sora.crypto.type;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jp.co.soramitsu.crypto.ed25519.EdDSAKey;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
 import jp.co.soramitsu.sora.crypto.common.Consts;
@@ -18,6 +19,7 @@ public enum KeyTypeEnum {
       EdDSASecurityProvider.PROVIDER_NAME
   );
 
+  @JsonValue
   String keyType;
   String algorithm;
   String provider;
