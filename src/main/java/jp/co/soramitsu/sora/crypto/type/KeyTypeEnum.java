@@ -1,9 +1,7 @@
 package jp.co.soramitsu.sora.crypto.type;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import jp.co.soramitsu.crypto.ed25519.EdDSAKey;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
-import jp.co.soramitsu.sora.crypto.common.Consts;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,14 +11,11 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public enum KeyTypeEnum {
-  Ed25519Sha3(
-      Consts.ED25519_SHA3_VERIFICATION_KEY,
+  Ed25519Sha3VerificationKey(
       EdDSAKey.KEY_ALGORITHM,
       EdDSASecurityProvider.PROVIDER_NAME
   );
 
-  @JsonValue
-  String keyType;
   String algorithm;
   String provider;
 

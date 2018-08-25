@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 public enum SignatureTypeEnum {
   Ed25519Sha3Signature(
       Consts.ED25519_SHA3_SIGNATURE,
-      KeyTypeEnum.Ed25519Sha3,
+      KeyTypeEnum.Ed25519Sha3VerificationKey,
       EdDSAEngine.SIGNATURE_ALGORITHM,
       EdDSASecurityProvider.PROVIDER_NAME
   );

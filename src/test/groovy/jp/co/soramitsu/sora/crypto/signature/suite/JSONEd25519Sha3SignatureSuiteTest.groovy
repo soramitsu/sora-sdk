@@ -84,7 +84,7 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
 
 
         when: "generate a keypair"
-        KeyPairGenerator generator = securityProvider.getKeyPairGenerator(KeyTypeEnum.Ed25519Sha3)
+        KeyPairGenerator generator = securityProvider.getKeyPairGenerator(KeyTypeEnum.Ed25519Sha3VerificationKey)
         KeyPair keyPair = generator.generateKeyPair()
 
         then: "EdDSA keypair is generated"
