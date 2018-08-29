@@ -1,0 +1,17 @@
+$include "uri.abnf";
+
+did-reference      = did [ "/" did-path ] [ "#" did-fragment ];
+scheme             = %x64 %x69 %x64;
+did                = scheme ":" method ":" specific-idstring;
+method             = 1*methodchar;
+methodchar         = %x61-7A / DIGIT;
+specific-idstring  = idstring *( ":" idstring );
+idstring           = 1*idchar;
+idchar             = ALPHA / DIGIT / "." / "-";
+
+did-fragment = *( pchar / "/" / "?" );
+did-path = path-abempty
+         / path-absolute
+         / path-noscheme
+         / path-rootless
+         / path-empty;

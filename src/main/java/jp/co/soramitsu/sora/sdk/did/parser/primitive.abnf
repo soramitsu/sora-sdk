@@ -1,0 +1,4 @@
+ALPHA  = %x41-5A / %x61-7A;
+HEXDIG = DIGIT / "A" / "B" / "C" / "D" / "E" / "F";
+DIGIT  = %x30-39;
+CHAR   = %x01-7F;
