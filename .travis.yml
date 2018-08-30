@@ -14,17 +14,16 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 env:
+  # CODECOV_TOKEN
+  # SONAR_TOKEN
   global:
-  - secure: TctcR4AdewAI9r612gSM4+Zp5PPZvd4cCD36E+4hJLkaxA4KQHMeDL2AB5jQoLolE1vqnFr9ZUxL3pDPVSlLAMVTPEoscKk3FfuNGN6SbXLXRWPRX20agkSzqx19kkktcEAIKEMq+s02m2yBWj4xIXgq8yZgHgG1V6V6OlpHIq/hxZDJ1Hbd0VIGz77k3xLzLbksyI6Esl34LpBcPf65RFq16G/uSBePUEtPzoPrIlUp5XHblKh1MqeLxUHgEMMOoCJBXGdJ27igREcAzwP+VDSLvT9jt2cX8bQ6A3CWLrLp0FlwEXhTIAfko+On1ya4+z3R1hDr7xJ5DcwhEK7VjU4EdANu+yg3CHV6Xn2kztAorPoSVqVqnLHzN15FI8dO2RWt+LhkgXIiT8m8XuZyYRg87elJGAI8jssPCUbIpZJVTCeOlbka36aQCrj5FrwVAenBNLln5e+XjFgT9uCvrgUEK5q/gWvbLVsZbo2sq/QC4M4Xu/ePEOVsOEx9poFiHqRIn0UB0Mntf6ZIwAKdiPr2DjlaP0eiwzMhZ5iuU6Rcij6DqYCr0x3iYqGUsN0TdHQfA4DWM67H4WdIrm7Wpe5rs9VB2uCA7L9ylRwIn8dTSxMrv0IYHQOPU1S9t5N4paHUZtRt/+3iFzc4BceaosRiiQiy8ooQ0VLc/hZl8Js=
-  - secure: Y/Kba67qeBAEB4neo7VLjJCbK+NuMJK64S0KBmQaNZzCQaE6rxB7aBuau0xxRUe67zxipJ2nOK8BsdGw4RmRrN3xP8FaVKeBVbx+IB6GW2V3Yso2MeQwe5XF8jn9sswFo3QbcU7j28108LWoIy+/P6LIv5eY94DeShEz0pm09bhIVutzJ2Dt/0HOtz+/j8WoGGYureSRLDIrEknOBygG4KOrGO+kwc49kKjQNiKfGNHciGhjWLj1cl3314gb7jNoXfjvyHpuocdtV6J1KFNirzJ9mncI43uhheqKv9imwwOuQ0Pm+vubxd3k5fEYm7c5STJYYvvnYf+ndUus14YObXq/rKrOHcTc16S09bMleFD79Fn8fYc+PLh+E29pBdPSHbx41CUTigywbxncGe9QxavHA2jaXz2StL3LQvzDNI7Lq68Kx9JZUiOUUWrFnU0xJf59GcEuwHhJh9s6tqaI9QFCR4FEvIu4kjWXtryPLSO2gAnNhvusyr4pS+9xvG7WSPACGKQiHk45mGDTqFK1EDyM3cU65wPoMjCYCrxZAyjF8DdE8g2ftqfeJcCeb9yPw/1n7OXvbR0ZAjAEqpYk/BSKa2485EdXtW405K2SrCV6w1ksuzsGCiPKIwOH4a/8I03nxpt3uTN3X6QY5GaGOF7vIFPy5lmC95xDND14sWs=
+  - secure: lNsMF111tdNffiQI3RsAec7R8VES87DCvs/O8TNmewZ0hzy8yZGLBW97vkFKaRAPsmJlZqYarXdCv/3nniToTY4IZ1i/IYBKdAVJ1hhYW8JxDAZpCviOMm5Aw66/yZ15NXlfplbjcfczdFACZlgyPnkgiEDhAmEuEtP9M53RNngHgI3RqAuqY2IeG6Sa/Q4BiBPMx3zuRMKhHCauFVdVWzbHU2EPtXL8S8yOuY8Z7I6GvxWqq3RZrqanZCmEdzl38TQrsopHLHOg7OErTGOubfrEfdDP6OcwCef8RbOM0ve758ZLcmDUVwIWDiYt8RkGRty5elbQPjTmztdtMo9OnWQ3pzlWD2DwwyXIZ/PJ/cqdiJVzsnR6Tvmk1xcC5N85ReLrtQkxdWxwPBxOgymLc0+PD//d97icg+sRLvp3M5eOjC1RcbACPf5dDZEG1CnM8baVGvPobKdafruAuScmTZ5vYVwYo12FKTJn4elrqZqb2KfvCO5cLqOIj+UwcleRQxYtr191/404w/5KPjnh91Qqa1MFi4hR+jgiHvmDXN+GBKwbYYzdNvIOZ9T5qZiFAILIbeHOjmP9I4KQiEv2oxbbdnRui+17O3VKr0xvydcQYqM0iwtS5L2NAbaH+lH57yzdaFOAEKuyO+Qi2V2U13D5bPiMLVnjWo1qSvTnVps=
+  - secure: Y3ti4jk+nHopp3fzFCMHpkXqrCZwpnEYsQTbJNrDp7k3kdAxkeOa2fpCaIfjMQf89HQVtKXnSp9XO8X5nJIjQYzjFM6mXJoSfeZ3DqKhUNS5tNQGCbtXG8rN/fD3sJ+jWG+1GPxcqaLn53TKDXpMywTB9T87+fNcxhLI1eWrZmxMiexFLyFg7SCAmI62ArDeKFFRFj2TvQJoL2XqqTBURvr4w6NBjIijk47rdXkO3niT5+tqLLGhglPHtJkb0sQUV2L/dc0ZZwYHI4tVwz7G+3ucB/XTYNy38XG0wo1yQDcsLzbHMO62pUAPG6DqkXK0i7H84Noxai1pfTS2oSChlB3s8OpQr5JEEIsleZkgrofnypP+LEN95wxfsAOD4gncGFSTJkjtIJomcpLxnlQKL/unW22GxdMbN++9/gxOMrlczyyZ4kkH78VtDZJXI9zgB2zl1MEyH0VJYy+mMKnah7yut2ND/jcMdoem81Z6TQca8qS9HagJ+LI1NRIBOPKTHldFlADFDnLA80NU5i2vnsZ0UUSrjOMAhtUucqlVonY1yT9NnHtMyW49TBJiR/HI2ZdtFiit0vOJTS6yhWA5CAfP3Sxs9YWNuKmPZcHI7UCeGe+8RIeN1WPghYJjTK62gVuqy+JXtSRY/hiEtGjKzMrKi8LzUTUUUHK05IHRm5Q=
+
 script:
 - "./gradlew --daemon"
 - "./gradlew assemble -x test --parallel"
 - "./gradlew test"
 - "./gradlew jacocoTestReport"
-- bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
-- "./gradlew sonarqube \
-  -Dsonar.organization=soramitsu \
-  -Dsonar.projectKey=sora-crypto-java \
-  -Dsonar.host.url=https://sonarcloud.io \
-  -Dsonar.login=${SONAR_TOKEN}"
+- "bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}"
+- "./gradlew sonarqube -Dsonar.organization=soramitsu -Dsonar.projectKey=sora-sdk -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}"

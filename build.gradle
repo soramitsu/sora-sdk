@@ -73,3 +73,8 @@ dependencies {
     compile("com.github.soramitsu:1code-java:${onecodeVersion}")
 }
 
+sonarqube {
+    properties {
+        property "sonar.exclusions", "**/generated/*.java"
+    }
+}
