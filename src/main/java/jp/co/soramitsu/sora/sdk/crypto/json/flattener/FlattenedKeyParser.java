@@ -1,12 +1,12 @@
-package jp.co.soramitsu.sora.crypto.json.flattener;
+package jp.co.soramitsu.sora.sdk.crypto.json.flattener;
 
 import static java.lang.Integer.parseUnsignedInt;
 import static java.lang.String.format;
 import static java.util.regex.Pattern.compile;
-import static jp.co.soramitsu.sora.crypto.json.flattener.Flattener.ARRAY_DELIMITER;
-import static jp.co.soramitsu.sora.crypto.json.flattener.Flattener.DICT_DELIMITER;
-import static jp.co.soramitsu.sora.crypto.json.flattener.TokenType.COLON;
-import static jp.co.soramitsu.sora.crypto.json.flattener.TokenType.NUMBER;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.Flattener.ARRAY_DELIMITER;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.Flattener.DICT_DELIMITER;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.TokenType.COLON;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.TokenType.NUMBER;
 
 import java.util.LinkedList;
 import java.util.List;

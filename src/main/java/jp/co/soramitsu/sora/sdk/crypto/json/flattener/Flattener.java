@@ -1,9 +1,9 @@
-package jp.co.soramitsu.sora.crypto.json.flattener;
+package jp.co.soramitsu.sora.sdk.crypto.json.flattener;
 
 import static java.lang.String.valueOf;
-import static jp.co.soramitsu.sora.crypto.common.Util.ensureArraySize;
-import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
-import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.DICT;
+import static jp.co.soramitsu.sora.sdk.crypto.common.Util.ensureArraySize;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.KeyTypeEnum.ARRAY;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.KeyTypeEnum.DICT;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.IntStream;
-import jp.co.soramitsu.sora.crypto.json.BadJsonException;
+import jp.co.soramitsu.sora.sdk.crypto.json.BadJsonException;
 import lombok.NoArgsConstructor;
 import lombok.val;
 

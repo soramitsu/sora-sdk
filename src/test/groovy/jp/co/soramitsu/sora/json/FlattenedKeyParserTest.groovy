@@ -1,11 +1,10 @@
 package jp.co.soramitsu.sora.json
 
-import jp.co.soramitsu.sora.crypto.json.flattener.DeflattenVisitor
-import jp.co.soramitsu.sora.crypto.json.flattener.FlattenedKeyParser
-import jp.co.soramitsu.sora.crypto.json.flattener.ParsingException
+import jp.co.soramitsu.sora.sdk.crypto.json.flattener.DeflattenVisitor
+import jp.co.soramitsu.sora.sdk.crypto.json.flattener.FlattenedKeyParser
+import jp.co.soramitsu.sora.sdk.crypto.json.flattener.ParsingException
 import spock.lang.Specification
 import spock.lang.Unroll
-
 
 class FlattenedKeyParserTest extends Specification {
 

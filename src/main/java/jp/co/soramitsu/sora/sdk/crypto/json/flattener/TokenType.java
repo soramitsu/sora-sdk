@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.crypto.json.flattener;
+package jp.co.soramitsu.sora.sdk.crypto.json.flattener;
 
 import java.util.regex.Pattern;
 import lombok.Getter;

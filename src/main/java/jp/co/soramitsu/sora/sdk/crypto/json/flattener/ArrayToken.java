@@ -1,7 +1,8 @@
-package jp.co.soramitsu.sora.crypto.json.flattener;
+package jp.co.soramitsu.sora.sdk.crypto.json.flattener;
 
-import static jp.co.soramitsu.sora.crypto.common.Util.ensureArraySize;
-import static jp.co.soramitsu.sora.crypto.json.flattener.KeyTypeEnum.ARRAY;
+
+import static jp.co.soramitsu.sora.sdk.crypto.common.Util.ensureArraySize;
+import static jp.co.soramitsu.sora.sdk.crypto.json.flattener.KeyTypeEnum.ARRAY;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

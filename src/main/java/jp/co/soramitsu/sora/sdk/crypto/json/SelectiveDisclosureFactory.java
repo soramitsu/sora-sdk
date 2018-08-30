@@ -16,6 +16,7 @@ import jp.co.soramitsu.sora.sdk.crypto.common.Hash;
 import jp.co.soramitsu.sora.sdk.crypto.common.HexdigestSaltGenerator;
 import jp.co.soramitsu.sora.sdk.crypto.common.SaltGenerator;
 import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider;
+import jp.co.soramitsu.sora.sdk.crypto.json.flattener.Flattener;
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTree;
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeFactory;
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeProof;

@@ -2,6 +2,7 @@ package jp.co.soramitsu.sora.sdk.crypto.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import jp.co.soramitsu.sora.sdk.crypto.json.flattener.Flattener
 import spock.genesis.Gen
 import spock.genesis.transform.Iterations
 import spock.lang.Specification
@@ -16,41 +17,6 @@ class FlattenerTest extends Specification {
 
     def initial = mapper.readTree(this.getClass().getResourceAsStream('/json/_initial.json'))
     def flattened = mapper.readTree(this.getClass().getResourceAsStream('/json/flattened.json'))
-
-    @Iterations(500)
-    def "sanitize and desanitize are opposite"() {
-        given:
-        expected
-
-        when:
-        def sanitized = flattener.sanitize(expected)
-        def actual = flattener.desanitize(sanitized)
-
-        then:
-        actual == expected
-        noExceptionThrown()
-
-        where:
-        expected << Gen.string(~/[a-z\\\/_0-9]+/)
-    }
-
-    def "sanitize handles UTF-8"() {
-        given:
-        byte[] b = str.getBytes("utf-8") as byte[]
-        def bytes = new String(b, "utf-8") as String
-
-        when:
-        def sanitized = flattener.sanitize(bytes)
-        def actual = flattener.desanitize(sanitized)
-
-        then:
-        actual == str
-        noExceptionThrown()
-
-        where:
-        str = "привет, мир"
-
-    }
 
     def "isFlattened works"() {
         given:

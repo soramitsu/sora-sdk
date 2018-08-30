@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.sora.sdk.crypto.common.Hash
 import jp.co.soramitsu.sora.sdk.crypto.common.SaltGenerator
+import jp.co.soramitsu.sora.sdk.crypto.json.flattener.Flattener
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeFactory
 import org.spongycastle.jcajce.provider.digest.SHA3
 import spock.lang.Specification
