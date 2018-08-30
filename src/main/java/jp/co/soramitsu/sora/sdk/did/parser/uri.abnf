@@ -1,0 +1,21 @@
+$include "primitive.abnf";
+
+path-abempty  = *( "/" segment );
+path-absolute = "/" [ segment-nz *( "/" segment ) ];
+path-noscheme = segment-nz-nc *( "/" segment );
+path-rootless = segment-nz *( "/" segment );
+path-empty    = 0*0pchar;
+segment       = *pchar;
+segment-nz    = 1*pchar;
+segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" );
+pchar         = unreserved / pct-encoded / sub-delims / ":" / "@";
+
+
+pct-encoded   = "%" HEXDIG HEXDIG;
+
+unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~";
+reserved      = gen-delims / sub-delims;
+gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@";
+sub-delims    = "!" / "$" / "&" / "'" / "(" / ")"
+             / "*" / "+" / "," / ";" / "=";
+
