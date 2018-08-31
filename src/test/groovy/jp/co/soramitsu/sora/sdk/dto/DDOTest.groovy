@@ -6,7 +6,6 @@ import jp.co.soramitsu.sora.sdk.model.dto.DDO
 import jp.co.soramitsu.sora.sdk.model.dto.DID
 import jp.co.soramitsu.sora.sdk.model.dto.authentication.Ed25519Sha3Authentication
 import jp.co.soramitsu.sora.sdk.model.dto.publickey.Ed25519Sha3VerificationKey
-import jp.co.soramitsu.sora.sdk.model.dto.publickey.PublicKeyVisitor
 import jp.co.soramitsu.sora.sdk.model.dto.service.GenericService
 import spock.lang.Specification
 
@@ -65,6 +64,10 @@ class DDOTest extends Specification {
 
         then:
         ddo2 == ddo1
+    }
+
+    def "ddo can be signed"() {
+
     }
 
 }

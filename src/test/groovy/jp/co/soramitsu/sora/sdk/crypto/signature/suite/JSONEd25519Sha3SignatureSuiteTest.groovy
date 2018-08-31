@@ -6,10 +6,10 @@ import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
 import jp.co.soramitsu.crypto.ed25519.KeyPairGenerator
 import jp.co.soramitsu.sora.sdk.common.MockSignature
-import jp.co.soramitsu.sora.sdk.crypto.JSONEd25519Sha3SignatureSuite
 import jp.co.soramitsu.sora.sdk.crypto.common.Consts
 import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizer
+import jp.co.soramitsu.sora.sdk.crypto.json.JSONEd25519Sha3SignatureSuite
 import jp.co.soramitsu.sora.sdk.json.JsonUtil
 import jp.co.soramitsu.sora.sdk.model.dto.DID
 import jp.co.soramitsu.sora.sdk.model.dto.Options

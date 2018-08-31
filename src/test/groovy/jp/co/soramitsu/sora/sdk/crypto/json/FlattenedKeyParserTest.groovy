@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.json
+package jp.co.soramitsu.sora.sdk.crypto.json
 
 import jp.co.soramitsu.sora.sdk.crypto.json.flattener.DeflattenVisitor
 import jp.co.soramitsu.sora.sdk.crypto.json.flattener.FlattenedKeyParser

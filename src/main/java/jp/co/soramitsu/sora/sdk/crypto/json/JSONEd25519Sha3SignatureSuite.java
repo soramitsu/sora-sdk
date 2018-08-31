@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.crypto;
+package jp.co.soramitsu.sora.sdk.crypto.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,12 +9,6 @@ import java.security.SignatureException;
 import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey;
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey;
 import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider;
-import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizer;
-import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizerWithOneCoding;
-import jp.co.soramitsu.sora.sdk.crypto.json.JSONSigner;
-import jp.co.soramitsu.sora.sdk.crypto.json.JSONSignerImpl;
-import jp.co.soramitsu.sora.sdk.crypto.json.JSONVerifier;
-import jp.co.soramitsu.sora.sdk.crypto.json.JSONVerifierImpl;
 import jp.co.soramitsu.sora.sdk.json.JsonUtil;
 import jp.co.soramitsu.sora.sdk.model.dto.Options;
 import jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum;

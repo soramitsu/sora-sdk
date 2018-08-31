@@ -8,7 +8,6 @@ import java.security.Signature;
 import java.security.SignatureException;
 import jp.co.soramitsu.sora.sdk.crypto.common.Consts;
 import jp.co.soramitsu.sora.sdk.crypto.common.Util;
-import jp.co.soramitsu.sora.sdk.json.JsonUtil;
 import jp.co.soramitsu.sora.sdk.model.dto.Options;
 import jp.co.soramitsu.sora.sdk.model.dto.Proof;
 import lombok.AccessLevel;

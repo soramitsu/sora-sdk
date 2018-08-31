@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import javax.validation.constraints.NotBlank;
 import jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
