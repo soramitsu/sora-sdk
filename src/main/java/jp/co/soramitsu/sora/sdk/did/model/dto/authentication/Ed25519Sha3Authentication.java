@@ -1,9 +1,9 @@
-package jp.co.soramitsu.sora.sdk.model.dto.authentication;
+package jp.co.soramitsu.sora.sdk.did.model.dto.authentication;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jp.co.soramitsu.sora.sdk.model.dto.Authentication;
-import jp.co.soramitsu.sora.sdk.model.dto.DID;
+import jp.co.soramitsu.sora.sdk.did.model.dto.Authentication;
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -21,7 +21,7 @@ public class Ed25519Sha3Authentication extends Authentication {
   }
 
   @Override
-  public void visit(AuthenticationVisitor visitor) {
+  public void accept(AuthenticationVisitor visitor) {
     visitor.visit(this);
   }
 }

@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.model.dto.publickey;
+package jp.co.soramitsu.sora.sdk.did.model.dto.publickey;
 
 public interface PublicKeyVisitor {
 

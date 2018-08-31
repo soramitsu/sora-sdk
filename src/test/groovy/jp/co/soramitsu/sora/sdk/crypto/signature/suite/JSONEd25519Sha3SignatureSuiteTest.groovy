@@ -6,13 +6,14 @@ import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
 import jp.co.soramitsu.crypto.ed25519.KeyPairGenerator
 import jp.co.soramitsu.sora.sdk.common.MockSignature
-import jp.co.soramitsu.sora.sdk.crypto.JSONEd25519Sha3SignatureSuite
 import jp.co.soramitsu.sora.sdk.crypto.common.Consts
 import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizer
+import jp.co.soramitsu.sora.sdk.crypto.json.JSONEd25519Sha3SignatureSuite
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID
+import jp.co.soramitsu.sora.sdk.did.model.dto.Options
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum
 import jp.co.soramitsu.sora.sdk.json.JsonUtil
-import jp.co.soramitsu.sora.sdk.model.dto.DID
-import jp.co.soramitsu.sora.sdk.model.dto.Options
 import spock.lang.Specification
 
 import java.security.KeyPair
@@ -21,7 +22,6 @@ import java.security.PublicKey
 import java.security.Signature
 import java.time.Instant
 
-import static jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum.Ed25519Sha3Signature
 
 class JSONEd25519Sha3SignatureSuiteTest extends Specification {
 
@@ -29,7 +29,7 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
         given:
 
         def signatureBytes = "signature" as byte[]
-        def algorithm = Ed25519Sha3Signature.getAlgorithm()
+        def algorithm = SignatureTypeEnum.Ed25519Sha3Signature.getAlgorithm()
 
         Signature signature = Spy(MockSignature, constructorArgs: [
                 algorithm,
@@ -37,7 +37,7 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
         ])
 
         SecurityProvider provider = Mock(SecurityProvider) {
-            getSignature(Ed25519Sha3Signature) >> { signature }
+            getSignature(SignatureTypeEnum.Ed25519Sha3Signature) >> { signature }
         }
 
         ObjectMapper jsonMapper = JsonUtil.buildMapper()
@@ -59,7 +59,7 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
         PublicKey publicKey = Stub(EdDSAPublicKey)
 
         Options options = Options.builder()
-                .type(Ed25519Sha3Signature)
+                .type(SignatureTypeEnum.Ed25519Sha3Signature)
                 .created(Instant.ofEpochSecond(0))
                 .creator(DID.parse("did:sora:uuid:1"))
                 .nonce("nonce")

@@ -7,17 +7,17 @@ import jp.co.soramitsu.sora.sdk.common.MockSignature
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizer
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONVerifier
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONVerifierImpl
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID
+import jp.co.soramitsu.sora.sdk.did.model.dto.Options
+import jp.co.soramitsu.sora.sdk.did.model.dto.Proof
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum
 import jp.co.soramitsu.sora.sdk.json.JsonUtil
-import jp.co.soramitsu.sora.sdk.model.dto.DID
-import jp.co.soramitsu.sora.sdk.model.dto.Options
-import jp.co.soramitsu.sora.sdk.model.dto.Proof
 import spock.lang.Specification
 
 import java.security.PublicKey
 import java.security.Signature
 import java.time.Instant
 
-import static jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum.Ed25519Sha3Signature
 
 class JSONVerifierImplTest extends Specification {
 
@@ -33,7 +33,7 @@ class JSONVerifierImplTest extends Specification {
         ]]
 
         Options options = Options.builder()
-                .type(Ed25519Sha3Signature)
+                .type(SignatureTypeEnum.Ed25519Sha3Signature)
                 .created(Instant.ofEpochSecond(0))
                 .creator(DID.parse("did:sora:uuid:1"))
                 .nonce("nonce")
@@ -78,7 +78,7 @@ class JSONVerifierImplTest extends Specification {
         JSONVerifier verifier = new JSONVerifierImpl(canonizer, jsonMapper)
 
         Signature signature = Spy(MockSignature, constructorArgs: [
-                Ed25519Sha3Signature.getAlgorithm(), signatureBytes
+                SignatureTypeEnum.Ed25519Sha3Signature.getAlgorithm(), signatureBytes
         ])
 
         signature.initVerify(Stub(PublicKey))

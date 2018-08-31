@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.security.Security;
 import java.security.Signature;
 import jp.co.soramitsu.crypto.ed25519.EdDSASecurityProvider;
-import jp.co.soramitsu.sora.sdk.model.type.DigestTypeEnum;
-import jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum;
+import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum;
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum;
 import lombok.SneakyThrows;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 

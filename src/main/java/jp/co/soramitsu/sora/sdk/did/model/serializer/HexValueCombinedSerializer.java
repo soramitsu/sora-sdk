@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.model.serializer;
+package jp.co.soramitsu.sora.sdk.did.model.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -27,7 +27,7 @@ public class HexValueCombinedSerializer {
 
     @Override
     public byte[] deserialize(JsonParser p, DeserializationContext ctxt)
-        throws IOException{
+        throws IOException {
       return DatatypeConverter.parseHexBinary(p.getText());
     }
   }

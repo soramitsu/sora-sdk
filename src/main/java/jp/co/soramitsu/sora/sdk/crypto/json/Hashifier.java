@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import jp.co.soramitsu.sora.sdk.crypto.common.Hash;
 import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider;
-import jp.co.soramitsu.sora.sdk.model.type.DigestTypeEnum;
+import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.val;

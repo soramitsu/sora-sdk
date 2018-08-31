@@ -1,10 +1,10 @@
-package jp.co.soramitsu.sora.sdk.model.dto;
+package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jp.co.soramitsu.sora.sdk.model.Visitable;
-import jp.co.soramitsu.sora.sdk.model.dto.publickey.Ed25519Sha3VerificationKey;
-import jp.co.soramitsu.sora.sdk.model.dto.publickey.PublicKeyVisitor;
+import jp.co.soramitsu.sora.sdk.did.model.Visitable;
+import jp.co.soramitsu.sora.sdk.did.model.dto.publickey.Ed25519Sha3VerificationKey;
+import jp.co.soramitsu.sora.sdk.did.model.dto.publickey.PublicKeyVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -21,4 +21,6 @@ public abstract class PublicKey implements Visitable<PublicKeyVisitor> {
 
   @NonNull
   private DID id;
+
+  private DID owner;
 }

@@ -21,7 +21,7 @@ import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTree;
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeFactory;
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeProof;
 import jp.co.soramitsu.sora.sdk.json.JsonUtil;
-import jp.co.soramitsu.sora.sdk.model.type.DigestTypeEnum;
+import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

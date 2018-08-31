@@ -7,6 +7,6 @@ import java.security.SignatureException;
 
 public interface Verifier<T> {
 
-  boolean verify(T ddo, PublicKey publicKey)
+  boolean verify(T obj, PublicKey publicKey)
       throws IOException, InvalidKeyException, SignatureException;
 }

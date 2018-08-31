@@ -1,10 +1,10 @@
-package jp.co.soramitsu.sora.sdk.model.dto;
+package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jp.co.soramitsu.sora.sdk.model.Visitable;
-import jp.co.soramitsu.sora.sdk.model.dto.authentication.AuthenticationVisitor;
-import jp.co.soramitsu.sora.sdk.model.dto.authentication.Ed25519Sha3Authentication;
+import jp.co.soramitsu.sora.sdk.did.model.Visitable;
+import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.AuthenticationVisitor;
+import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.Ed25519Sha3Authentication;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

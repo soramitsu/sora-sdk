@@ -1,15 +1,21 @@
 package jp.co.soramitsu.sora.sdk.dto
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
+import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
+import jp.co.soramitsu.crypto.ed25519.KeyPairGenerator
+import jp.co.soramitsu.sora.sdk.crypto.json.JSONEd25519Sha3SignatureSuite
+import jp.co.soramitsu.sora.sdk.did.model.dto.DDO
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID
+import jp.co.soramitsu.sora.sdk.did.model.dto.Options
+import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.Ed25519Sha3Authentication
+import jp.co.soramitsu.sora.sdk.did.model.dto.publickey.Ed25519Sha3VerificationKey
+import jp.co.soramitsu.sora.sdk.did.model.dto.service.GenericService
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum
 import jp.co.soramitsu.sora.sdk.json.JsonUtil
-import jp.co.soramitsu.sora.sdk.model.dto.DDO
-import jp.co.soramitsu.sora.sdk.model.dto.DID
-import jp.co.soramitsu.sora.sdk.model.dto.authentication.Ed25519Sha3Authentication
-import jp.co.soramitsu.sora.sdk.model.dto.publickey.Ed25519Sha3VerificationKey
-import jp.co.soramitsu.sora.sdk.model.dto.publickey.PublicKeyVisitor
-import jp.co.soramitsu.sora.sdk.model.dto.service.GenericService
 import spock.lang.Specification
 
+import java.security.KeyPair
 import java.time.Instant
 
 class DDOTest extends Specification {
@@ -48,7 +54,7 @@ class DDOTest extends Specification {
         DDO ddo1 = DDO.builder()
                 .id(owner)
                 .owner(owner)
-                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, [48] as byte[]))
+                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
                 .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
                 .created(created)
@@ -66,5 +72,54 @@ class DDOTest extends Specification {
         then:
         ddo2 == ddo1
     }
+
+//    def "ddo can be signed"() {
+//        given:
+//        DID owner = DID.randomUUID()
+//        Instant created = Instant.now()
+//
+//        DID pubkeyId = owner.withFragment("keys-1")
+//
+//        DDO ddo = DDO.builder()
+//                .id(owner)
+//                .owner(owner)
+//                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
+//                .authentication(new Ed25519Sha3Authentication(pubkeyId))
+//                .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
+//                .created(created)
+//                .build()
+//
+//        def suite = new JSONEd25519Sha3SignatureSuite()
+//        def mapper = JsonUtil.buildMapper()
+//
+//        def generator = new KeyPairGenerator()
+//        KeyPair keyPair = generator.generateKeyPair()
+//
+//        def options = Options.builder()
+//                .type(SignatureTypeEnum.Ed25519Sha3Signature)
+//                .nonce("nonce")
+//                .creator(pubkeyId)
+//                .created(Instant.now())
+//                .build()
+//
+//        when:
+//        ObjectNode signedJson = suite.sign(
+//                ddo,
+//                keyPair.getPrivate(),
+//                options
+//        )
+//
+//        DDO signed = mapper.readValue(signedJson.toString(), DDO.class)
+//
+//        then: "signature is valid"
+//        suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
+//
+//        when: "break ddo signature"
+//        DDO broken = signed
+//                .setOwner(DID.randomUUID())
+//
+//        then:
+//        !suite.verify(broken, keyPair.getPublic() as EdDSAPublicKey)
+//    }
 
 }

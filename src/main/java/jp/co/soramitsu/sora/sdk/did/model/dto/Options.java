@@ -1,11 +1,10 @@
-package jp.co.soramitsu.sora.sdk.model.dto;
+package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import javax.validation.constraints.NotBlank;
-import jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum;
-import lombok.AllArgsConstructor;
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
