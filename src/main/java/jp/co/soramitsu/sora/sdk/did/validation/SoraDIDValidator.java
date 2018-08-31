@@ -6,7 +6,7 @@ import static java.lang.String.join;
 import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import jp.co.soramitsu.sora.sdk.model.dto.DID;
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

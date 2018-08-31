@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 import java.security.Signature;
 import java.security.SignatureException;
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizer;
-import jp.co.soramitsu.sora.sdk.model.dto.Options;
+import jp.co.soramitsu.sora.sdk.did.model.dto.Options;
 import org.spongycastle.util.Arrays;
 
 public class Util {

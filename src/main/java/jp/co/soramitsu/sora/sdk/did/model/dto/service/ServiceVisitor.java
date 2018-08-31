@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.model.dto.service;
+package jp.co.soramitsu.sora.sdk.did.model.dto.service;
 
 public interface ServiceVisitor {
 

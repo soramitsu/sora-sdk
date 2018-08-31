@@ -6,16 +6,16 @@ import jp.co.soramitsu.sora.sdk.common.MockSignature
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONCanonizer
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONSigner
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONSignerImpl
-import jp.co.soramitsu.sora.sdk.model.dto.DID
-import jp.co.soramitsu.sora.sdk.model.dto.Options
-import jp.co.soramitsu.sora.sdk.model.dto.Proof
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID
+import jp.co.soramitsu.sora.sdk.did.model.dto.Options
+import jp.co.soramitsu.sora.sdk.did.model.dto.Proof
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum
 import spock.lang.Specification
 
 import java.security.PrivateKey
 import java.security.Signature
 import java.time.Instant
 
-import static jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum.Ed25519Sha3Signature
 
 class JSONSignerImplTest extends Specification {
 
@@ -46,12 +46,12 @@ class JSONSignerImplTest extends Specification {
         JSONSigner signer = new JSONSignerImpl(canonizer, jsonMapper)
 
         Signature signature = Spy(MockSignature, constructorArgs: [
-                Ed25519Sha3Signature.getAlgorithm(), signatureBytes
+                SignatureTypeEnum.Ed25519Sha3Signature.getAlgorithm(), signatureBytes
         ])
         signature.initSign(Stub(PrivateKey))
 
         Options options = Options.builder()
-                .type(Ed25519Sha3Signature)
+                .type(SignatureTypeEnum.Ed25519Sha3Signature)
                 .created(Instant.ofEpochSecond(0))
                 .creator(DID.parse("did:sora:uuid:1"))
                 .nonce("nonce")

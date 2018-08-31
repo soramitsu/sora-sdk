@@ -1,12 +1,12 @@
-package jp.co.soramitsu.sora.sdk.model.dto;
+package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.net.URL;
-import jp.co.soramitsu.sora.sdk.model.Visitable;
-import jp.co.soramitsu.sora.sdk.model.dto.service.GenericService;
-import jp.co.soramitsu.sora.sdk.model.dto.service.ServiceVisitor;
+import jp.co.soramitsu.sora.sdk.did.model.Visitable;
+import jp.co.soramitsu.sora.sdk.did.model.dto.service.GenericService;
+import jp.co.soramitsu.sora.sdk.did.model.dto.service.ServiceVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

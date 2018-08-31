@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.model.dto;
+package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 

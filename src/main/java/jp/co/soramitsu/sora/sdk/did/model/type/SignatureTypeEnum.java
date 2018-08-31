@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.model.type;
+package jp.co.soramitsu.sora.sdk.did.model.type;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import jp.co.soramitsu.crypto.ed25519.EdDSAEngine;

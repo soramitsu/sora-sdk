@@ -1,4 +1,4 @@
-package jp.co.soramitsu.sora.sdk.model.dto.authentication;
+package jp.co.soramitsu.sora.sdk.did.model.dto.authentication;
 
 public interface AuthenticationVisitor {
 

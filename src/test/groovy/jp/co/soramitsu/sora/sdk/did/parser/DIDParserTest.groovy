@@ -1,8 +1,7 @@
 package jp.co.soramitsu.sora.sdk.did.parser
 
-
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID
 import jp.co.soramitsu.sora.sdk.did.parser.generated.ParserException
-import jp.co.soramitsu.sora.sdk.model.dto.DID
 import spock.lang.Specification
 import spock.lang.Unroll
 

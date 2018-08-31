@@ -7,5 +7,5 @@ import java.security.SignatureException;
 
 public interface Signer<T> {
 
-  T sign(T ddo, PrivateKey privateKey) throws IOException, SignatureException, InvalidKeyException;
+  T sign(T obj, PrivateKey privateKey) throws IOException, SignatureException, InvalidKeyException;
 }

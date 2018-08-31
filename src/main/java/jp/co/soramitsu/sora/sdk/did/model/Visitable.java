@@ -1,9 +1,9 @@
-package jp.co.soramitsu.sora.sdk.model;
+package jp.co.soramitsu.sora.sdk.did.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public interface Visitable<T> {
 
   @JsonIgnore
-  void visit(T t);
+  void accept(T t);
 }

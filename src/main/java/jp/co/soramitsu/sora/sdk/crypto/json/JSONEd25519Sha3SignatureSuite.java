@@ -10,8 +10,8 @@ import jp.co.soramitsu.crypto.ed25519.EdDSAPrivateKey;
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey;
 import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider;
 import jp.co.soramitsu.sora.sdk.json.JsonUtil;
-import jp.co.soramitsu.sora.sdk.model.dto.Options;
-import jp.co.soramitsu.sora.sdk.model.type.SignatureTypeEnum;
+import jp.co.soramitsu.sora.sdk.did.model.dto.Options;
+import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum;
 import lombok.SneakyThrows;
 
 
