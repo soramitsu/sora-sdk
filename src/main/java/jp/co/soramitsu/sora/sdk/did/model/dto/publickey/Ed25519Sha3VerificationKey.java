@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
@@ -32,8 +31,7 @@ public class Ed25519Sha3VerificationKey extends PublicKey {
   public Ed25519Sha3VerificationKey(
       @JsonProperty("id") DID id,
       @JsonProperty("owner") DID owner,
-      @JsonProperty("publicKey") byte[] publicKey
-  ) {
+      @JsonProperty("publicKey") byte[] publicKey) {
     super(id, owner);
     this.publicKey = publicKey;
   }
@@ -42,5 +40,9 @@ public class Ed25519Sha3VerificationKey extends PublicKey {
   public void accept(PublicKeyVisitor visitor) {
     visitor.visit(this);
   }
-}
 
+  @Override
+  public byte[] getPublicKeyValue() {
+    return publicKey;
+  }
+}
