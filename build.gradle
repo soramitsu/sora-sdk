@@ -46,7 +46,7 @@ final def jacksonVersion = '2.9.6'
 final def onecodeVersion = '1.0.8'
 final def lombokVersion = '1.18.2'
 final def cglibVersion = '3.2.8'
-final def bytebuddyVersion = '1.8.16'
+final def bytebuddyVersion = '1.8.22'
 final def objgenesisVersion = '2.6'
 final def validationVersion = '2.0.1.Final'
 
