@@ -9,11 +9,13 @@ import jp.co.soramitsu.sora.sdk.did.model.dto.PublicKey;
 import jp.co.soramitsu.sora.sdk.did.model.serializer.HexValueCombinedSerializer.HexValueDeserializer;
 import jp.co.soramitsu.sora.sdk.did.model.serializer.HexValueCombinedSerializer.HexValueSerializer;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 
 @EqualsAndHashCode(callSuper = true)
 public class Ed25519Sha3VerificationKey extends PublicKey {
 
+  @Getter
   @JsonSerialize(using = HexValueSerializer.class)
   @JsonDeserialize(using = HexValueDeserializer.class)
   @NonNull
@@ -35,10 +37,5 @@ public class Ed25519Sha3VerificationKey extends PublicKey {
   @Override
   public void accept(PublicKeyVisitor visitor) {
     visitor.visit(this);
-  }
-
-  @Override
-  public byte[] getPublicKeyValue() {
-    return publicKey;
   }
 }

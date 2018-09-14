@@ -23,5 +23,5 @@ public abstract class PublicKey implements Visitable<PublicKeyVisitor> {
   private DID owner;
 
   @JsonIgnore
-  public abstract byte[] getPublicKeyValue();
+  public abstract byte[] getPublicKey();
 }
