@@ -73,53 +73,52 @@ class DDOTest extends Specification {
         ddo2 == ddo1
     }
 
-//    def "ddo can be signed"() {
-//        given:
-//        DID owner = DID.randomUUID()
-//        Instant created = Instant.now()
-//
-//        DID pubkeyId = owner.withFragment("keys-1")
-//
-//        DDO ddo = DDO.builder()
-//                .id(owner)
-//                .owner(owner)
-//                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
-//                .authentication(new Ed25519Sha3Authentication(pubkeyId))
-//                .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
-//                .created(created)
-//                .build()
-//
-//        def suite = new JSONEd25519Sha3SignatureSuite()
-//        def mapper = JsonUtil.buildMapper()
-//
-//        def generator = new KeyPairGenerator()
-//        KeyPair keyPair = generator.generateKeyPair()
-//
-//        def options = Options.builder()
-//                .type(SignatureTypeEnum.Ed25519Sha3Signature)
-//                .nonce("nonce")
-//                .creator(pubkeyId)
-//                .created(Instant.now())
-//                .build()
-//
-//        when:
-//        ObjectNode signedJson = suite.sign(
-//                ddo,
-//                keyPair.getPrivate(),
-//                options
-//        )
-//
-//        DDO signed = mapper.readValue(signedJson.toString(), DDO.class)
-//
-//        then: "signature is valid"
-//        suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
-//
-//        when: "break ddo signature"
-//        DDO broken = signed
-//                .setOwner(DID.randomUUID())
-//
-//        then:
-//        !suite.verify(broken, keyPair.getPublic() as EdDSAPublicKey)
-//    }
+    def "ddo can be signed"() {
+        given:
+        DID owner = DID.randomUUID()
+        Instant created = Instant.now()
+
+        DID pubkeyId = owner.withFragment("keys-1")
+
+        DDO ddo = DDO.builder()
+                .id(owner)
+                .owner(owner)
+                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
+                .authentication(new Ed25519Sha3Authentication(pubkeyId))
+                .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
+                .created(created)
+                .build()
+
+        def suite = new JSONEd25519Sha3SignatureSuite()
+        def mapper = JsonUtil.buildMapper()
+
+        def generator = new KeyPairGenerator()
+        KeyPair keyPair = generator.generateKeyPair()
+
+        def options = Options.builder()
+                .type(SignatureTypeEnum.Ed25519Sha3Signature)
+                .nonce("nonce")
+                .creator(pubkeyId)
+                .created(Instant.now())
+                .build()
+
+        when:
+        ObjectNode signedJson = suite.sign(
+                ddo,
+                keyPair.getPrivate(),
+                options
+        )
+
+        DDO signed = mapper.readValue(signedJson.toString(), DDO.class)
+
+        then: "signature is valid"
+        suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
+
+        when: "break ddo signature"
+        signed.setOwner(DID.randomUUID())
+
+        then:
+        !suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
+    }
 
 }

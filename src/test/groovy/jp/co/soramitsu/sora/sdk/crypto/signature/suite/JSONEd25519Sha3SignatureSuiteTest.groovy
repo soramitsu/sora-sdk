@@ -71,7 +71,7 @@ class JSONEd25519Sha3SignatureSuiteTest extends Specification {
         ObjectNode out = suite.sign(object, privateKey, options)
 
         then:
-        out.toString() == '{"a":1,"proof":{"type":"Ed25519Sha3Signature","created":"1970-01-01T00:00:00Z","creator":"did:sora:uuid:1","nonce":"nonce","purpose":"purpose","signatureValue":"c2lnbmF0dXJl"}}'
+        out.toString() == '{"a":1,"proof":{"type":"Ed25519Sha3Signature","created":"1970-01-01T00:00:00Z","creator":"did:sora:uuid:1","nonce":"nonce","purpose":"purpose","signatureValue":"7369676e6174757265"}}'
 
         when: "verify proof"
         boolean valid = suite.verify(out, publicKey)
