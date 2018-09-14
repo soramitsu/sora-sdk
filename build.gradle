@@ -49,6 +49,7 @@ final def cglibVersion = '3.2.7'
 final def bytebuddyVersion = '1.8.16'
 final def objgenesisVersion = '2.6'
 final def validationVersion = '2.0.1.Final'
+final def jaywayVersion = '2.4.0'
 
 
 dependencies {
@@ -61,6 +62,7 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
     testCompile("com.nagternal:spock-genesis:${spockGenesisVersion}")
     testCompile("org.spockframework:spock-core:${spockVersion}")
+    testCompile("com.jayway.jsonpath:json-path:${jaywayVersion}")
 
     compile("javax.validation:validation-api:${validationVersion}")
 
