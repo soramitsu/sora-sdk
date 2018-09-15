@@ -8,17 +8,14 @@ import jp.co.soramitsu.sora.sdk.did.model.dto.DID;
 import jp.co.soramitsu.sora.sdk.did.model.dto.PublicKey;
 import jp.co.soramitsu.sora.sdk.did.model.serializer.HexValueCombinedSerializer.HexValueDeserializer;
 import jp.co.soramitsu.sora.sdk.did.model.serializer.HexValueCombinedSerializer.HexValueSerializer;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
-import lombok.ToString;
 
-
-@Data
 @EqualsAndHashCode(callSuper = true)
-@ToString
 public class Ed25519Sha3VerificationKey extends PublicKey {
 
+  @Getter
   @JsonSerialize(using = HexValueSerializer.class)
   @JsonDeserialize(using = HexValueDeserializer.class)
   @NonNull
@@ -32,8 +29,7 @@ public class Ed25519Sha3VerificationKey extends PublicKey {
   public Ed25519Sha3VerificationKey(
       @JsonProperty("id") DID id,
       @JsonProperty("owner") DID owner,
-      @JsonProperty("publicKey") byte[] publicKey
-  ) {
+      @JsonProperty("publicKey") byte[] publicKey) {
     super(id, owner);
     this.publicKey = publicKey;
   }
@@ -43,4 +39,3 @@ public class Ed25519Sha3VerificationKey extends PublicKey {
     visitor.visit(this);
   }
 }
-

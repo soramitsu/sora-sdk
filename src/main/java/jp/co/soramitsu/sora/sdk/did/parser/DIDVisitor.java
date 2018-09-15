@@ -1,6 +1,7 @@
 package jp.co.soramitsu.sora.sdk.did.parser;
 
 import java.util.List;
+import jp.co.soramitsu.sora.sdk.did.model.dto.DID;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.Parser;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.ParserException;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.Rule;
@@ -35,7 +36,6 @@ import jp.co.soramitsu.sora.sdk.did.parser.generated.Rule_unreserved;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.Terminal_NumericValue;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.Terminal_StringValue;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.Visitor;
-import jp.co.soramitsu.sora.sdk.did.model.dto.DID;
 import lombok.val;
 
 public class DIDVisitor implements Visitor {
