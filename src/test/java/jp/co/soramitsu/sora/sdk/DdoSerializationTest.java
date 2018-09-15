@@ -6,19 +6,17 @@ import static org.junit.Assert.assertEquals;
 import static org.spongycastle.util.encoders.Hex.toHexString;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import jp.co.soramitsu.jackson.OneCodeMapper;
 import jp.co.soramitsu.sora.sdk.did.model.dto.DDO;
+import jp.co.soramitsu.sora.sdk.json.JsonUtil;
 import org.junit.Test;
 
 public class DdoSerializationTest {
 
-  private ObjectMapper mapper = new OneCodeMapper();
+  private ObjectMapper mapper = JsonUtil.buildMapper();
 
   @Test
   public void jsonDDO_correctSerializationOfBytesType() throws IOException, URISyntaxException {
