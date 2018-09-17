@@ -9,7 +9,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import org.spongycastle.util.encoders.Hex;
 
-/** Class for custom process of serialize/deserialize string in HEX encode to bytes */
+/**
+ * Class for custom process of serialize/deserialize string in HEX encode to bytes
+ */
 public class HexValueCombinedSerializer {
 
   public static class HexValueSerializer extends JsonSerializer<byte[]> {

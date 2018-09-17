@@ -23,7 +23,9 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class Proof {
 
-  @NonNull @JsonUnwrapped private Options options;
+  @NonNull
+  @JsonUnwrapped
+  private Options options;
 
   @JsonSerialize(using = HexValueSerializer.class)
   @JsonDeserialize(using = HexValueDeserializer.class)
