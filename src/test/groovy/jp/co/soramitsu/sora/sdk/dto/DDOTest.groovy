@@ -53,7 +53,6 @@ class DDOTest extends Specification {
 
         DDO ddo1 = DDO.builder()
                 .id(owner)
-                .owner(owner)
                 .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
                 .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
@@ -67,7 +66,6 @@ class DDOTest extends Specification {
 
         when: 'load ddo from file'
         DDO ddo2 = mapper.readValue(file, DDO.class)
-        println(ddo2)
 
         then:
         ddo2 == ddo1
