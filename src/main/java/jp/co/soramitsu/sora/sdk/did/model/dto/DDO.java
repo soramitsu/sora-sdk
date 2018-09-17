@@ -38,9 +38,6 @@ public class DDO {
   @Singular("service")
   private List<Service> service;
 
-  @JsonProperty("owner")
-  private DID owner;
-
   @JsonProperty("guardian")
   private DID guardian;
 
