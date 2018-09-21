@@ -10,10 +10,11 @@ import lombok.ToString;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Ed25519Sha3Authentication.class, name = "Ed25519Sha3Authentication")
+    @JsonSubTypes.Type(value = Ed25519Sha3Authentication.class, name = "Ed25519Sha3Authentication")
 })
 @EqualsAndHashCode
 @ToString
 public abstract class Authentication implements Visitable<AuthenticationVisitor> {
+
   public abstract DID getPublicKey();
 }

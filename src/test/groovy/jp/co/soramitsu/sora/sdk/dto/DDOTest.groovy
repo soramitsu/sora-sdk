@@ -2,8 +2,8 @@ package jp.co.soramitsu.sora.sdk.dto
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import jp.co.soramitsu.crypto.ed25519.Ed25519Sha3
 import jp.co.soramitsu.crypto.ed25519.EdDSAPublicKey
-import jp.co.soramitsu.crypto.ed25519.KeyPairGenerator
 import jp.co.soramitsu.sora.sdk.crypto.json.JSONEd25519Sha3SignatureSuite
 import jp.co.soramitsu.sora.sdk.did.model.dto.DDO
 import jp.co.soramitsu.sora.sdk.did.model.dto.DID
@@ -15,7 +15,7 @@ import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum
 import jp.co.soramitsu.sora.sdk.json.JsonUtil
 import spock.lang.Specification
 
-import java.security.KeyPair
+import javax.xml.bind.DatatypeConverter
 import java.time.Instant
 
 class DDOTest extends Specification {
@@ -53,7 +53,6 @@ class DDOTest extends Specification {
 
         DDO ddo1 = DDO.builder()
                 .id(owner)
-                .owner(owner)
                 .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
                 .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
@@ -67,7 +66,6 @@ class DDOTest extends Specification {
 
         when: 'load ddo from file'
         DDO ddo2 = mapper.readValue(file, DDO.class)
-        println(ddo2)
 
         then:
         ddo2 == ddo1
@@ -75,15 +73,18 @@ class DDOTest extends Specification {
 
     def "ddo can be signed"() {
         given:
-        DID owner = DID.randomUUID()
-        Instant created = Instant.now()
+        DID owner = DID.parse("did:sora:bogdan")
+        Instant created = Instant.ofEpochMilli(0)
 
         DID pubkeyId = owner.withFragment("keys-1")
 
+        def privKeySeed = DatatypeConverter.parseHexBinary("0000000000000000000000000000000000000000000000000000000000000000")
+        def engine = new Ed25519Sha3()
+        def keyPair = engine.generateKeypair(privKeySeed)
+
         DDO ddo = DDO.builder()
                 .id(owner)
-                .owner(owner)
-                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
+                .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, keyPair.getPublic().getEncoded()))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
                 .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
                 .created(created)
@@ -92,14 +93,11 @@ class DDOTest extends Specification {
         def suite = new JSONEd25519Sha3SignatureSuite()
         def mapper = JsonUtil.buildMapper()
 
-        def generator = new KeyPairGenerator()
-        KeyPair keyPair = generator.generateKeyPair()
-
         def options = Options.builder()
                 .type(SignatureTypeEnum.Ed25519Sha3Signature)
                 .nonce("nonce")
                 .creator(pubkeyId)
-                .created(Instant.now())
+                .created(created)
                 .build()
 
         when:
@@ -115,7 +113,7 @@ class DDOTest extends Specification {
         suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
 
         when: "break ddo signature"
-        signed.setOwner(DID.randomUUID())
+        signed.setId(DID.randomUUID())
 
         then:
         !suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)

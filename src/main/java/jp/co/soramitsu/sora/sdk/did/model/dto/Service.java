@@ -15,16 +15,18 @@ import lombok.NonNull;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = GenericService.class, name = "GenericService"),
-  @JsonSubTypes.Type(value = SharingRulesService.class, name = "SharingRulesService"),
-  @JsonSubTypes.Type(value = TransferDataService.class, name = "TransferDataService")
+    @JsonSubTypes.Type(value = GenericService.class, name = "GenericService"),
+    @JsonSubTypes.Type(value = SharingRulesService.class, name = "SharingRulesService"),
+    @JsonSubTypes.Type(value = TransferDataService.class, name = "TransferDataService")
 })
 @Getter
 @AllArgsConstructor
 @Data
 public abstract class Service implements Visitable<ServiceVisitor> {
 
-  @NonNull DID id;
+  @NonNull
+  DID id;
 
-  @NonNull URL serviceEndpoint;
+  @NonNull
+  URL serviceEndpoint;
 }
