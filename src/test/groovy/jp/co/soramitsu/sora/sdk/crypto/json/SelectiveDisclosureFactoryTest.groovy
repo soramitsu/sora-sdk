@@ -1,5 +1,6 @@
 package jp.co.soramitsu.sora.sdk.crypto.json
 
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.sora.sdk.crypto.common.Hash
@@ -30,6 +31,27 @@ class SelectiveDisclosureFactoryTest extends Specification {
                 ]
         ]
 
+        def saltifiedClaim = [
+                "/4:name":[
+                        "v": "bogdan",
+                        "s":"salt"
+                        ],
+                "/3:has/9:documents_0": [
+                        "v":"passport",
+                        "s":"salt"
+                        ],
+                "/3:has/9:documents_1": [
+                        "v":"driverlicense",
+                        "s":"salt"
+                        ],
+                "/3:has/7:animals": [
+                        "v":[],
+                        "s":"salt"
+                        ]
+                ]
+
+        def expectedSaltified = "{\"/4:name\":{\"v\":\"bogdan\",\"s\":\"salt\"},\"/3:has/9:documents_0\":{\"v\":\"passport\",\"s\":\"salt\"},\"/3:has/9:documents_1\":{\"v\":\"driverlicense\",\"s\":\"salt\"},\"/3:has/7:animals\":{\"v\":[],\"s\":\"salt\"}}"
+
         MessageDigest digest = Spy(SHA3.Digest256)
         SaltGenerator gen = Mock(SaltGenerator) {
             next() >> { "salt" }
@@ -56,7 +78,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
         noExceptionThrown()
         sd.getCommitment().toString() == expectedRoot
         sd.getMerkleTree().getHashTree().size() == 7 // total number of nodes for 4 leaves
-        sd.getSaltifiedJson().toString() == "{\"/4:name\":{\"v\":\"bogdan\",\"s\":\"salt\"},\"/3:has/9:documents_0\":{\"v\":\"passport\",\"s\":\"salt\"},\"/3:has/9:documents_1\":{\"v\":\"driverlicense\",\"s\":\"salt\"},\"/3:has/7:animals\":{\"v\":[],\"s\":\"salt\"}}"
+        sd.getSaltifiedJson().toString() == expectedSaltified
 
         interaction {
             1 * mapper.valueToTree(_)
@@ -66,7 +88,6 @@ class SelectiveDisclosureFactoryTest extends Specification {
             1 * hashifier.hashify(_ as ObjectNode)
             1 * merkleTreeFactory.createFromLeaves(_ as List<Hash>)
         }
-
 
         when: "calculate affected (covered by hash) JSON keys by ROOT"
         def keys = sd.getAffectedKeys(Hash.fromHex(expectedRoot))
@@ -83,6 +104,39 @@ class SelectiveDisclosureFactoryTest extends Specification {
 
         then: "should be equal to the first two keys in JSON"
         keys2.toSet() == ["/4:name", "/3:has/9:documents_0"].toSet()
+
+        //  fromSaltified
+        when: "selective disclosure item is created from saltified"
+        def sdsaltified = factory.createCommitmentFromSaltified(
+                (ObjectNode) mapper.valueToTree(saltifiedClaim))
+
+        then: "it is valid"
+        sdsaltified.getMerkleTree().getHashTree().size() == 7
+        sdsaltified.getCommitment().toString() == expectedRoot
+        sdsaltified.getSaltifiedJson().toString() == expectedSaltified
+
+        interaction {
+            1 * mapper.valueToTree(_)
+            1 * hashifier.hashify(_ as ObjectNode)
+            1 * merkleTreeFactory.createFromLeaves(_ as List<Hash>)
+        }
+
+        when: "calculate affected (covered by hash) JSON keys by ROOT"
+        def keysSaltified = sdsaltified.getAffectedKeys(Hash.fromHex(expectedRoot))
+
+        then: "affected JSON keys by ROOT are ALL keys"
+        keysSaltified.size() == 4 // all keys are covered by root
+        sdsaltified.getSaltifiedJson().fieldNames().toSet() == keysSaltified.toSet()
+
+        when: "calculate affected (covered by hash) JSON keys by leftmostleaf's parent"
+        def treeSaltified = sdsaltified.getMerkleTree().getHashTree()
+        def parentIndexSaltified = getParentIndex(treeSaltified.leftmostLeafIndex())
+        def parentHashSaltified = treeSaltified.get(parentIndexSaltified)
+        def keys2Saltified = sd.getAffectedKeys(parentHashSaltified)
+
+        then: "should be equal to the first two keys in JSON"
+        keys2Saltified.toSet() == ["/4:name", "/3:has/9:documents_0"].toSet()
+
     }
 
     def "usage example"() {

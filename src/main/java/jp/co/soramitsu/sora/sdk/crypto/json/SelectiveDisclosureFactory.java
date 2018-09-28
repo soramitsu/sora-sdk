@@ -55,19 +55,25 @@ public class SelectiveDisclosureFactory {
    * @throws IOException is thrown when {@link ObjectMapper} can not process input JSON
    */
   public SelectiveDisclosureItem createCommitment(Object input) throws IOException {
-    return getSelectiveDisclosureItemFromSaltified(getSaltified(getNodeFromInput(input)));
+
+    JsonNode json = mapper.valueToTree(input);
+    if (!json.isObject()) {
+      throw new NotJsonObjectException(json);
+    }
+
+    return getSelectiveDisclosureItemFromSaltified(getSaltified((ObjectNode) json));
   }
 
   /**
-   * Create cryptographic commitment for given raw input.
+   * Create cryptographic commitment for given prepared (saltify and flatten) input.
    *
-   * @param input can be a Map<String, Object>, POJO, JsonNode; anything that {@link ObjectMapper}
-   *     can process
+   * @param inputNode ObjectNode, JsonNode; anything that {@link ObjectMapper} can process
    * @return single selective disclosure item, which is used to create cryptographic proofs
    * @throws IOException is thrown when {@link ObjectMapper} can not process input JSON
    */
-  public SelectiveDisclosureItem createCommitmentFromSaltified(Object input) throws IOException {
-    return getSelectiveDisclosureItemFromSaltified(getNodeFromInput(input));
+  public SelectiveDisclosureItem createCommitmentFromSaltified(ObjectNode inputNode)
+      throws IOException {
+    return getSelectiveDisclosureItemFromSaltified(inputNode);
   }
 
   /**
@@ -79,15 +85,6 @@ public class SelectiveDisclosureFactory {
    */
   public SelectiveDisclosureItem createCommitment(MerkleTree merkleTree, ObjectNode saltifiedJson) {
     return new SelectiveDisclosureItem(merkleTree, saltifiedJson);
-  }
-
-  private ObjectNode getNodeFromInput(Object input) {
-    JsonNode json = mapper.valueToTree(input);
-    if (!json.isObject()) {
-      throw new NotJsonObjectException(json);
-    }
-
-    return (ObjectNode) json;
   }
 
   private ObjectNode getSaltified(ObjectNode jsonNodes) {
