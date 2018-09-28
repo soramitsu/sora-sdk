@@ -46,28 +46,28 @@ public class SelectiveDisclosureFactory {
     this.merkleTreeFactory = new MerkleTreeFactory(digest);
   }
 
-
   /**
-   * Create cryptographic commitment for given input.
+   * Create cryptographic commitment for given raw input.
    *
    * @param input can be a Map<String, Object>, POJO, JsonNode; anything that {@link ObjectMapper}
-   * can process
+   *     can process
    * @return single selective disclosure item, which is used to create cryptographic proofs
    * @throws IOException is thrown when {@link ObjectMapper} can not process input JSON
    */
   public SelectiveDisclosureItem createCommitment(Object input) throws IOException {
-    JsonNode json = mapper.valueToTree(input);
+    return getSelectiveDisclosureItemFromSaltified(getSaltified(getNodeFromInput(input)));
+  }
 
-    if (!json.isObject()) {
-      throw new NotJsonObjectException(json);
-    }
-
-    ObjectNode obj = flattener.flatten((ObjectNode) json);
-    ObjectNode saltified = (ObjectNode) saltifier.saltify(obj);
-    List<Hash> hashes = hashifier.hashify(saltified);
-    MerkleTree tree = merkleTreeFactory.createFromLeaves(hashes);
-
-    return new SelectiveDisclosureItem(tree, saltified);
+  /**
+   * Create cryptographic commitment for given raw input.
+   *
+   * @param input can be a Map<String, Object>, POJO, JsonNode; anything that {@link ObjectMapper}
+   *     can process
+   * @return single selective disclosure item, which is used to create cryptographic proofs
+   * @throws IOException is thrown when {@link ObjectMapper} can not process input JSON
+   */
+  public SelectiveDisclosureItem createCommitmentFromSaltified(Object input) throws IOException {
+    return getSelectiveDisclosureItemFromSaltified(getNodeFromInput(input));
   }
 
   /**
@@ -81,6 +81,27 @@ public class SelectiveDisclosureFactory {
     return new SelectiveDisclosureItem(merkleTree, saltifiedJson);
   }
 
+  private ObjectNode getNodeFromInput(Object input) {
+    JsonNode json = mapper.valueToTree(input);
+    if (!json.isObject()) {
+      throw new NotJsonObjectException(json);
+    }
+
+    return (ObjectNode) json;
+  }
+
+  private ObjectNode getSaltified(ObjectNode jsonNodes) {
+    ObjectNode flattened = flattener.flatten(jsonNodes);
+    return (ObjectNode) saltifier.saltify(flattened);
+  }
+
+  private SelectiveDisclosureItem getSelectiveDisclosureItemFromSaltified(ObjectNode saltified)
+      throws IOException {
+    List<Hash> hashes = hashifier.hashify(saltified);
+    MerkleTree tree = merkleTreeFactory.createFromLeaves(hashes);
+
+    return new SelectiveDisclosureItem(tree, saltified);
+  }
 
   /**
    * An object, which stores state, enough to create cryptographic proofs for given JSON. JSON is
@@ -107,10 +128,7 @@ public class SelectiveDisclosureFactory {
      * resolved (validated) in TRUE or FALSE
      */
     public MerkleTreeProof createProofForKey(String key) throws IOException {
-      Hash hash = hashifier.hashJsonField(new SimpleEntry<>(
-          key,
-          saltifiedJson.get(key)
-      ));
+      Hash hash = hashifier.hashJsonField(new SimpleEntry<>(key, saltifiedJson.get(key)));
 
       return createProof(hash);
     }
@@ -119,9 +137,7 @@ public class SelectiveDisclosureFactory {
       return merkleTree.createProof(hash);
     }
 
-    /**
-     * Getter for the original JSON, without salt and without flat keys.
-     */
+    /** Getter for the original JSON, without salt and without flat keys. */
     public ObjectNode getOriginalJson() {
       ObjectNode node = (ObjectNode) saltifier.desaltify(saltifiedJson);
       return flattener.deflatten(node);
@@ -138,24 +154,21 @@ public class SelectiveDisclosureFactory {
       Set<Hash> affectedLeafHashes = new HashSet<>();
       val hashTree = merkleTree.getHashTree();
 
-      hashes.forEach(h ->
-          affectedLeafHashes.addAll(
-              merkleTree
-                  .getLeavesIndicesBelowHash(h) // get indices of leafs, affected by current hash
-                  .stream()
-                  .map(hashTree::get)  // return only affected leafs
-                  .collect(Collectors.toSet())
-          )
-      );
+      hashes.forEach(
+          h ->
+              affectedLeafHashes.addAll(
+                  merkleTree
+                      .getLeavesIndicesBelowHash(
+                          h) // get indices of leafs, affected by current hash
+                      .stream()
+                      .map(hashTree::get) // return only affected leafs
+                      .collect(Collectors.toSet())));
 
-      return hashifier
-          .dehashify(affectedLeafHashes, saltifiedJson)
-          .values();
+      return hashifier.dehashify(affectedLeafHashes, saltifiedJson).values();
     }
 
     public Collection<String> getAffectedKeys(Hash hash) throws IOException {
       return getAffectedKeys(Collections.singletonList(hash));
     }
-
   }
 }
