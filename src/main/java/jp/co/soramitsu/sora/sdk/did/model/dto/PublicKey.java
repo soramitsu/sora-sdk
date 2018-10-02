@@ -10,16 +10,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = Ed25519Sha3VerificationKey.class, name = "Ed25519Sha3VerificationKey")
+  @JsonSubTypes.Type(value = Ed25519Sha3VerificationKey.class, name = "Ed25519Sha3VerificationKey")
 })
 @AllArgsConstructor
 @Data
 public abstract class PublicKey implements Visitable<PublicKeyVisitor> {
 
-  @NonNull
-  private DID id;
+  @NonNull private DID id;
 
   private DID owner;
 

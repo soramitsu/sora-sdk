@@ -18,7 +18,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
 
     def "selective disclosure works"() {
         given:
-        def expectedRoot = "216237DEB62EE186F57941284A103C9C997F5C3338C23AE6ABB59F425F8F7ECC"
+        def expectedRoot = "216237deb62ee186f57941284a103c9c997f5c3338c23ae6abb59f425f8f7ecc"
 
         def claim = [
                 "name": "bogdan",

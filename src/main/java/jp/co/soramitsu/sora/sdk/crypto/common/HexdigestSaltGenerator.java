@@ -1,9 +1,9 @@
 package jp.co.soramitsu.sora.sdk.crypto.common;
 
 import java.security.SecureRandom;
-import javax.xml.bind.DatatypeConverter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.spongycastle.util.encoders.Hex;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +16,6 @@ public class HexdigestSaltGenerator implements SaltGenerator {
   public String next() {
     byte[] salt = new byte[length];
     random.nextBytes(salt);
-    return DatatypeConverter.printHexBinary(salt);
+    return Hex.toHexString(salt);
   }
 }
