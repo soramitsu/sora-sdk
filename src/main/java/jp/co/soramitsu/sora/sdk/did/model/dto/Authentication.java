@@ -8,9 +8,9 @@ import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.Ed25519Sha3Authenti
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = Ed25519Sha3Authentication.class, name = "Ed25519Sha3Authentication")
+  @JsonSubTypes.Type(value = Ed25519Sha3Authentication.class, name = "Ed25519Sha3Authentication")
 })
 @EqualsAndHashCode
 @ToString

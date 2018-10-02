@@ -1,5 +1,8 @@
 package jp.co.soramitsu.sora.sdk.did.model.serializer;
 
+import static org.spongycastle.util.encoders.Hex.decode;
+import static org.spongycastle.util.encoders.Hex.toHexString;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -7,11 +10,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
-import org.spongycastle.util.encoders.Hex;
 
-/**
- * Class for custom process of serialize/deserialize string in HEX encode to bytes
- */
+/** Class for custom process of serialize/deserialize string in HEX encode to bytes */
 public class HexValueCombinedSerializer {
 
   public static class HexValueSerializer extends JsonSerializer<byte[]> {
@@ -19,7 +19,7 @@ public class HexValueCombinedSerializer {
     @Override
     public void serialize(byte[] value, JsonGenerator gen, SerializerProvider serializers)
         throws IOException {
-      gen.writeString(Hex.toHexString(value));
+      gen.writeString(toHexString(value));
     }
   }
 
@@ -27,7 +27,7 @@ public class HexValueCombinedSerializer {
 
     @Override
     public byte[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-      return Hex.decode(p.getText());
+      return decode(p.getText());
     }
   }
 }
