@@ -1,8 +1,10 @@
 package jp.co.soramitsu.sora.sdk.crypto.common;
 
+import static org.spongycastle.util.encoders.Hex.decode;
+import static org.spongycastle.util.encoders.Hex.toHexString;
+
 import lombok.NonNull;
 import lombok.Value;
-import org.spongycastle.util.encoders.Hex;
 
 @Value
 public class Hash {
@@ -10,11 +12,11 @@ public class Hash {
   @NonNull byte[] data;
 
   public static Hash fromHex(String hex) {
-    return new Hash(Hex.decode(hex));
+    return new Hash(decode(hex));
   }
 
   @Override
   public String toString() {
-    return Hex.toHexString(data);
+    return toHexString(data);
   }
 }
