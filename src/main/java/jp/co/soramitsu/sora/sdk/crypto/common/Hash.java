@@ -9,7 +9,8 @@ import lombok.Value;
 @Value
 public class Hash {
 
-  @NonNull byte[] data;
+  @NonNull
+  byte[] data;
 
   public static Hash fromHex(String hex) {
     return new Hash(decode(hex));

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
-/** Class for custom process of serialize/deserialize string in HEX encode to bytes */
+/**
+ * Class for custom process of serialize/deserialize string in HEX encode to bytes
+ */
 public class HexValueCombinedSerializer {
 
   public static class HexValueSerializer extends JsonSerializer<byte[]> {

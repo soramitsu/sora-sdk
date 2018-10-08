@@ -50,7 +50,7 @@ public class SelectiveDisclosureFactory {
    * Create cryptographic commitment for given raw input.
    *
    * @param input can be a Map<String, Object>, POJO, JsonNode; anything that {@link ObjectMapper}
-   *     can process
+   * can process
    * @return single selective disclosure item, which is used to create cryptographic proofs
    * @throws IOException is thrown when {@link ObjectMapper} can not process input JSON
    */
@@ -134,7 +134,9 @@ public class SelectiveDisclosureFactory {
       return merkleTree.createProof(hash);
     }
 
-    /** Getter for the original JSON, without salt and without flat keys. */
+    /**
+     * Getter for the original JSON, without salt and without flat keys.
+     */
     public ObjectNode getOriginalJson() {
       ObjectNode node = (ObjectNode) saltifier.desaltify(saltifiedJson);
       return flattener.deflatten(node);

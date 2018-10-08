@@ -32,23 +32,23 @@ class SelectiveDisclosureFactoryTest extends Specification {
         ]
 
         def saltifiedClaim = [
-                "/4:name":[
+                "/4:name"             : [
                         "v": "bogdan",
-                        "s":"salt"
-                        ],
+                        "s": "salt"
+                ],
                 "/3:has/9:documents_0": [
-                        "v":"passport",
-                        "s":"salt"
-                        ],
+                        "v": "passport",
+                        "s": "salt"
+                ],
                 "/3:has/9:documents_1": [
-                        "v":"driverlicense",
-                        "s":"salt"
-                        ],
-                "/3:has/7:animals": [
-                        "v":[],
-                        "s":"salt"
-                        ]
+                        "v": "driverlicense",
+                        "s": "salt"
+                ],
+                "/3:has/7:animals"    : [
+                        "v": [],
+                        "s": "salt"
                 ]
+        ]
 
         def expectedSaltified = "{\"/4:name\":{\"v\":\"bogdan\",\"s\":\"salt\"},\"/3:has/9:documents_0\":{\"v\":\"passport\",\"s\":\"salt\"},\"/3:has/9:documents_1\":{\"v\":\"driverlicense\",\"s\":\"salt\"},\"/3:has/7:animals\":{\"v\":[],\"s\":\"salt\"}}"
 
