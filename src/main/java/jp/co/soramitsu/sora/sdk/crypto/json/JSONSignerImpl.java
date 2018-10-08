@@ -14,11 +14,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import net.jcip.annotations.ThreadSafe;
 
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-
+@ThreadSafe
 public class JSONSignerImpl implements JSONSigner {
 
   JSONCanonizer canonizer;

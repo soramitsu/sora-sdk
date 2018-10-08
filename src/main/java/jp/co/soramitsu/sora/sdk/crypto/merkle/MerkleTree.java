@@ -15,10 +15,12 @@ import jp.co.soramitsu.sora.sdk.crypto.common.Hash;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.jcip.annotations.NotThreadSafe;
 
 @RequiredArgsConstructor
 @ToString
 @Getter
+@NotThreadSafe
 public class MerkleTree {
 
   private final MessageDigest digest;

@@ -19,10 +19,12 @@ import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
+import net.jcip.annotations.NotThreadSafe;
 import org.spongycastle.util.Arrays;
 
 @FieldDefaults(makeFinal = true)
 @RequiredArgsConstructor
+@NotThreadSafe
 public class Hashifier {
 
   private final MessageDigest digest;

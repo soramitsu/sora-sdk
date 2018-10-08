@@ -1,16 +1,12 @@
 package jp.co.soramitsu.sora.sdk.crypto.json
 
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jp.co.soramitsu.sora.sdk.crypto.common.Hash
 import jp.co.soramitsu.sora.sdk.crypto.common.SaltGenerator
 import jp.co.soramitsu.sora.sdk.crypto.json.flattener.Flattener
-import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeFactory
-import org.spongycastle.jcajce.provider.digest.SHA3
+import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum
 import spock.lang.Specification
-
-import java.security.MessageDigest
 
 import static jp.co.soramitsu.sora.sdk.crypto.common.ArrayTree.getParentIndex
 
@@ -52,23 +48,18 @@ class SelectiveDisclosureFactoryTest extends Specification {
 
         def expectedSaltified = "{\"/4:name\":{\"v\":\"bogdan\",\"s\":\"salt\"},\"/3:has/9:documents_0\":{\"v\":\"passport\",\"s\":\"salt\"},\"/3:has/9:documents_1\":{\"v\":\"driverlicense\",\"s\":\"salt\"},\"/3:has/7:animals\":{\"v\":[],\"s\":\"salt\"}}"
 
-        MessageDigest digest = Spy(SHA3.Digest256)
         SaltGenerator gen = Mock(SaltGenerator) {
             next() >> { "salt" }
         }
         ObjectMapper mapper = Spy(ObjectMapper)
         Flattener flattener = Spy(Flattener)
         Saltifier saltifier = Spy(Saltifier, constructorArgs: [mapper, gen])
-        Hashifier hashifier = Spy(Hashifier, constructorArgs: [digest])
-        MerkleTreeFactory merkleTreeFactory = Spy(MerkleTreeFactory, constructorArgs: [digest])
 
-        def factory = new SelectiveDisclosureFactory(
-                mapper,
-                flattener,
-                saltifier,
-                hashifier,
-                merkleTreeFactory
-        )
+        def factory = new SelectiveDisclosureFactory()
+                .withObjectMapper(mapper)
+                .withFlattener(flattener)
+                .withSaltifier(saltifier)
+                .withHashAlgorithm(DigestTypeEnum.SHA3_256)
 
 
         when: "selective disclosure item is created"
@@ -85,8 +76,6 @@ class SelectiveDisclosureFactoryTest extends Specification {
             1 * flattener.flatten(_ as ObjectNode)
             1 * saltifier.saltify(_ as ObjectNode)  // 1 call for ObjectNode
             4 * saltifier.saltify(_)                // 4 calls for keys of ObjectNode
-            1 * hashifier.hashify(_ as ObjectNode)
-            1 * merkleTreeFactory.createFromLeaves(_ as List<Hash>)
         }
 
         when: "calculate affected (covered by hash) JSON keys by ROOT"
@@ -117,8 +106,6 @@ class SelectiveDisclosureFactoryTest extends Specification {
 
         interaction {
             1 * mapper.valueToTree(_)
-            1 * hashifier.hashify(_ as ObjectNode)
-            1 * merkleTreeFactory.createFromLeaves(_ as List<Hash>)
         }
 
         when: "calculate affected (covered by hash) JSON keys by ROOT"

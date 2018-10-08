@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,28 +21,54 @@ import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeFactory;
 import jp.co.soramitsu.sora.sdk.crypto.merkle.MerkleTreeProof;
 import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum;
 import jp.co.soramitsu.sora.sdk.json.JsonUtil;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import net.jcip.annotations.ThreadSafe;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@ThreadSafe
 public class SelectiveDisclosureFactory {
 
-  private final ObjectMapper mapper;
-  private final Flattener flattener;
-  private final Saltifier saltifier;
-  private final Hashifier hashifier;
-  private final MerkleTreeFactory merkleTreeFactory;
+  private ObjectMapper mapper;
+  private Flattener flattener;
+  private Saltifier saltifier;
+  private DigestTypeEnum hashAlgorithm;
+  private SecurityProvider provider = new SecurityProvider();
 
   public SelectiveDisclosureFactory() {
-    MessageDigest digest = new SecurityProvider().getMessageDigest(DigestTypeEnum.SHA3_256);
+    this.hashAlgorithm = DigestTypeEnum.SHA3_256;
     SaltGenerator generator = new HexdigestSaltGenerator();
 
     this.mapper = JsonUtil.buildMapper();
     this.flattener = new Flattener();
-    this.hashifier = new Hashifier(digest);
     this.saltifier = new Saltifier(mapper, generator);
-    this.merkleTreeFactory = new MerkleTreeFactory(digest);
+  }
+
+  public SelectiveDisclosureFactory withObjectMapper(ObjectMapper mapper) {
+    this.mapper = mapper;
+    return this;
+  }
+
+  public SelectiveDisclosureFactory withFlattener(Flattener flattener) {
+    this.flattener = flattener;
+    return this;
+  }
+
+  public SelectiveDisclosureFactory withSaltifier(Saltifier saltifier) {
+    this.saltifier = saltifier;
+    return this;
+  }
+
+  public SelectiveDisclosureFactory withHashAlgorithm(DigestTypeEnum hashAlgorithm) {
+    this.hashAlgorithm = hashAlgorithm;
+    return this;
+  }
+
+  public SelectiveDisclosureFactory withSecurityProvidr(SecurityProvider provider) {
+    this.provider = provider;
+    return this;
   }
 
   /**
@@ -94,8 +119,10 @@ public class SelectiveDisclosureFactory {
 
   private SelectiveDisclosureItem getSelectiveDisclosureItemFromSaltified(ObjectNode saltified)
       throws IOException {
-    List<Hash> hashes = hashifier.hashify(saltified);
-    MerkleTree tree = merkleTreeFactory.createFromLeaves(hashes);
+    val digest = provider.getMessageDigest(this.hashAlgorithm);
+
+    List<Hash> hashes = new Hashifier(digest).hashify(saltified);
+    MerkleTree tree = new MerkleTreeFactory(digest).createFromLeaves(hashes);
 
     return new SelectiveDisclosureItem(tree, saltified);
   }
@@ -125,6 +152,7 @@ public class SelectiveDisclosureFactory {
      * resolved (validated) in TRUE or FALSE
      */
     public MerkleTreeProof createProofForKey(String key) throws IOException {
+      val hashifier = new Hashifier(provider.getMessageDigest(hashAlgorithm));
       Hash hash = hashifier.hashJsonField(new SimpleEntry<>(key, saltifiedJson.get(key)));
 
       return createProof(hash);
@@ -163,6 +191,7 @@ public class SelectiveDisclosureFactory {
                       .map(hashTree::get) // return only affected leafs
                       .collect(Collectors.toSet())));
 
+      val hashifier = new Hashifier(provider.getMessageDigest(hashAlgorithm));
       return hashifier.dehashify(affectedLeafHashes, saltifiedJson).values();
     }
 

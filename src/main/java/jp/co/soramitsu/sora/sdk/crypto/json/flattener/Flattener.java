@@ -15,9 +15,10 @@ import java.util.stream.IntStream;
 import jp.co.soramitsu.sora.sdk.crypto.json.BadJsonException;
 import lombok.NoArgsConstructor;
 import lombok.val;
-
+import net.jcip.annotations.ThreadSafe;
 
 @NoArgsConstructor
+@ThreadSafe
 public class Flattener {
 
   public static final String DICT_DELIMITER = "/";
