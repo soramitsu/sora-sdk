@@ -66,7 +66,7 @@ public class SelectiveDisclosureFactory {
     return this;
   }
 
-  public SelectiveDisclosureFactory withSecurityProvidr(SecurityProvider provider) {
+  public SelectiveDisclosureFactory withSecurityProvider(SecurityProvider provider) {
     this.provider = provider;
     return this;
   }
