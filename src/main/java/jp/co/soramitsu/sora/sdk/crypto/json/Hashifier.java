@@ -1,5 +1,7 @@
 package jp.co.soramitsu.sora.sdk.crypto.json;
 
+import static java.util.Comparator.comparing;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -72,6 +74,7 @@ public class Hashifier {
   public List<Hash> hashify(ObjectNode root) throws IOException {
     List<Hash> hashes = new ArrayList<>(root.size());
     hashify(root, (Consumer<Hash>) hashes::add);
+    hashes.sort(comparing(Hash::toString));
     return hashes;
   }
 
