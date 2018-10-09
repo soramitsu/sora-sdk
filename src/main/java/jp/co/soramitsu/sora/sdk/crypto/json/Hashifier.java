@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import jp.co.soramitsu.sora.sdk.crypto.common.Hash;
@@ -18,7 +19,6 @@ import jp.co.soramitsu.sora.sdk.crypto.common.SecurityProvider;
 import jp.co.soramitsu.sora.sdk.did.model.type.DigestTypeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.val;
 import org.spongycastle.util.Arrays;
 
 @FieldDefaults(makeFinal = true)
@@ -55,9 +55,12 @@ public class Hashifier {
   }
 
   public void hashify(ObjectNode root, BiConsumer<String, Hash> consumer) throws IOException {
-    for (Iterator<Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
-      val field = it.next();
-      consumer.accept(field.getKey(), hashJsonField(field));
+    Set<Map.Entry<String, JsonNode>> elementsForHashing = new TreeSet<>(
+        Comparator.comparing(Entry::getKey));
+    root.fields().forEachRemaining(elementsForHashing::add);
+
+    for (Entry<String, JsonNode> elemForHashing : elementsForHashing) {
+      consumer.accept(elemForHashing.getKey(), hashJsonField(elemForHashing));
     }
   }
 

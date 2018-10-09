@@ -103,7 +103,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
         def keys2 = sd.getAffectedKeys(parentHash)
 
         then: "should be equal to the first two keys in JSON"
-        keys2.toSet() == ["/4:name", "/3:has/9:documents_0"].toSet()
+        keys2.toSet() == ["/3:has/7:animals", "/3:has/9:documents_0"].toSet()
 
         //  fromSaltified
         when: "selective disclosure item is created from saltified"
@@ -135,7 +135,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
         def keys2Saltified = sd.getAffectedKeys(parentHashSaltified)
 
         then: "should be equal to the first two keys in JSON"
-        keys2Saltified.toSet() == ["/4:name", "/3:has/9:documents_0"].toSet()
+        keys2Saltified.toSet() == ["/3:has/7:animals", "/3:has/9:documents_0"].toSet()
 
     }
 
