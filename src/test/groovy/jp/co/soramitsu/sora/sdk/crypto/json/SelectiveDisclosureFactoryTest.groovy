@@ -18,7 +18,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
 
     def "selective disclosure works"() {
         given:
-        def expectedRoot = "d923052347125b4305269925fe6197903b6c354547dcb49e59a695d6a2fc0264"
+        def expectedRoot = "3d65a2467b20abc994a0959e3f04ffd1c41a6377340a026ee3d17e7f4fc02cf6"
 
         def claim = [
                 "name": "bogdan",
@@ -103,7 +103,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
         def keys2 = sd.getAffectedKeys(parentHash)
 
         then: "should be equal to the first two keys in JSON"
-        keys2.toSet() == ["/3:has/7:animals", "/3:has/9:documents_0"].toSet()
+        keys2.toSet() == ["/3:has/7:animals", "/3:has/9:documents_1"].toSet()
 
         //  fromSaltified
         when: "selective disclosure item is created from saltified"
@@ -135,7 +135,7 @@ class SelectiveDisclosureFactoryTest extends Specification {
         def keys2Saltified = sd.getAffectedKeys(parentHashSaltified)
 
         then: "should be equal to the first two keys in JSON"
-        keys2Saltified.toSet() == ["/3:has/7:animals", "/3:has/9:documents_0"].toSet()
+        keys2Saltified.toSet() == ["/3:has/7:animals", "/3:has/9:documents_1"].toSet()
 
     }
 
