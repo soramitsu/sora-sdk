@@ -50,6 +50,7 @@ final def bytebuddyVersion = '1.9.1'
 final def objgenesisVersion = '2.6'
 final def validationVersion = '2.0.1.Final'
 final def jaywayVersion = '2.4.0'
+final def jcipVersion = '1.0.0'
 
 
 dependencies {
@@ -65,6 +66,7 @@ dependencies {
     testCompile("com.jayway.jsonpath:json-path:${jaywayVersion}")
 
     compile("javax.validation:validation-api:${validationVersion}")
+    compile("org.lucee:jcip-annotations:${jcipVersion}")
 
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"

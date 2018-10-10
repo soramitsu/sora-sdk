@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import jp.co.soramitsu.sora.sdk.crypto.common.SaltGenerator;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import net.jcip.annotations.ThreadSafe;
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true)
+@ThreadSafe
 public class Saltifier {
 
   ObjectMapper mapper;

@@ -13,8 +13,10 @@ import jp.co.soramitsu.sora.sdk.crypto.common.Util;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
+import net.jcip.annotations.NotThreadSafe;
 
 @AllArgsConstructor
+@NotThreadSafe
 public class MerkleTreeFactory {
 
   private final MessageDigest digest;

@@ -12,10 +12,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.jcip.annotations.NotThreadSafe;
 
 @ToString
 @RequiredArgsConstructor
 @Getter
+@NotThreadSafe
 public class MerkleTreeProof {
 
   private final MessageDigest digest;

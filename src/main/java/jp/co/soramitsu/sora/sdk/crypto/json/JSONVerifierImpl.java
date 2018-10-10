@@ -13,10 +13,12 @@ import jp.co.soramitsu.sora.sdk.did.model.dto.Proof;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import net.jcip.annotations.ThreadSafe;
 
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ThreadSafe
 public class JSONVerifierImpl implements JSONVerifier {
 
   JSONCanonizer canonizer;
