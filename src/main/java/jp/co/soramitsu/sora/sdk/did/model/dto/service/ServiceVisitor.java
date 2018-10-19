@@ -10,4 +10,7 @@ public interface ServiceVisitor {
 
   default void visit(TransferDataService service) {
   }
+
+  default void visit(NotificationService service) {
+  }
 }
