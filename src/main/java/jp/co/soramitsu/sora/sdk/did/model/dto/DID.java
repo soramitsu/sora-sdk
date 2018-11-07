@@ -39,6 +39,15 @@ public class DID {
   private String fragment;
 
   @JsonCreator
+  public DID(String did) throws ParserException {
+    DID d = DID.parse(did);
+    this.method = d.method;
+    this.identifiers = d.identifiers;
+    this.path = d.path;
+    this.fragment = d.fragment;
+  }
+
+  @JsonCreator
   public static DID parse(String did) throws ParserException {
     return DIDVisitor.parse(did, "did-reference");
   }
