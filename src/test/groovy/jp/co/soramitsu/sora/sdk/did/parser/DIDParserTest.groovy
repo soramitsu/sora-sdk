@@ -19,6 +19,16 @@ class DIDParserTest extends Specification {
         d.getPath() == path
         d.getFragment() == fragment
 
+        and:
+        DID a = new DID(did)
+
+        then:
+        a.toString() == did
+        a.getMethod() == method
+        a.getIdentifiers().toList() == ids.toList()
+        a.getPath() == path
+        a.getFragment() == fragment
+
         where:
         did                                   || method | ids           | fragment | path
         "did:sora:uuid:1#keys-1"              || "sora" | ["uuid", "1"] | "keys-1" | null
