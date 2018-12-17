@@ -76,7 +76,7 @@ public class DID {
 
     if (fragment != null) {
       builder.append("#");
-      builder.append("fragment");
+      builder.append(fragment);
     }
 
     return builder.toString();
