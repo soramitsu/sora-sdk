@@ -76,8 +76,6 @@ class DDOTest extends Specification {
     def "ddo can be signed"() {
         given:
         DID owner = DID.parse("did:sora:bogdan")
-        Instant created = Instant.ofEpochMilli(0)
-
         DID pubkeyId = owner.withFragment("keys-1")
 
         def privKeySeed = DatatypeConverter.parseHexBinary("0000000000000000000000000000000000000000000000000000000000000000")
@@ -90,6 +88,7 @@ class DDOTest extends Specification {
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
                 .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
                 .created(created)
+                .updated(updated)
                 .build()
 
         def suite = new JSONEd25519Sha3SignatureSuite()
@@ -119,6 +118,10 @@ class DDOTest extends Specification {
 
         then:
         !suite.verify(signed, keyPair.getPublic() as EdDSAPublicKey)
+
+        where:
+        created << [new Date(), Instant.now(), "2002-10-10T17:00:00Z"]
+        updated << [new Date(), Instant.now(), "2002-10-10T17:00:00Z"]
     }
 
 }
