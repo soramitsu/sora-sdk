@@ -1,15 +1,14 @@
 package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 import static java.lang.String.format;
-import static java.lang.String.join;
 import static java.util.Arrays.asList;
-import static java.util.Objects.nonNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.List;
 import java.util.UUID;
+import jp.co.soramitsu.sora.sdk.did.Utils;
 import jp.co.soramitsu.sora.sdk.did.parser.DIDVisitor;
 import jp.co.soramitsu.sora.sdk.did.parser.generated.ParserException;
 import lombok.AllArgsConstructor;
@@ -65,13 +64,13 @@ public class DID {
 
   @JsonValue
   public String toString() {
-    String did = format("did:%s:%s", method, join(":", identifiers));
+    String did = format("did:%s:%s", method, Utils.join(":", identifiers));
 
-    if (nonNull(path)) {
+    if (path != null) {
       did += "/" + path;
     }
 
-    if (nonNull(fragment)) {
+    if (fragment != null) {
       did += "#" + fragment;
     }
 
