@@ -10,12 +10,16 @@ import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Annotation that adds validation to String fields. String is valid, if it is ISO8601 time
+ * normalized to UTC+00.
+ */
 @Retention(value = RUNTIME)
 @Target(value = FIELD)
-@Constraint(validatedBy = ISO8601NormalizedTime.Vaidatior.class)
-public @interface ISO8601NormalizedTime {
+@Constraint(validatedBy = ISO8601NormalizedDateTime.Vaidatior.class)
+public @interface ISO8601NormalizedDateTime {
 
-  class Vaidatior implements ConstraintValidator<ISO8601NormalizedTime, String> {
+  class Vaidatior implements ConstraintValidator<ISO8601NormalizedDateTime, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

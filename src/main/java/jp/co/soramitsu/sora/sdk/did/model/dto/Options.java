@@ -7,7 +7,7 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum;
 import jp.co.soramitsu.sora.sdk.did.validation.ISO8601DateTimeFormatter;
-import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedTime;
+import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedDateTime;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -22,7 +22,7 @@ public class Options {
 
   @NonNull
   @JsonProperty("created")
-  @ISO8601NormalizedTime
+  @ISO8601NormalizedDateTime
   private String created;
 
   @NonNull

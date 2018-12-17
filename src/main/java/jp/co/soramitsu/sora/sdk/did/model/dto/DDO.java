@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import jp.co.soramitsu.sora.sdk.did.validation.ISO8601DateTimeFormatter;
-import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedTime;
+import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,11 +45,11 @@ public class DDO {
   private DID guardian;
 
   @JsonProperty("created")
-  @ISO8601NormalizedTime
+  @ISO8601NormalizedDateTime
   private String created;
 
   @JsonProperty("updated")
-  @ISO8601NormalizedTime
+  @ISO8601NormalizedDateTime
   private String updated;
 
   @JsonProperty("proof")
