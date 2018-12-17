@@ -9,17 +9,27 @@ import java.time.ZoneOffset
 class ISO8601DateTimeFormatterTest extends Specification {
     def "given UTC+1 datetime, formatted as UTC+0"() {
         given:
-        def dt = Instant.ofEpochSecond(0)
+        def b = Instant.ofEpochSecond(0)
                 .atZone(ZoneId.of("UTC+1"))
 
         when:
-        String s = ISO8601DateTimeFormatter.format(dt.toInstant())
+        String s = ISO8601DateTimeFormatter.format(b.toInstant())
         Instant parsed = Instant.parse(s)
+        def a = parsed.atZone(ZoneOffset.UTC)
 
         then:
-        parsed.atZone(ZoneOffset.UTC).hour == 0
-        dt.hour == 1
-        parsed.atZone(ZoneOffset.UTC).minute == dt.minute
-        parsed.atZone(ZoneOffset.UTC).second == dt.second
+        a.offset != b.offset
+
+        a.hour == 0
+        b.hour == 1
+
+        a.year == b.year
+        a.month == b.month
+        a.dayOfMonth == b.dayOfMonth
+        a.dayOfWeek == b.dayOfWeek
+        a.dayOfYear == b.dayOfYear
+        a.minute == b.minute
+        a.second == b.second
+        a.nano == b.nano
     }
 }
