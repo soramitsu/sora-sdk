@@ -55,7 +55,7 @@ public class DIDVisitor implements Visitor {
     }
   }
 
-  public DID build() {
+  public DID build() throws ParserException {
     return builder.build();
   }
 

@@ -1,6 +1,5 @@
 package jp.co.soramitsu.sora.sdk.did.model.dto;
 
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -64,17 +63,23 @@ public class DID {
 
   @JsonValue
   public String toString() {
-    String did = format("did:%s:%s", method, Utils.join(":", identifiers));
+    StringBuilder builder = new StringBuilder();
+    builder.append("did:");
+    builder.append(method);
+    builder.append(":");
+    builder.append(Utils.join(":", identifiers));
 
     if (path != null) {
-      did += "/" + path;
+      builder.append("/");
+      builder.append(path);
     }
 
     if (fragment != null) {
-      did += "#" + fragment;
+      builder.append("#");
+      builder.append("fragment");
     }
 
-    return did;
+    return builder.toString();
   }
 
   /**
