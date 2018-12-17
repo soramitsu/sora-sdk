@@ -47,16 +47,14 @@ class DDOTest extends Specification {
         given:
         def file = File.createTempFile("ddo", ".json")
         DID owner = DID.randomUUID()
-        Instant created = Instant.now()
-
         DID pubkeyId = owner.withFragment("keys-1")
-
         DDO ddo1 = DDO.builder()
                 .id(owner)
                 .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
                 .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
                 .created(created)
+                .updated(updated)
                 .build()
 
         ObjectMapper mapper = JsonUtil.buildMapper()
@@ -69,6 +67,10 @@ class DDOTest extends Specification {
 
         then:
         ddo2 == ddo1
+
+        where:
+        created << [new Date(), Instant.now(), "2002-10-10T17:00:00Z"]
+        updated << [new Date(), Instant.now(), "2002-10-10T17:00:00Z"]
     }
 
     def "ddo can be signed"() {
