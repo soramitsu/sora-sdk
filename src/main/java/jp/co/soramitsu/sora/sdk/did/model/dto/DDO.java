@@ -4,14 +4,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import jp.co.soramitsu.sora.sdk.did.model.serializer.TimeCombinedSerializer.TimeISO8601Deserializer;
-import jp.co.soramitsu.sora.sdk.did.model.serializer.TimeCombinedSerializer.TimeISO8601Serializer;
 import jp.co.soramitsu.sora.sdk.did.validation.ISO8601DateTimeFormatter;
+import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,13 +45,11 @@ public class DDO {
   private DID guardian;
 
   @JsonProperty("created")
-  @JsonSerialize(using = TimeISO8601Serializer.class)
-  @JsonDeserialize(using = TimeISO8601Deserializer.class)
+  @ISO8601NormalizedTime
   private String created;
 
   @JsonProperty("updated")
-  @JsonSerialize(using = TimeISO8601Serializer.class)
-  @JsonDeserialize(using = TimeISO8601Deserializer.class)
+  @ISO8601NormalizedTime
   private String updated;
 
   @JsonProperty("proof")

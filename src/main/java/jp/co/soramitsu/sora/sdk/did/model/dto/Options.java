@@ -2,15 +2,12 @@ package jp.co.soramitsu.sora.sdk.did.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.Instant;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
-import jp.co.soramitsu.sora.sdk.did.model.serializer.TimeCombinedSerializer.TimeISO8601Deserializer;
-import jp.co.soramitsu.sora.sdk.did.model.serializer.TimeCombinedSerializer.TimeISO8601Serializer;
 import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum;
 import jp.co.soramitsu.sora.sdk.did.validation.ISO8601DateTimeFormatter;
+import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedTime;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -25,8 +22,7 @@ public class Options {
 
   @NonNull
   @JsonProperty("created")
-  @JsonSerialize(using = TimeISO8601Serializer.class)
-  @JsonDeserialize(using = TimeISO8601Deserializer.class)
+  @ISO8601NormalizedTime
   private String created;
 
   @NonNull
