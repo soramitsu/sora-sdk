@@ -6,7 +6,6 @@ import java.net.URL;
 import jp.co.soramitsu.sora.sdk.did.model.dto.DID;
 import jp.co.soramitsu.sora.sdk.did.model.dto.Service;
 
-
 public class GenericService extends Service {
 
   @JsonCreator
@@ -14,10 +13,5 @@ public class GenericService extends Service {
       @JsonProperty("id") DID serviceId,
       @JsonProperty("serviceEndpoint") URL endpointURL) {
     super(serviceId, endpointURL);
-  }
-
-  @Override
-  public void accept(ServiceVisitor visitor) {
-    visitor.visit(this);
   }
 }

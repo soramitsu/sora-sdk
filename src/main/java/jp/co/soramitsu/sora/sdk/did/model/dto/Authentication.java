@@ -1,20 +1,17 @@
 package jp.co.soramitsu.sora.sdk.did.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.MINIMAL_CLASS;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jp.co.soramitsu.sora.sdk.did.model.Visitable;
-import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.AuthenticationVisitor;
-import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.Ed25519Sha3Authentication;
+import jp.co.soramitsu.sora.sdk.did.model.Executable;
+import jp.co.soramitsu.sora.sdk.did.model.dto.authentication.AuthenticationExecutor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = Ed25519Sha3Authentication.class, name = "Ed25519Sha3Authentication")
-})
+@JsonTypeInfo(use = MINIMAL_CLASS, property = "type")
 @EqualsAndHashCode
 @ToString
-public abstract class Authentication implements Visitable<AuthenticationVisitor> {
+public abstract class Authentication implements Executable<AuthenticationExecutor> {
 
   public abstract DID getPublicKey();
 }

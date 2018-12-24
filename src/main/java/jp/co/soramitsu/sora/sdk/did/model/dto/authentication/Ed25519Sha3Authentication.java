@@ -19,7 +19,7 @@ public class Ed25519Sha3Authentication extends Authentication {
   }
 
   @Override
-  public void accept(AuthenticationVisitor visitor) {
-    visitor.visit(this);
+  public void accept(AuthenticationExecutor visitor) {
+    visitor.execute(this);
   }
 }
