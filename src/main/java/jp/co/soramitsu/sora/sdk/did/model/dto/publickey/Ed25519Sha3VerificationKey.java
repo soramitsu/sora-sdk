@@ -35,7 +35,7 @@ public class Ed25519Sha3VerificationKey extends PublicKey {
   }
 
   @Override
-  public void accept(PublicKeyExecutor executor) {
+  public void execute(PublicKeyExecutor executor) {
     executor.execute(this);
   }
 }

@@ -5,5 +5,5 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public interface Executable<T> {
 
   @JsonIgnore
-  void accept(T t);
+  void execute(T t);
 }

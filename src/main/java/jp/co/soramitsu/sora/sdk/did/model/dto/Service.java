@@ -23,7 +23,7 @@ public abstract class Service implements Executable<ServiceExecutor> {
   URL serviceEndpoint;
 
   @Override
-  public final void accept(ServiceExecutor serviceExecutor) {
+  public final void execute(ServiceExecutor serviceExecutor) {
     stream(serviceExecutor.getClass().getDeclaredMethods()).forEach(method -> {
       if (stream(method.getParameterTypes()).anyMatch(aClass -> aClass.equals(this.getClass()))) {
         serviceExecutor.execute(this);
