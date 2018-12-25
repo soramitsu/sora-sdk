@@ -1,32 +1,33 @@
 package jp.co.soramitsu.sora.sdk.did.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.MINIMAL_CLASS;
+import static java.util.Arrays.stream;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.net.URL;
-import jp.co.soramitsu.sora.sdk.did.model.Visitable;
-import jp.co.soramitsu.sora.sdk.did.model.dto.service.GenericService;
-import jp.co.soramitsu.sora.sdk.did.model.dto.service.ServiceVisitor;
-import jp.co.soramitsu.sora.sdk.did.model.dto.service.SharingRulesService;
-import jp.co.soramitsu.sora.sdk.did.model.dto.service.TransferDataService;
+import jp.co.soramitsu.sora.sdk.did.model.Executable;
+import jp.co.soramitsu.sora.sdk.did.model.dto.service.ServiceExecutor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NonNull;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = GenericService.class, name = "GenericService"),
-    @JsonSubTypes.Type(value = SharingRulesService.class, name = "SharingRulesService"),
-    @JsonSubTypes.Type(value = TransferDataService.class, name = "TransferDataService")
-})
-@Getter
-@AllArgsConstructor
+@JsonTypeInfo(use = MINIMAL_CLASS, property = "type")
 @Data
-public abstract class Service implements Visitable<ServiceVisitor> {
+@AllArgsConstructor
+public abstract class Service implements Executable<ServiceExecutor> {
 
   @NonNull
   DID id;
 
   @NonNull
   URL serviceEndpoint;
+
+  @Override
+  public final void execute(ServiceExecutor serviceExecutor) {
+    stream(serviceExecutor.getClass().getDeclaredMethods()).forEach(method -> {
+      if (stream(method.getParameterTypes()).anyMatch(aClass -> aClass.equals(this.getClass()))) {
+        serviceExecutor.execute(this);
+      }
+    });
+  }
 }
