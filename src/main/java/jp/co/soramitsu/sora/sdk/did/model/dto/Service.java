@@ -1,6 +1,6 @@
 package jp.co.soramitsu.sora.sdk.did.model.dto;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.MINIMAL_CLASS;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
 import static java.util.Arrays.stream;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
-@JsonTypeInfo(use = MINIMAL_CLASS, property = "type")
+@JsonTypeInfo(use = CLASS, property = "type")
 @Data
 @AllArgsConstructor
 public abstract class Service implements Executable<ServiceExecutor> {
