@@ -15,20 +15,21 @@ import jp.co.soramitsu.sora.sdk.did.model.type.SignatureTypeEnum
 import jp.co.soramitsu.sora.sdk.json.JsonUtil
 import spock.lang.Specification
 
+import javax.validation.Validation
 import javax.xml.bind.DatatypeConverter
 import java.time.Instant
 
 class DDOTest extends Specification {
 
+    final def PATH_TO_JSON =  "/json/ddo/canonical-1.json"
+
     def "can parse valid ddo from json and print to json"() {
         given:
         def mapper = JsonUtil.buildMapper()
 
-        expect:
-        stream != null
-
         when: "deserialize from json"
-        DDO ddo = mapper.readValue(stream, DDO.class)
+        def ddo = this.getClass().getResourceAsStream(PATH_TO_JSON)
+                .withStream {stream -> mapper.readValue(stream, DDO.class)}
 
         then: "success"
         noExceptionThrown()
@@ -38,9 +39,6 @@ class DDOTest extends Specification {
 
         then: "success; json is valid"
         noExceptionThrown()
-
-        where:
-        stream = this.getClass().getResourceAsStream("/json/ddo/canonical-1.json")
     }
 
     def "save ddo then load"() {
@@ -122,6 +120,27 @@ class DDOTest extends Specification {
         where:
         created << [new Date(), Instant.now(), "2002-10-10T17:00:00Z"]
         updated << [new Date(), Instant.now(), "2002-10-10T17:00:00Z"]
+    }
+
+    def "incorrect datetime format violates constraints"() {
+        given:
+        def mapper = JsonUtil.buildMapper()
+
+        when: "deserialize from json"
+        def ddo = this.getClass().getResourceAsStream(PATH_TO_JSON)
+                .withStream {stream -> mapper.readValue(stream, DDO.class)}
+
+        then: "success"
+        noExceptionThrown()
+
+        when: "validate ddo against constraints"
+        ddo.updated = "foo"
+        def constraints = Validation.buildDefaultValidatorFactory().validator.validate(ddo)
+
+        then: "constraint violation"
+        noExceptionThrown()
+        constraints.size() == 1
+        constraints.iterator().next().propertyPath.toString() == 'updated'
     }
 
 }

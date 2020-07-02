@@ -51,6 +51,8 @@ final def objgenesisVersion = '3.0.1'
 final def validationVersion = '2.0.1.Final'
 final def jaywayVersion = '2.4.0'
 final def jcipVersion = '1.0.0'
+final def hibernateValidatorVersion = '6.1.5.Final'
+final def elVersion = '3.0.3'
 
 
 dependencies {
@@ -64,6 +66,8 @@ dependencies {
     testCompile("com.nagternal:spock-genesis:${spockGenesisVersion}")
     testCompile("org.spockframework:spock-core:${spockVersion}")
     testCompile("com.jayway.jsonpath:json-path:${jaywayVersion}")
+    testCompile("org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}")
+    testCompile("org.glassfish:jakarta.el:${elVersion}")
 
     compile("javax.validation:validation-api:${validationVersion}")
     compile("org.lucee:jcip-annotations:${jcipVersion}")
