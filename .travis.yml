@@ -1,8 +1,5 @@
 language: java
 jdk:
-- oraclejdk9
-- oraclejdk8
-- openjdk9
 - openjdk8
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -23,5 +20,5 @@ script:
 - "./gradlew assemble -x test --parallel"
 - "./gradlew test"
 - "./gradlew jacocoTestReport"
-- "bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}"
-- "./gradlew sonarqube -Dsonar.organization=soramitsu -Dsonar.projectKey=sora-sdk -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}"
+- "bash <(curl -s https://codecov.io/bash)"
+#- "./gradlew sonarqube -Dsonar.organization=soramitsu -Dsonar.projectKey=sora-sdk -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}"
