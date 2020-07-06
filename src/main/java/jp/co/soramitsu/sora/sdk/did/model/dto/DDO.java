@@ -46,6 +46,7 @@ public class DDO {
 
   @JsonProperty("created")
   @ISO8601NormalizedDateTime
+  @NonNull
   private String created;
 
   @JsonProperty("updated")
