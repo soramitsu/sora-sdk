@@ -19,6 +19,8 @@ import javax.validation.Validation
 import javax.xml.bind.DatatypeConverter
 import java.time.Instant
 
+import static java.util.Collections.singletonMap
+
 class DDOTest extends Specification {
 
     final def PATH_TO_JSON =  "/json/ddo/canonical-1.json"
@@ -50,7 +52,7 @@ class DDOTest extends Specification {
                 .id(owner)
                 .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, [48] as byte[]))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
-                .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
+                .service(new GenericService(null, new URL("https://google.com/")))
                 .created(created)
                 .updated(updated)
                 .build()
@@ -80,11 +82,13 @@ class DDOTest extends Specification {
         def engine = new Ed25519Sha3()
         def keyPair = engine.generateKeypair(privKeySeed)
 
+        def service = new GenericService(null, new URL("https://google.com/"))
+        service.setDetails(singletonMap("id", owner.withFragment("service-1")))
         DDO ddo = DDO.builder()
                 .id(owner)
                 .publicKey(new Ed25519Sha3VerificationKey(pubkeyId, null, keyPair.getPublic().getEncoded()))
                 .authentication(new Ed25519Sha3Authentication(pubkeyId))
-                .service(new GenericService(owner.withFragment("service-1"), new URL("https://google.com/")))
+                .service(service)
                 .created(created)
                 .updated(updated)
                 .build()

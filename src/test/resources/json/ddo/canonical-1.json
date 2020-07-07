@@ -20,6 +20,15 @@
       "publicKey": "did:sora:uuid:caab4570-5f3f-4050-8d61-15306dea4bcf#keys-1"
     }
   ],
+  "service":[{
+    "type":"jp.co.soramitsu.sora.bcaunitbackend.services.SharingRulesService",
+    "serviceEndpoint": ["https://example.com/"],
+    "details" : {
+      "id" : "did:sora:uuid:fakeuuid#service-1",
+      "owner" : "Alice",
+      "bla" : "blabla"
+    }
+  }],
   "created": "2018-07-04T17:00:00Z",
   "proof": {
     "type": "Ed25519Sha3Signature",

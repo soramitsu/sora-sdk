@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import jp.co.soramitsu.sora.sdk.did.validation.ISO8601DateTimeFormatter;
 import jp.co.soramitsu.sora.sdk.did.validation.ISO8601NormalizedDateTime;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,7 @@ public class DDO {
 
   @JsonProperty("service")
   @Singular("service")
+  @Valid
   private List<Service> service;
 
   @JsonProperty("guardian")
@@ -46,7 +49,7 @@ public class DDO {
 
   @JsonProperty("created")
   @ISO8601NormalizedDateTime
-  @NonNull
+  @NotNull
   private String created;
 
   @JsonProperty("updated")

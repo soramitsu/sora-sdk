@@ -1,26 +1,43 @@
 package jp.co.soramitsu.sora.sdk.did.model.dto;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
 import static java.util.Arrays.stream;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import jp.co.soramitsu.sora.sdk.did.model.Executable;
+import jp.co.soramitsu.sora.sdk.did.model.dto.service.GenericService;
 import jp.co.soramitsu.sora.sdk.did.model.dto.service.ServiceExecutor;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
 
-@JsonTypeInfo(use = CLASS, property = "type")
+@JsonDeserialize(as = GenericService.class)
 @Data
-@AllArgsConstructor
 public abstract class Service implements Executable<ServiceExecutor> {
 
-  @NonNull
-  DID id;
+  @NotNull
+  private String type;
 
-  @NonNull
-  URL serviceEndpoint;
+  @NotEmpty
+  private List<URL> serviceEndpoint;
+
+  private Map<String, Object> details;
+
+  public Service(String type, @NotEmpty URL ...serviceEndpoint) {
+    this.serviceEndpoint = new ArrayList<>(Arrays.asList(serviceEndpoint));
+    this.type = type;
+  }
+
+  public String getType() {
+    if (type == null) {
+      type = getClass().getCanonicalName();
+    }
+    return type;
+  }
 
   @Override
   public final void execute(ServiceExecutor serviceExecutor) {
