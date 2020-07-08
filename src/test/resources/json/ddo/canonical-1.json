@@ -20,6 +20,14 @@
       "publicKey": "did:sora:uuid:caab4570-5f3f-4050-8d61-15306dea4bcf#keys-1"
     }
   ],
+  "service":[{
+    "type":"CustomService",
+    "id":"did:sora:uuid:fakeuuid#service-1",
+    "serviceEndpoint":"https://example.com/",
+    "owners" : {
+      "name" : ["Alice", "Bob"]
+    }
+  }],
   "created": "2018-07-04T17:00:00Z",
   "proof": {
     "type": "Ed25519Sha3Signature",
